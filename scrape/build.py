@@ -70,6 +70,14 @@ def load_matches(fname="matches.jsonl"):
     return sorted(ms.values(), key=lambda d: d["date"])
 
 
+# team country -> region label for Indian players abroad; "International" means VLR has no country
+COUNTRY_REGION = {"United States": "North America", "Canada": "North America", "International": "",
+                  "United Kingdom": "EMEA", "Germany": "EMEA", "France": "EMEA", "Europe": "EMEA",
+                  "United Arab Emirates": "MENA", "Saudi Arabia": "MENA", "Singapore": "Asia-Pacific",
+                  "Malaysia": "Asia-Pacific", "Indonesia": "Asia-Pacific", "Philippines": "Asia-Pacific",
+                  "Thailand": "Asia-Pacific", "Vietnam": "Asia-Pacific", "Australia": "Oceania", "New Zealand": "Oceania"}
+
+
 def abroad_opp_elo(title):
     """Matches between two non-South-Asian teams carry no Elo here, so estimate the opponent's level from the event."""
     t = (title or "").lower()
@@ -490,6 +498,19 @@ def main():
         return t.get("flag", "") not in ("", "un") or tid in abroad_team_ids
 
     abroad_team_ids = {t["id"] for m in abroad_matches for t in m["teams"]}
+
+    @functools.lru_cache(maxsize=None)
+    def team_country(tid):
+        """Country of a team outside our crawl, from its VLR page (cached for a month)."""
+        t = teams_raw.get(str(tid))
+        if t and t.get("country"):
+            return t["country"]
+        try:
+            import crawl
+            h = vlr.get(f"https://www.vlr.gg/team/{tid}/x", max_age=30 * 86400)
+            return (crawl.parse_team(h, tid) or {}).get("country", "") if h else ""
+        except Exception:
+            return ""
     players_out = []
     for pid, pp in P.items():
         allrows = sorted(pp["rows"], key=lambda r: r["d"])
@@ -566,7 +587,7 @@ def main():
                           for r in rows[-30:]] if (NOW - dt.datetime.strptime(last["d"], "%Y-%m-%d")).days <= 365 else [],
                   indian_team=bool(indian_team_rows), gc=is_gc,
                   abroad=(dict(region=region_of_team.get(cur_tid) or (abroad_info.get(pid) or {}).get("region", "")
-                               or teams_raw.get(str(cur_tid), {}).get("country", ""),
+                               or COUNTRY_REGION.get(team_country(cur_tid), team_country(cur_tid)),
                                team_flag=(abroad_info.get(pid) or {}).get("team_flag", "") or teams_raw.get(str(cur_tid), {}).get("flag", ""))
                           if pp["flag"] == "in" and is_foreign_team(cur_tid) else None))
         players_out.append(po)

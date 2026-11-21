@@ -32,4 +32,10 @@ jobs:
         with:
           path: site
       - id: deployment
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
+      # deploy-pages sometimes looks for the artifact before it is visible; wait and retry once
+      - if: steps.deployment.outcome == 'failure'
+        run: sleep 30
+      - if: steps.deployment.outcome == 'failure'
         uses: actions/deploy-pages@v4
