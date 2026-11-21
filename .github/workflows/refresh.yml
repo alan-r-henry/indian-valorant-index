@@ -1,0 +1,61 @@
+name: Refresh data
+
+# Weekly re-crawl of VLR + Liquipedia, rebuild site/data.js, commit, then pages.yml deploys.
+on:
+  schedule:
+    - cron: "30 2 * * 1"   # Mondays 02:30 UTC (08:00 IST)
+  workflow_dispatch:
+    inputs:
+      abroad:
+        description: "Also rescan every VLR region for Indian players abroad (slow, about 40 min)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pillow
+      - name: Restore page cache
+        uses: actions/cache@v4
+        with:
+          path: cache
+          key: vlr-cache-${{ github.run_id }}
+          restore-keys: vlr-cache-
+      - name: Crawl
+        working-directory: scrape
+        run: |
+          python -X utf8 crawl_events.py
+          python -X utf8 crawl.py
+          python -X utf8 find_abroad.py
+      - name: Indian players abroad
+        working-directory: scrape
+        # full region rescan when asked or every fourth run; otherwise only their new matches
+        run: |
+          if [ "${{ inputs.abroad }}" = "true" ] || [ $(( ${{ github.run_number }} % 4 )) -eq 0 ]; then export ABROAD_RESCAN=1; else export ABROAD_RESCAN=0; fi
+          python -X utf8 crawl_abroad.py
+      - name: Build
+        working-directory: scrape
+        run: |
+          python -X utf8 build.py
+          python -X utf8 og_image.py
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data site
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "Data refresh $(date -u +%Y-%m-%d)"
+          git push

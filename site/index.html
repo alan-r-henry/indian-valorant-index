@@ -1,7 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Indian Valorant Index</title>
-<meta name="claude:viewport-fit-sides" content="cover">
+<title>Indian Valorant Index: rankings, player stats and results</title>
+<meta name="description" content="Fan-made stats for the Indian Valorant scene: team Elo rankings, opponent-adjusted player ratings, Indian players abroad, head-to-heads with match odds, a circuit tracker and every tournament since 2020, built from VLR.gg and Liquipedia.">
+<meta name="theme-color" content="#0e1016">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230e1016'/%3E%3Cpath d='M7 7h18v11l-7 7H7z' fill='%23f0a63a'/%3E%3C/svg%3E">
+<link rel="canonical" href="https://alan-r-henry.github.io/indian-valorant-index/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Indian Valorant Index">
+<meta property="og:title" content="Indian Valorant Index">
+<meta property="og:description" content="Team rankings, player stats, head-to-heads and tournament history for Indian Valorant, built from every VLR.gg match since 2020.">
+<meta property="og:url" content="https://alan-r-henry.github.io/indian-valorant-index/">
+<meta property="og:image" content="https://alan-r-henry.github.io/indian-valorant-index/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap">
@@ -185,22 +200,65 @@ footer { border-top: 1px solid var(--line); padding-block: 18px; color: var(--mu
   .pct { grid-template-columns: 90px 1fr 48px; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+/* added: sticky name column, buttons, pickers, compare, head-to-head, logo fallback */
+.stk { position: sticky; left: 0; z-index: 1; background: var(--panel); }
+th.stk { z-index: 3; }
+tbody tr:hover td.stk { background: var(--panel2); }
+.btn { background: var(--panel2); border: 1px solid var(--line); color: var(--fg); padding: 6px 10px; border-radius: 3px; cursor: pointer; font: inherit; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+.btn:disabled { opacity: .5; cursor: default; }
+.toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.search .res a.act, .picker .res a.act { background: var(--panel2); color: var(--accent); }
+.picker { position: relative; }
+.picker input { background: var(--panel2); border: 1px solid var(--line); color: var(--fg); padding: 7px 10px; width: 240px; max-width: 100%; font: inherit; border-radius: 3px; }
+.picker .res { position: absolute; left: 0; top: 100%; margin-top: 4px; width: 300px; max-width: 90vw; max-height: 340px; overflow: auto; background: var(--panel); border: 1px solid var(--line); z-index: 40; box-shadow: 0 10px 30px rgba(0,0,0,.35); }
+.picker .res a { display: flex; gap: 8px; padding: 7px 10px; align-items: center; border-bottom: 1px solid var(--line); }
+.picker .res a small { color: var(--muted); margin-left: auto; }
+.slots { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.slot { display: inline-flex; align-items: center; gap: 7px; padding: 4px 4px 4px 10px; border: 1px solid var(--line); border-radius: 99px; background: var(--panel2); font-weight: 600; }
+.slot i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.slot button { background: none; border: 0; color: var(--muted); cursor: pointer; font-size: 15px; line-height: 1; padding: 2px 6px; }
+.slot button:hover { color: var(--neg); }
+.cmp td.best { color: var(--accent); font-weight: 700; }
+.cmp th.pl { text-transform: none; letter-spacing: 0; font-size: 13px; color: var(--fg); cursor: default; }
+.prob { display: flex; height: 30px; border-radius: 3px; overflow: hidden; font-weight: 700; font-size: 13px; background: var(--panel2); }
+.prob span { display: flex; align-items: center; padding: 0 10px; white-space: nowrap; min-width: 0; overflow: hidden; }
+.vs { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: center; }
+.vs .side { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.vs .side.r { flex-direction: row-reverse; text-align: right; }
+.vs .mid { font-family: var(--display); font-weight: 700; font-size: 26px; color: var(--muted); }
+.pager { display: flex; gap: 10px; align-items: center; justify-content: center; padding: 12px; }
+.chip { display: inline-block; font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 2px; }
+.chip.W { background: color-mix(in srgb, var(--pos) 22%, transparent); color: var(--pos); }
+.chip.L { background: color-mix(in srgb, var(--neg) 18%, transparent); color: var(--neg); }
+.pill.abroad { color: var(--info); border-color: color-mix(in srgb, var(--info) 55%, transparent); background: color-mix(in srgb, var(--info) 12%, transparent); }
+.toast { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); background: var(--fg); color: var(--bg); padding: 8px 14px; border-radius: 4px; font-weight: 600; font-size: 13px; z-index: 60; }
+.logo-fb { display: inline-grid; place-items: center; border-radius: 4px; background: hsl(var(--h, 220) 45% 50% / .22); color: var(--fg); font: 700 9px/1 var(--body); letter-spacing: .02em; border: 1px solid var(--line); overflow: hidden; }
+.logo-fb.lg { font-size: 20px; border-radius: 8px; }
+kbd { font: 11px var(--body); border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 3px; padding: 0 4px; color: var(--muted); }
+@media (max-width: 640px) {
+  .vs { grid-template-columns: 1fr; }
+  .vs .side.r { flex-direction: row; text-align: left; }
+  .vs .mid { font-size: 18px; }
+  .picker input { width: 100%; }
+}
 </style>
-
+</head>
+<body>
 <header class="bar">
   <div class="wrap">
     <a class="brand" href="#overview"><span class="mark"></span>Indian Valorant Index <small id="asof"></small></a>
     <nav class="tabs" id="tabs">
-      <a href="#overview">Overview</a><a href="#teams">Team rankings</a><a href="#players">Players</a><a href="#circuit">Circuit tracker</a><a href="#events">Tournaments</a><a href="#meta">Meta</a><a href="#records">Records</a><a href="#about">Method</a>
+      <a href="#overview">Overview</a><a href="#teams">Rankings</a><a href="#players">Players</a><a href="#abroad">Abroad</a><a href="#compare">Compare</a><a href="#h2h">Head-to-head</a><a href="#results">Results</a><a href="#circuit">Circuit</a><a href="#events">Tournaments</a><a href="#meta">Meta</a><a href="#records">Records</a><a href="#about">Method</a>
     </nav>
-    <div class="search"><input id="q" type="text" placeholder="Search team or player" autocomplete="off" aria-label="Search teams and players"><div class="res" id="qres" hidden></div></div>
+    <div class="search"><input id="q" type="text" placeholder="Search team or player  ( / )" autocomplete="off" aria-label="Search teams and players"><div class="res" id="qres" hidden></div></div>
     <button class="themebtn" id="themebtn" type="button" aria-label="Switch colour theme">Theme</button>
   </div>
 </header>
-<main class="wrap" id="view"><div class="empty">Loading data…</div></main>
+<main class="wrap" id="view"><div class="empty">Loading data…</div><noscript><div class="empty">This site needs JavaScript to show its tables and charts.</div></noscript></main>
 <footer><div class="wrap" id="foot"></div></footer>
 
-<script src="data.js" charset="utf-8"></script>
+<script src="data.js?v=d67c4882e1" charset="utf-8"></script>
 <script>
 "use strict";
 const D = window.IVI_DATA;
@@ -213,6 +271,9 @@ const sgn = v => (v > 0 ? "+" : "") + v;
 const img = u => u ? (u.startsWith("//") ? "https:" + u : (u.startsWith("/") ? "https://www.vlr.gg" + u : u)) : "";
 const NOW = new Date(D.generated + "T00:00:00");
 const daysAgo = d => Math.round((NOW - new Date(d + "T00:00:00")) / 864e5);
+// Current season = the snapshot's year, unless it has barely started (then the previous year).
+const SEASON = (() => { const y = D.generated.slice(0, 4); return D.matches.filter(m => m.d.startsWith(y)).length >= 40 ? y : String(+y - 1); })();
+const PREV = String(+SEASON - 1);
 const store = { get(k, d) { try { const v = localStorage.getItem("ivi_" + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem("ivi_" + k, JSON.stringify(v)); } catch (e) {} } };
 
 const TEAM = new Map(D.teams.map(t => [t.id, t]));
@@ -227,12 +288,31 @@ const ROLE_COLORS = { Duelist: "#e8615a", Initiator: "#3fbf9f", Controller: "#7a
 const AG = a => a ? a.charAt(0).toUpperCase() + a.slice(1).replace("kayo", "KAY/O") : "–";
 const agName = a => a === "kayo" ? "KAY/O" : AG(a);
 
+function initials(n) {
+  const w = String(n || "?").replace(/[^A-Za-z0-9 ]/g, " ").trim().split(/\s+/).filter(Boolean);
+  return (w.length > 1 ? w[0][0] + w[1][0] : (w[0] || "?").slice(0, 2)).toUpperCase();
+}
+function logoFallback(name, lg) {
+  let h = 0; for (const ch of String(name || "")) h = (h * 31 + ch.charCodeAt(0)) % 360;
+  return `<span class="logo logo-fb${lg ? " lg" : ""}" style="--h:${h}" aria-hidden="true">${esc(initials(name))}</span>`;
+}
+function logoHTML(url, name, lg = false) {
+  const u = img(url);
+  if (!u || /\/img\/vlr\/tmp\/vlr\.png$/.test(u)) return logoFallback(name, lg);
+  return `<img class="logo${lg ? " lg" : ""}" src="${esc(u)}" alt="" data-n="${esc(name)}" loading="lazy" referrerpolicy="no-referrer">`;
+}
+// Broken or blocked logo URLs turn into an initials badge instead of a broken-image icon.
+document.addEventListener("error", e => {
+  const el = e.target;
+  if (el && el.tagName === "IMG" && el.classList.contains("logo")) el.outerHTML = logoFallback(el.dataset.n, el.classList.contains("lg"));
+}, true);
 function teamLink(id, withLogo = true) {
-  const t = TEAM.get(id), nm = esc(tname(id)), lg = tlogo(id);
-  const inner = (withLogo && lg ? `<img class="logo" src="${lg}" alt="" loading="lazy">` : "") + `<span>${nm}</span>`;
+  const t = TEAM.get(id), nm = esc(tname(id));
+  const inner = (withLogo ? logoHTML(TEAM.get(id)?.logo || D.tlogos[id] || "", tname(id)) : "") + `<span>${nm}</span>`;
   return t ? `<a class="tlink" href="#team-${id}">${inner}</a>` : `<span class="tlink">${inner}</span>`;
 }
-function playerLink(id) { const p = PLAYER.get(id); return p ? `<a href="#player-${id}"><b>${esc(p.name)}</b></a>` : "–"; }
+function abroadPill(p) { return p && p.abroad ? ` <span class="pill abroad" title="Indian player on a team outside South Asia">Abroad${p.abroad.region ? " · " + esc(p.abroad.region) : ""}</span>` : ""; }
+function playerLink(id) { const p = PLAYER.get(id); return p ? `<a href="#player-${id}"><b>${esc(p.name)}</b></a>${abroadPill(p)}` : "–"; }
 function formBar(f) { return `<span class="form" aria-label="Recent form ${f.join("")}">${f.slice(-8).map(x => `<i class="${x}"></i>`).join("")}</span>`; }
 function tierTag(t) { return `<span class="tier ${t}">${TIER_LABEL[t] || t}</span>`; }
 
@@ -240,9 +320,9 @@ function tierTag(t) { return `<span class="tier ${t}">${TIER_LABEL[t] || t}</spa
 const INDIAN = D.teams.filter(t => t.indian);
 function teamPool(opts) {
   const win = opts.win || "now";
-  const since = win === "now" ? isoAgo(365) : win === "2026" ? "2026-01-01" : win === "2y" ? isoAgo(730) : "0000";
+  const since = win === "now" ? isoAgo(365) : win === "season" ? SEASON + "-01-01" : win === "2y" ? isoAgo(730) : "0000";
   return D.teams.filter(t => (opts.scope === "sa" ? true : t.indian) && !!t.gc === (opts.circ === "gc") && t.last && t.last >= since && (win !== "now" || !t.inactive)
-    && (win === "2026" ? (t.y["2026"] ? t.y["2026"].series[0] + t.y["2026"].series[1] : 0) : t.series[0] + t.series[1]) >= (opts.minSeries ?? 1));
+    && (win === "season" ? (t.y[SEASON] ? t.y[SEASON].series[0] + t.y[SEASON].series[1] : 0) : t.series[0] + t.series[1]) >= (opts.minSeries ?? 1));
 }
 function isoAgo(days) { return new Date(NOW - days * 864e5).toISOString().slice(0, 10); }
 function rankTeams(list) { return list.slice().sort((a, b) => b.rating - a.rating); }
@@ -256,8 +336,8 @@ function ratingAgo(t, days) {
 }
 function seasonDelta(t) {
   let before = null, last = null;
-  for (const [m, v] of t.hist) { if (m < "2026-01") before = v; last = v; }
-  return before == null || !t.last || t.last < "2026" ? null : t.elo - before;
+  for (const [m, v] of t.hist) { if (m < SEASON + "-01") before = v; last = v; }
+  return before == null || !t.last || t.last < SEASON ? null : t.elo - before;
 }
 function bestMap(t) {
   let best = null;
@@ -312,8 +392,8 @@ function table(id, cols, rows, state, opts = {}) {
     return (va > vb ? 1 : va < vb ? -1 : 0) * dir;
   });
   const lim = opts.limit ? sorted.slice(0, opts.limit) : sorted;
-  const head = cols.map(c => `<th class="${c.n ? "n" : ""} ${c.k === key ? "sorted" : ""}" data-k="${c.k}" title="${esc(c.t || c.h)}">${c.h}${c.k === key ? ` <span class="arr">${dir < 0 ? "▼" : "▲"}</span>` : ""}</th>`).join("");
-  const body = lim.map((r, i) => `<tr class="${i < 3 && opts.rankCol ? "top3" : ""}">${cols.map(c => `<td class="${c.n ? "n" : ""} ${c.cls || ""}">${c.f ? c.f(r, i) : esc(c.v(r))}</td>`).join("")}</tr>`).join("");
+  const head = cols.map(c => `<th class="${c.n ? "n" : ""} ${c.k === key ? "sorted" : ""} ${c.stick ? "stk" : ""}" data-k="${c.k}" tabindex="0" aria-sort="${c.k === key ? (dir < 0 ? "descending" : "ascending") : "none"}" title="${esc(c.t || c.h)}">${c.h}${c.k === key ? ` <span class="arr">${dir < 0 ? "▼" : "▲"}</span>` : ""}</th>`).join("");
+  const body = lim.map((r, i) => `<tr class="${i < 3 && opts.rankCol ? "top3" : ""}">${cols.map(c => `<td class="${c.n ? "n" : ""} ${c.cls || ""} ${c.stick ? "stk" : ""}">${c.f ? c.f(r, i) : esc(c.v(r))}</td>`).join("")}</tr>`).join("");
   return `<div class="tw"><table id="${id}"><thead><tr>${head}</tr></thead><tbody>${body || `<tr><td colspan="${cols.length}" class="empty">Nothing matches these filters</td></tr>`}</tbody></table></div>`;
 }
 function bindSort(root, state, rerender, defDir = {}) {
@@ -322,13 +402,18 @@ function bindSort(root, state, rerender, defDir = {}) {
     if (state.sort === k) state.dir *= -1; else { state.sort = k; state.dir = defDir[k] ?? -1; }
     rerender();
   });
+  root.querySelectorAll("th[data-k]").forEach(th => th.onkeydown = e => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    e.preventDefault(); const k = th.dataset.k; th.click();
+    document.querySelector(`th[data-k="${k}"]`)?.focus();
+  });
 }
 
 /* ---------- views ---------- */
 const V = {};
 
 V.overview = () => {
-  const yr = "2026";
+  const yr = SEASON;
   const top10 = RANKED.slice(0, 10);
   const recent = D.matches.filter(m => INDIAN.some(t => t.id === m.t[0] || t.id === m.t[1])).slice(-14).reverse();
   const curPlayers = D.players.filter(p => p.active && !p.gc && p.flag === "in" && p.cur && p.cur.maps >= 10 && p.cur.adj != null).sort((a, b) => b.cur.adj - a.cur.adj).slice(0, 10);
@@ -368,11 +453,34 @@ V.overview = () => {
     <div class="panel flush"><div style="padding:14px 16px 6px"><h3>Latest results</h3></div>${recent.map(matchRow).join("")}</div>
   </div>
   <div class="sec grid g2">
-    <div class="panel"><h3>Coming up</h3><div class="grid" style="gap:12px">${UPCOMING.map(s => `<div class="story"><b>${esc(s[0])}</b><p>${s[1]}</p></div>`).join("")}</div></div>
+    <div class="panel"><h3>Coming up <span class="small muted" style="text-transform:none;letter-spacing:0">· notes as of 22 Nov 2026</span></h3><div class="grid" style="gap:12px">${UPCOMING.map(s => `<div class="story"><b>${esc(s[0])}</b><p>${s[1]}</p></div>`).join("")}</div></div>
     <div class="panel"><h3>How the scene got here</h3><div class="timeline">${HISTORY.map(h => `<div class="tl"><div class="y">${h[0]}</div><div>${h[1]}</div></div>`).join("")}</div></div>
   </div>
+  ${overviewExtras()}
   ${rollOfHonour()}`;
 };
+
+function overviewExtras() {
+  const avg = rs => rs.length ? rs.reduce((s, x) => s + x[1], 0) / rs.length : null;
+  const inForm = D.players.filter(p => p.flag === "in" && !p.gc && p.recent && p.recent.length >= 10 && daysAgo(p.recent[p.recent.length - 1][0]) <= 90)
+    .map(p => { const rs = p.recent.slice(-10).filter(x => x[1] != null); return [p, avg(rs), rs.length]; })
+    .filter(x => x[1] != null && x[2] >= 8).sort((a, b) => b[1] - a[1]).slice(0, 8);
+  const rising = RANKED.filter(t => t.last && daysAgo(t.last) <= 120).map(t => [t, ratingAgo(t, 120)]).filter(x => x[1] != null)
+    .map(([t, r]) => [t, t.elo - r]).sort((a, b) => b[1] - a[1]).slice(0, 8);
+  const abroad = D.players.filter(p => p.abroad && p.active && p.cur && p.cur.maps >= 5).sort((a, b) => (b.cur.adj ?? -9) - (a.cur.adj ?? -9)).slice(0, 8);
+  const head = (t, link, lab) => `<div style="padding:14px 16px 6px" class="sec-head"><h3>${t}</h3>${link ? `<a class="small muted" href="${link}">${lab} →</a>` : ""}</div>`;
+  return `<div class="sec grid g3">
+    <div class="panel flush">${head("In form · last 10 maps", "#players", "All players")}<div class="tw"><table><thead><tr><th>Player</th><th>Team</th><th class="n">Avg rating</th></tr></thead><tbody>
+      ${inForm.map(([p, v]) => `<tr><td>${playerLink(p.id)}</td><td>${teamLink(p.team)}</td><td class="n"><b>${fmt(v)}</b></td></tr>`).join("") || `<tr><td colspan="3" class="empty">No one has 10 recent maps</td></tr>`}
+    </tbody></table></div></div>
+    <div class="panel flush">${head("Rising teams · last 4 months", "#teams", "Rankings")}<div class="tw"><table><thead><tr><th>Team</th><th class="n">Rating</th><th class="n">Change</th></tr></thead><tbody>
+      ${rising.map(([t, d]) => `<tr><td>${teamLink(t.id)}</td><td class="n">${t.rating}</td><td class="n"><span class="${d > 0 ? "win" : d < 0 ? "loss" : ""}">${sgn(Math.round(d))}</span></td></tr>`).join("")}
+    </tbody></table></div></div>
+    <div class="panel flush">${head("Indians abroad", "#abroad", "All")}<div class="tw"><table><thead><tr><th>Player</th><th>Team</th><th class="n">Adj.</th></tr></thead><tbody>
+      ${abroad.map(p => `<tr><td><a href="#player-${p.id}"><b>${esc(p.name)}</b></a> <span class="small muted">${esc(p.abroad.region || "")}</span></td><td>${teamLink(p.team)}</td><td class="n"><b>${fmt(p.cur.adj)}</b></td></tr>`).join("") || `<tr><td colspan="3" class="empty">None found</td></tr>`}
+    </tbody></table></div></div>
+  </div>`;
+}
 
 function rollOfHonour() {
   const evs = D.events.filter(e => (e.tier === "challengers" || e.tier === "ascension" || e.tier === "gc") && e.places.some(p => /^1/.test(p.place)) && /south asia|ascension|last chance|india/i.test(e.title)).sort((a, b) => b.start.localeCompare(a.start));
@@ -390,23 +498,25 @@ function matchRow(m) {
 }
 
 /* ---- Teams ranking ---- */
-const tState = Object.assign({ sort: "rating", dir: -1, scope: "in", circ: "open", win: "now", minSeries: 1, q: "", limit: 100 }, store.get("tstate2", {}));
-const WIN_LABEL = { now: "Active now", "2026": "2026 season", "2y": "Last 2 years", all: "All-time" };
+const T_DEF = { sort: "rating", dir: -1, scope: "in", circ: "open", win: "now", minSeries: 1, q: "", limit: 100 };
+const tState = Object.assign({}, T_DEF, store.get("tstate2", {}));
+const WIN_LABEL = { now: "Active now", season: SEASON + " season", "2y": "Last 2 years", all: "All-time" };
+if (!WIN_LABEL[tState.win]) tState.win = tState.win === SEASON ? "season" : "now";
 V.teams = () => {
   const pool = teamPool(tState).filter(t => !tState.q || t.name.toLowerCase().includes(tState.q.toLowerCase()) || (t.tag || "").toLowerCase() === tState.q.toLowerCase());
   const ranked = rankTeams(teamPool(tState)); const pos = new Map(ranked.map((t, i) => [t.id, i + 1]));
   const cols = [
     { k: "rank", h: "#", v: t => pos.get(t.id), n: true, cls: "rank", f: t => pos.get(t.id) },
-    { k: "name", h: "Team", v: t => t.name.toLowerCase(), f: t => `${teamLink(t.id)} ${t.indian ? "" : `<span class="flag">${esc((t.flag || "").toUpperCase())}</span>`}` },
+    { k: "name", h: "Team", stick: true, v: t => t.name.toLowerCase(), f: t => `${teamLink(t.id)} ${t.indian ? "" : `<span class="flag">${esc((t.flag || "").toUpperCase())}</span>`}` },
     { k: "rating", h: "Rating", t: "Map-level Elo, discounted for teams with few maps; 1500 = new Indian team", v: t => t.rating, n: true, f: t => `<b>${t.rating}</b>${t.nmaps < 15 ? ` <span class="pill" title="Fewer than 15 maps: rating still settling">prov.</span>` : ""}` },
     { k: "elo", h: "Elo", t: "Raw Elo before the small-sample discount", v: t => t.elo, n: true },
-    { k: "d26", h: "2026 Δ", t: "Elo change since the end of 2025", v: t => seasonDelta(t), n: true, f: t => { const d = seasonDelta(t); if (d == null) return "–"; return `<span class="${d > 0 ? "win" : d < 0 ? "loss" : ""}">${sgn(d)}</span>`; } },
+    { k: "d26", h: SEASON + " Δ", t: "Elo change since the end of " + PREV, v: t => seasonDelta(t), n: true, f: t => { const d = seasonDelta(t); if (d == null) return "–"; return `<span class="${d > 0 ? "win" : d < 0 ? "loss" : ""}">${sgn(d)}</span>`; } },
     { k: "peak", h: "Peak", v: t => t.peak, n: true },
     { k: "trend", h: "Trend", v: t => 0, f: t => spark(t.hist.slice(-12)) },
     { k: "series", h: "Series", t: "Series won–lost (all time)", v: t => t.series[0] / Math.max(1, t.series[0] + t.series[1]), n: true, f: t => `${t.series[0]}–${t.series[1]}` },
     { k: "mapw", h: "Map W%", v: t => t.maps[0] / Math.max(1, t.maps[0] + t.maps[1]), n: true, f: t => pct(t.maps[0] / Math.max(1, t.maps[0] + t.maps[1])) },
     { k: "rd", h: "RD/map", t: "Average round difference per map", v: t => (t.rounds[0] - t.rounds[1]) / Math.max(1, t.maps[0] + t.maps[1]), n: true, f: t => { const v = (t.rounds[0] - t.rounds[1]) / Math.max(1, t.maps[0] + t.maps[1]); return `<span class="${v > 0 ? "win" : "loss"}">${v > 0 ? "+" : ""}${v.toFixed(2)}</span>`; } },
-    { k: "y26", h: "2026", t: "2026 series record", v: t => t.y["2026"] ? t.y["2026"].series[0] - t.y["2026"].series[1] : null, n: true, f: t => t.y["2026"] ? `${t.y["2026"].series[0]}–${t.y["2026"].series[1]}` : "–" },
+    { k: "y26", h: SEASON, t: SEASON + " series record", v: t => t.y[SEASON] ? t.y[SEASON].series[0] - t.y[SEASON].series[1] : null, n: true, f: t => t.y[SEASON] ? `${t.y[SEASON].series[0]}–${t.y[SEASON].series[1]}` : "–" },
     { k: "form", h: "Form", v: t => t.form.slice(-5).filter(x => x === "W").length, f: t => formBar(t.form) },
     { k: "best", h: "Best map", v: t => bestMap(t)?.[1] ?? null, f: t => { const b = bestMap(t); return b ? `${esc(b[0])} <span class="muted small">${pct(b[1])}</span>` : "–"; } },
     { k: "titles", h: "Titles", t: "1st-place finishes on VLR", v: t => t.events.filter(e => /^1/.test(e.place)).length, n: true },
@@ -422,10 +532,10 @@ V.teams = () => {
     <label for="tmin">Min series<input id="tmin" type="number" min="0" value="${tState.minSeries}"></label>
     <label for="tq">Name<input id="tq" type="text" value="${esc(tState.q)}" placeholder="Filter"></label>
     <label>Window<span class="seg" id="twin">${Object.entries(WIN_LABEL).map(([k, v]) => `<button type="button" data-v="${k}" class="${tState.win === k ? "on" : ""}">${v}</button>`).join("")}</span></label>
-    <span class="count">${pool.length} teams</span>
+    <span class="count">${pool.length} teams</span>${toolbar("teamsTbl", "indian-valorant-teams.csv")}
   </div>
   <div class="sec panel flush" id="tt">${table("teamsTbl", cols, pool, tState, { limit: tState.limit, rankCol: true })}</div>
-  <p class="note"><b>Active now</b> = played in the last 12 months and not marked inactive or disbanded on VLR (S8UL and Global Esports, for example, are inactive). <b>2026 season</b> includes every team that played in 2026, whatever its status now. Rating is the map Elo minus a small-sample discount of 150 × e<sup>−maps/10</sup>, so teams with only a handful of maps (marked prov.) don't jump the table. 1500 is where a new Indian team starts; foreign teams act as fixed reference points (1600–1700, 1850 for VCT Pacific teams, 2050 for teams met at Masters or Champions). The rating shown is the latest one, so for inactive teams it is where they finished. Click a column to sort.</p>`;
+  <p class="note"><b>Active now</b> = played in the last 12 months and not marked inactive or disbanded on VLR (S8UL and Global Esports, for example, are inactive). <b>${SEASON} season</b> includes every team that played in ${SEASON}, whatever its status now. Rating is the map Elo minus a small-sample discount of 150 × e<sup>−maps/10</sup>, so teams with only a handful of maps (marked prov.) don't jump the table. 1500 is where a new Indian team starts; foreign teams act as fixed reference points (1600–1700, 1850 for VCT Pacific teams, 2050 for teams met at Masters or Champions). The rating shown is the latest one, so for inactive teams it is where they finished. Click a column to sort.</p>`;
   return { html, bind(root) {
     const re = () => { store.set("tstate2", tState); render(); };
     bindSort(root, tState, re, { name: 1, rank: 1 });
@@ -459,8 +569,9 @@ const PCOLS_ALL = [
   ["maps", "Maps", "Maps played in the period", 0],
   ["wins", "Map W%", "Maps won", 0, "w%"],
 ];
-const pState = Object.assign({ sort: "adj", dir: -1, period: "cur", nat: "in", circ: "open", role: "all", agent: "all", ageMin: "", ageMax: "", ageUnknown: true, minMaps: 8, active: true, team: "", q: "", limit: 100,
-  cols: ["rating", "adj", "acs", "kd", "kast", "adr", "kpr", "apr", "fkpr", "fdpr", "fkpct", "hs", "p90", "maps"] }, store.get("pstate2", {}));
+const P_DEF = { sort: "adj", dir: -1, period: "cur", nat: "in", circ: "open", role: "all", agent: "all", ageMin: "", ageMax: "", ageUnknown: true, minMaps: 8, active: true, team: "", q: "", limit: 100,
+  cols: ["rating", "adj", "acs", "kd", "kast", "adr", "kpr", "apr", "fkpr", "fdpr", "fkpct", "hs", "p90", "maps"] };
+const pState = Object.assign({}, P_DEF, store.get("pstate2", {}));
 function pstat(p, period) { return period === "cur" ? p.cur : period === "career" ? p.career : (p.seasons[period] || null); }
 V.players = () => {
   const years = [...new Set(D.players.flatMap(p => Object.keys(p.seasons)))].sort().reverse();
@@ -470,7 +581,7 @@ V.players = () => {
     if (!!p.gc !== (pState.circ === "gc")) return false;
     if (pState.nat === "in" && p.flag !== "in") return false;
     if (pState.nat === "imp" && p.flag === "in") return false;
-    if (pState.nat === "abroad" && (p.flag !== "in" || TEAM.get(p.team)?.indian)) return false;
+    if (pState.nat === "abroad" && !p.abroad) return false;
     if (pState.active && !p.active) return false;
     if (pState.role === "igl" ? !p.igl : (pState.role !== "all" && p.role !== pState.role)) return false;
     if (pState.agent !== "all" && !p.agents.some(a => a[0] === pState.agent)) return false;
@@ -484,7 +595,7 @@ V.players = () => {
   });
   const cols = [
     { k: "rank", h: "#", v: p => 0, cls: "rank", f: (p, i) => i + 1 },
-    { k: "name", h: "Player", v: p => p.name.toLowerCase(), f: p => `${playerLink(p.id)}${p.flag !== "in" ? ` <span class="flag">${esc(p.flag.toUpperCase())}</span>` : ""}${p.igl ? ` <span class="pill acc" title="In-game leader">IGL</span>` : ""}<div class="small muted">${esc(p.real || "")}</div>` },
+    { k: "name", h: "Player", stick: true, v: p => p.name.toLowerCase(), f: p => `${playerLink(p.id)}${p.flag !== "in" ? ` <span class="flag">${esc(p.flag.toUpperCase())}</span>` : ""}${p.igl ? ` <span class="pill acc" title="In-game leader">IGL</span>` : ""}<div class="small muted">${esc(p.real || "")}</div>` },
     { k: "team", h: "Team", v: p => tname(p.team).toLowerCase(), f: p => teamLink(p.team) },
     { k: "role", h: "Role", v: p => p.role, f: p => `<span style="color:${ROLE_COLORS[p.role]}">${p.role}</span>` },
     { k: "age", h: "Age", v: p => p.age, n: true, f: p => p.age ?? "–" },
@@ -512,10 +623,10 @@ V.players = () => {
     <label class="chk"><input id="pact" type="checkbox" ${pState.active ? "checked" : ""}> Active only</label>
     <label>Show<span class="seg" id="plim">${[25, 50, 100, 500].map(n => `<button type="button" data-v="${n}" class="${pState.limit === n ? "on" : ""}">${n}</button>`).join("")}</span></label>
     <div class="colpick"><button type="button" class="themebtn" id="pcolbtn">Columns</button><div class="menu" id="pcolmenu" hidden>${PCOLS_ALL.map(c => `<label class="chk"><input type="checkbox" data-c="${c[0]}" ${pState.cols.includes(c[0]) ? "checked" : ""}> ${c[1]} <span class="muted small">${c[2]}</span></label>`).join("")}</div></div>
-    <span class="count">${pool.length} players</span>
+    <span class="count">${pool.length} players</span>${toolbar("plTbl", "indian-valorant-players.csv")}
   </div>
   <div class="sec panel flush">${table("plTbl", cols, pool, pState, { limit: pState.limit, rankCol: true })}</div>
-  <p class="note">Ages come from Liquipedia birth dates and are missing for many lower-tier players; untick "Keep unknown ages" to see only players with a known age. Roles come from the agents played over the last 12 months (55%+ on one class, otherwise Flex). Pre-2022 VLR pages carry no Rating or KAST, so career figures for long-serving players lean on recent seasons.</p>`;
+  <p class="note">Ages come from Liquipedia birth dates and are missing for many lower-tier players; untick "Keep unknown ages" to see only players with a known age. Roles come from the agents played over the last 12 months (55%+ on one class, otherwise Flex). Pre-2022 VLR pages carry no Rating or KAST, so career figures for long-serving players lean on recent seasons. Indian players on teams outside South Asia are included and tagged <span class="pill abroad">Abroad</span>; see the <a href="#abroad">Abroad</a> page.</p>`;
   return { html, bind(root) {
     const re = () => { store.set("pstate2", pState); render(); };
     bindSort(root, pState, re, { name: 1, team: 1, role: 1, sd: 1, fdpr: 1, age: 1 });
@@ -549,10 +660,12 @@ function stageOf(stages) {
   for (const s of stages) for (const [re, r, lab] of STAGE_RANK) if (re.test(s)) { if (r > best[0]) best = [r, lab]; break; }
   return best;
 }
-const cState = Object.assign({ tier: "challengers", years: "2025-2026" }, store.get("cstate", {}));
+const C_DEF = { tier: "challengers", years: PREV + "-" + SEASON };
+const cState = Object.assign({}, C_DEF, store.get("cstate", {}));
 V.circuit = () => {
   const tiers = ["challengers", "ascension", "vct_pacific", "international", "gc", "national", "third_party"];
-  const evs = D.events.filter(e => e.tier === cState.tier && (cState.years === "all" || cState.years.split("-").some(y => e.start.startsWith(y)) || (cState.years === "2025-2026" && e.start >= "2025"))).sort((a, b) => a.start.localeCompare(b.start));
+  const evs = D.events.filter(e => e.tier === cState.tier && (cState.years === "all" || cState.years.split("-").some(y => e.start.startsWith(y)))).sort((a, b) => a.start.localeCompare(b.start));
+  const yrList = [...new Set(D.events.map(e => e.start.slice(0, 4)).filter(y => y >= "2020"))].sort().reverse();
   const evIds = new Set(evs.map(e => e.id));
   const rows = new Map();
   for (const t of D.teams) {
@@ -573,7 +686,7 @@ V.circuit = () => {
   <p class="lede">Each cell is a team's deepest stage in that event (OQ = open qualifier, OQ-LC = last-chance open qualifier, Q-Playoffs, Main, Playoffs, Final) or its final placing where VLR records one, with series W–L below. Hover a cell for the full path.</p></div></div>
   <div class="sec filters">
     <label>Circuit<span class="seg" id="ctier">${tiers.map(t => `<button type="button" data-v="${t}" class="${cState.tier === t ? "on" : ""}">${TIER_LABEL[t]}</button>`).join("")}</span></label>
-    <label>Years<span class="seg" id="cyrs">${["2025-2026", "2026", "2025", "2024", "2023", "all"].map(y => `<button type="button" data-v="${y}" class="${cState.years === y ? "on" : ""}">${y === "all" ? "All" : y.replace("-", "–")}</button>`).join("")}</span></label>
+    <label>Years<span class="seg" id="cyrs">${[PREV + "-" + SEASON, ...yrList, "all"].map(y => `<button type="button" data-v="${y}" class="${cState.years === y ? "on" : ""}">${y === "all" ? "All" : y.replace("-", "–")}</button>`).join("")}</span></label>
     <span class="count">${evs.length} events · ${teamIds.length} teams</span>
   </div>
   <div class="sec panel flush"><div class="tw"><table class="matrix"><thead><tr><th>Team</th>${evs.map(e => `<th title="${esc(e.title)}"><a href="#event-${e.id}">${esc(shortEv(e.title))}</a><div class="small muted" style="text-transform:none;letter-spacing:0">${e.start.slice(0, 7)}</div></th>`).join("")}</tr></thead>
@@ -599,7 +712,8 @@ function intlSummary() {
 }
 
 /* ---- Events ---- */
-const eState = Object.assign({ tier: "all", year: "all", q: "" }, store.get("estate", {}));
+const E_DEF = { tier: "all", year: "all", q: "" };
+const eState = Object.assign({}, E_DEF, store.get("estate", {}));
 V.events = () => {
   const years = [...new Set(D.events.map(e => e.start.slice(0, 4)).filter(Boolean))].sort().reverse();
   const list = D.events.filter(e => (eState.tier === "all" || e.tier === eState.tier) && (eState.year === "all" || e.start.startsWith(eState.year)) && (!eState.q || e.title.toLowerCase().includes(eState.q.toLowerCase())) && e.ind.length);
@@ -698,6 +812,7 @@ V.about = () => `
   <div class="panel"><h3>What counts as Indian</h3><p>A team counts as Indian when VLR lists its country as India, or when at least half of its recent lineups are Indian players. That covers Indian organisations on the Asia-Pacific (Mumbai) side, the Challengers South Asia ecosystem, and Indian rosters that entered SEA or Pacific events. Players count when VLR flags them as Indian; imports on Indian teams appear under a separate filter. Other South Asian teams (Bangladesh, Pakistan, Nepal, Sri Lanka, Maldives) are in the data as opponents and appear under "All South Asia" in the rankings.</p></div>
   <div class="panel"><h3>Team rating</h3><p>Elo over individual maps, run in date order over every recorded series since 2020. Each map moves ratings by K × margin factor × (result − expectation), where the margin factor grows with round difference (log) and is damped for heavy favourites. New teams use K = 40 for their first 15 maps, then 24. Indian and South Asian teams start at 1500; foreign teams start at 1600–1700, or 1850 if first seen in VCT Pacific or international events. After 60+ idle days a rating relaxes toward 1500 (8% per 90 days). The table ranks on that Elo minus a small-sample discount (150 × e<sup>−maps/10</sup>), so a team with ten maps gives up about 55 points and a team with fifty gives up one. Game Changers matches use a separate rating pool, since that circuit mostly plays within itself.</p></div>
   <div class="panel"><h3>Player stats</h3><p>Per-map lines from VLR match pages: Rating 2.0, ACS, kills, deaths, assists, KAST, ADR, HS%, first kills and deaths, with attack and defence splits. Rates are weighted by rounds. <b>Adj. rating</b> subtracts β × (opponent Elo − 1500) from each map's rating before averaging, where β is fitted by regressing map rating on opponent Elo across all the data: each extra 100 Elo of opponent strength costs a typical player ${fmt(-D.beta * 100, 3)} rating, so that much is added back. <b>Peak</b> is the 90th-percentile map rating and <b>Consistency</b> is its standard deviation. Ideas taken from 1trick.gg (Elevated's site: opponent-adjusted ratings, peak games, sample sizes) and from VLR and Liquipedia (stat sets and results), plus things they don't show for India: opponent-adjusted ratings, age and role filters, and circuit-by-circuit tracking.</p></div>
+  <div class="panel"><h3>Indian players abroad</h3><p>Indian-flagged players on teams outside South Asia are found three ways: by scanning the rosters of every team in VLR's regional rankings (Asia-Pacific, EMEA, MENA, Americas, China, Japan, Korea, Oceania, Game Changers and collegiate), from Liquipedia players with Indian nationality, and from a hand-kept list in the repository (<code>data/abroad_extra.json</code>). Their matches since 2024 count towards their player stats and they carry an <span class="pill abroad">Abroad</span> tag everywhere. Those matches stay out of team ratings and results, and because their opponents have no rating here, the opponent strength used for the adjusted rating is estimated from the event: 1950 for VCT leagues and internationals, 1650 for Challengers, 1550 otherwise.</p></div>
   <div class="panel"><h3>Sources</h3><ul class="small" style="padding-left:18px;margin:0;display:grid;gap:4px">
     <li><a href="https://www.vlr.gg" target="_blank" rel="noopener">VLR.gg</a>: matches, maps, player stats, rosters, placements, prize money.</li>
     <li><a href="https://liquipedia.net/valorant" target="_blank" rel="noopener">Liquipedia VALORANT</a> (CC BY-SA): birth dates, IGL tags, real names, socials.</li>
@@ -720,9 +835,9 @@ V.team = id => {
   for (const e of t.events) { const r = tierRec[e.tier] || (tierRec[e.tier] = { n: 0, w: 0, l: 0, best: null }); r.n++; r.w += e.w; r.l += e.l; const pn = placeNum(e.place); if (pn < 999 && (!r.best || pn < placeNum(r.best.place))) r.best = e; }
   const wr = t.maps[0] / Math.max(1, t.maps[0] + t.maps[1]);
   return `<a class="back" href="#teams">← Team rankings</a>
-  <div class="phead">${t.logo ? `<img class="logo lg" src="${img(t.logo)}" alt="">` : ""}<div class="who"><div class="eyebrow">${esc(t.country || "")} ${t.tag ? "· " + esc(t.tag) : ""}</div><h1>${esc(t.name)}</h1>
+  <div class="phead">${logoHTML(t.logo, t.name, true)}<div class="who"><div class="eyebrow">${esc(t.country || "")} ${t.tag ? "· " + esc(t.tag) : ""}</div><h1>${esc(t.name)}</h1>
   <div class="meta">${rk ? `<span class="pill acc">#${rk} in India${t.gc ? " · Game Changers" : ""}</span>` : `<span class="pill ${t.inactive ? "neg" : ""}">${t.inactive ? "Inactive on VLR" : "Not ranked (no match in 12 months)"}</span>`}${t.vlr_rank ? `<span class="pill">VLR #${t.vlr_rank} Asia-Pacific</span>` : ""}${t.winnings ? `<span class="pill">${esc(t.winnings)} won</span>` : ""}${t.streak ? `<span class="pill ${t.streak[0] === "W" ? "pos" : "neg"}">${t.streak[0] === "W" ? "Won" : "Lost"} ${t.streak.slice(1)} in a row</span>` : ""}
-  ${t.links.slice(0, 3).map(l => `<a class="pill" href="${esc(l)}" target="_blank" rel="noopener">${esc(l.replace(/^https?:\/\/(www\.)?/, "").slice(0, 28))} ↗</a>`).join("")}<a class="pill" href="https://www.vlr.gg/team/${t.id}" target="_blank" rel="noopener">VLR ↗</a></div></div></div>
+  ${t.links.slice(0, 3).map(l => `<a class="pill" href="${esc(l)}" target="_blank" rel="noopener">${esc(l.replace(/^https?:\/\/(www\.)?/, "").slice(0, 28))} ↗</a>`).join("")}<a class="pill" href="https://www.vlr.gg/team/${t.id}" target="_blank" rel="noopener">VLR ↗</a><a class="pill acc" href="#h2h?a=${t.id}">Head-to-head</a></div></div></div>
   <div class="sec tiles"><div class="tile"><b>${t.rating}</b><span>Rating</span></div><div class="tile"><b>${t.peak}</b><span>Peak (${esc((t.peak_date || "").slice(0, 7))})</span></div><div class="tile"><b>${t.series[0]}–${t.series[1]}</b><span>Series</span></div><div class="tile"><b>${pct(wr)}</b><span>Map win rate</span></div><div class="tile"><b>${((t.rounds[0] - t.rounds[1]) / Math.max(1, t.maps[0] + t.maps[1])).toFixed(2)}</b><span>Round diff / map</span></div><div class="tile"><b>${placings.filter(e => /^1/.test(e.place)).length}</b><span>Titles</span></div></div>
   <div class="sec grid g2">
     <div class="panel"><h3>Rating history</h3>${lineChart(t.hist.map(([m, v]) => [m, v]), { label: "Team rating by month" })}</div>
@@ -737,7 +852,7 @@ V.team = id => {
     <div class="panel flush"><div style="padding:14px 16px 6px"><h3>By circuit</h3></div><div class="tw"><table><thead><tr><th>Circuit</th><th class="n">Events</th><th class="n">Series</th><th>Best</th></tr></thead><tbody>
     ${TIER_ORDER.filter(k => tierRec[k]).map(k => `<tr><td>${tierTag(k)}</td><td class="n">${tierRec[k].n}</td><td class="n">${tierRec[k].w}–${tierRec[k].l}</td><td class="small">${tierRec[k].best ? `${esc(tierRec[k].best.place)} · <a href="#event-${tierRec[k].best.e}">${esc(EVENT.get(tierRec[k].best.e)?.title || "")}</a>` : "–"}</td></tr>`).join("")}
     </tbody></table></div>
-    <div style="padding:14px 16px 6px"><h3>Most-played opponents</h3></div><div class="tw"><table><thead><tr><th>Opponent</th><th class="n">W–L</th></tr></thead><tbody>${t.h2h.map(([o, w, l]) => `<tr><td>${teamLink(o)}</td><td class="n">${w}–${l}</td></tr>`).join("")}</tbody></table></div></div>
+    <div style="padding:14px 16px 6px"><h3>Most-played opponents</h3></div><div class="tw"><table><thead><tr><th>Opponent</th><th class="n">W–L</th></tr></thead><tbody>${t.h2h.map(([o, w, l]) => `<tr><td>${teamLink(o)}</td><td class="n">${TEAM.has(o) ? `<a href="#h2h?a=${t.id}&b=${o}" title="Open head-to-head">${w}–${l}</a>` : `${w}–${l}`}</td></tr>`).join("")}</tbody></table></div></div>
   </div>
   <div class="sec panel flush"><div style="padding:14px 16px 6px"><h3>Event history</h3></div><div class="tw"><table><thead><tr><th>Date</th><th>Event</th><th>Circuit</th><th>Reached</th><th class="n">Series</th><th class="n">Maps</th><th>Place</th><th class="n">Prize</th></tr></thead><tbody>
   ${t.events.map(e => `<tr><td class="small">${e.d}</td><td><a href="#event-${e.e}">${esc(EVENT.get(e.e)?.title || "")}</a></td><td>${tierTag(e.tier)}</td><td class="small">${esc(stageOf(e.st)[1])}</td><td class="n">${e.w}–${e.l}</td><td class="n">${e.mw}–${e.ml}</td><td>${e.place ? `<b>${esc(e.place)}</b>` : "–"}</td><td class="n small">${esc(e.prize || "")}</td></tr>`).join("")}
@@ -763,8 +878,14 @@ V.player = id => {
   return `<a class="back" href="#players">← Players</a>
   <div class="phead"><div class="who"><div class="eyebrow">${esc(p.flag.toUpperCase())} · ${esc(p.role)}${p.igl ? " · IGL" : ""}${p.age ? " · age " + p.age : ""}${p.staff ? " · " + esc(p.staff) : ""}</div><h1>${esc(p.name)}</h1>
   <div class="muted">${esc(p.real || "")}</div>
-  <div class="meta">${teamLink(p.team)}<span class="pill ${p.active ? "pos" : ""}">${p.active ? "Active" : "Last played " + esc(p.last)}</span>${p.lp ? `<a class="pill" href="https://liquipedia.net/valorant/${encodeURIComponent(p.lp.replace(/ /g, "_"))}" target="_blank" rel="noopener">Liquipedia ↗</a>` : ""}<a class="pill" href="https://www.vlr.gg/player/${p.id}" target="_blank" rel="noopener">VLR ↗</a>${Object.entries(p.social || {}).map(([k, v]) => `<a class="pill" target="_blank" rel="noopener" href="${k === "twitter" ? "https://x.com/" + esc(v) : k === "twitch" ? "https://twitch.tv/" + esc(v) : k === "instagram" ? "https://instagram.com/" + esc(v) : "https://youtube.com/" + esc(v)}">${k} ↗</a>`).join("")}</div></div></div>
+  <div class="meta">${teamLink(p.team)}${abroadPill(p)}<a class="pill acc" href="#compare?p=${p.id}">Compare</a><span class="pill ${p.active ? "pos" : ""}">${p.active ? "Active" : "Last played " + esc(p.last)}</span>${p.lp ? `<a class="pill" href="https://liquipedia.net/valorant/${encodeURIComponent(p.lp.replace(/ /g, "_"))}" target="_blank" rel="noopener">Liquipedia ↗</a>` : ""}<a class="pill" href="https://www.vlr.gg/player/${p.id}" target="_blank" rel="noopener">VLR ↗</a>${Object.entries(p.social || {}).map(([k, v]) => `<a class="pill" target="_blank" rel="noopener" href="${k === "twitter" ? "https://x.com/" + esc(v) : k === "twitch" ? "https://twitch.tv/" + esc(v) : k === "instagram" ? "https://instagram.com/" + esc(v) : "https://youtube.com/" + esc(v)}">${k} ↗</a>`).join("")}</div></div></div>
   <div class="sec tiles"><div class="tile"><b>${fmt(s.adj)}</b><span>Adj. rating · 12m</span></div><div class="tile"><b>${fmt(s.rating)}</b><span>Rating 2.0</span></div><div class="tile"><b>${fmt(s.acs, 0)}</b><span>ACS</span></div><div class="tile"><b>${fmt(s.kd)}</b><span>K/D</span></div><div class="tile"><b>${pctRaw(s.kast)}</b><span>KAST</span></div><div class="tile"><b>${s.maps} <small class="muted" style="font-size:14px">/ ${p.career.maps}</small></b><span>Maps · 12m / career</span></div></div>
+  ${p.abroad ? `<p class="note">${esc(p.name)} plays outside South Asia${p.abroad.region ? " (" + esc(p.abroad.region) + ")" : ""}. Their matches there count towards these stats; opponent strength for those maps is estimated from the event level, since those teams have no rating here.</p>` : ""}
+  ${p.recent && p.recent.length ? `<div class="sec grid g2">
+    <div class="panel"><h3>Form · last ${p.recent.length} maps</h3>${formChart(p.recent)}<p class="note">Dots are single-map ratings (green = map won, red = lost); the line is a five-map rolling average.</p></div>
+    <div class="panel flush"><div style="padding:14px 16px 6px"><h3>Recent maps</h3></div><div class="tw"><table><thead><tr><th>Date</th><th>Opponent</th><th>Map</th><th>Agent</th><th class="n">K/D/A</th><th class="n">ACS</th><th class="n">Rating</th><th></th></tr></thead><tbody>
+    ${p.recent.slice(-10).reverse().map(r => `<tr><td class="small"><a href="https://www.vlr.gg/${r[4]}" target="_blank" rel="noopener">${r[0]}</a></td><td>${teamLink(r[3])}</td><td>${esc(r[5] || "?")}</td><td class="small">${agName(r[6])}</td><td class="n">${r[8] ?? "–"}/${r[9] ?? "–"}/${r[10] ?? "–"}</td><td class="n">${r[2] ?? "–"}</td><td class="n"><b>${fmt(r[1])}</b></td><td><span class="chip ${r[7] ? "W" : "L"}">${r[7] ? "W" : "L"}</span></td></tr>`).join("")}
+    </tbody></table></div></div></div>` : ""}
   <div class="sec grid g2">
     <div class="panel"><h3>Percentile vs active ${p.role === "Flex" ? "players" : p.role + "s"} · last 12 months</h3><div class="grid" style="gap:7px">${p.cur ? metrics.map(([k, lab, low]) => { const r = percentile(p, k, peers, low); return `<div class="pct"><span>${lab}</span><span class="track"><span class="fill" style="width:${r == null ? 0 : Math.round(r * 100)}%"></span></span><span class="v">${r == null ? "–" : Math.round(r * 100)}</span></div>`; }).join("") : `<div class="empty">No maps in the last 12 months</div>`}</div><p class="note">Compared with ${peers.length} active players in the same role with 20+ maps.</p></div>
     <div class="panel"><h3>Profile</h3><dl class="kv">
@@ -807,7 +928,7 @@ V.event = id => {
   for (const t of D.teams) { const x = t.events.find(v => v.e === e.id); if (x) teamRes.push([t, x]); }
   teamRes.sort((a, b) => placeNum(a[1].place) - placeNum(b[1].place) || stageOf(b[1].st)[0] - stageOf(a[1].st)[0] || b[1].w - a[1].w);
   return `<a class="back" href="#events">← Tournaments</a>
-  <div class="phead">${e.logo ? `<img class="logo lg" src="${img(e.logo)}" alt="">` : ""}<div class="who"><div class="eyebrow">${esc(e.series.filter(Boolean).join(" · "))}</div><h1>${esc(e.title)}</h1><div class="meta">${tierTag(e.tier)}<span class="pill">${esc(e.dates || e.start)}</span>${e.prize ? `<span class="pill">${esc(e.prize)}</span>` : ""}<a class="pill" href="https://www.vlr.gg/event/${e.id}" target="_blank" rel="noopener">VLR ↗</a></div></div></div>
+  <div class="phead">${logoHTML(e.logo, e.title, true)}<div class="who"><div class="eyebrow">${esc(e.series.filter(Boolean).join(" · "))}</div><h1>${esc(e.title)}</h1><div class="meta">${tierTag(e.tier)}<span class="pill">${esc(e.dates || e.start)}</span>${e.prize ? `<span class="pill">${esc(e.prize)}</span>` : ""}<a class="pill" href="https://www.vlr.gg/event/${e.id}" target="_blank" rel="noopener">VLR ↗</a></div></div></div>
   <div class="sec grid g2">
     <div class="panel flush"><div style="padding:14px 16px 6px"><h3>Placements</h3></div><div class="tw"><table><thead><tr><th>Place</th><th>Team</th><th class="n">Prize</th><th>Note</th></tr></thead><tbody>
     ${e.places.map(p => `<tr><td><b>${esc(p.place.replace(/ /g, ""))}</b></td><td>${p.team_id ? teamLink(p.team_id) : esc(p.team)}</td><td class="n small">${esc(p.prize)}</td><td class="small muted">${esc(p.note)}</td></tr>`).join("") || `<tr><td colspan="4" class="empty">VLR has no placement table for this event</td></tr>`}
@@ -819,6 +940,262 @@ V.event = id => {
   <div class="sec panel flush"><div style="padding:14px 16px 6px"><h3>Series (${ms.length})</h3></div>${ms.map(matchRow).join("")}</div>`;
 };
 
+/* ---------- shared widgets ---------- */
+function toolbar(tableId, file) {
+  return `<span class="toolbar"><button type="button" class="btn" data-csv="${tableId}" data-file="${file}">Download CSV</button><button type="button" class="btn" data-copy>Copy link</button></span>`;
+}
+function toast(msg) { const t = document.createElement("div"); t.className = "toast"; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 1800); }
+function exportCSV(tbl, file) {
+  const cell = el => '"' + el.innerText.replace(/[▲▼]/g, "").trim().replace(/\s*\n\s*/g, " / ").replace(/"/g, '""') + '"';
+  const rows = [...tbl.querySelectorAll("tr")].map(tr => [...tr.children].map(cell).join(","));
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob(["\ufeff" + rows.join("\r\n")], { type: "text/csv;charset=utf-8" }));
+  a.download = file; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+function bindWidgets(root) {
+  root.querySelectorAll("[data-csv]").forEach(b => b.onclick = () => { const t = document.getElementById(b.dataset.csv); if (t) exportCSV(t, b.dataset.file); });
+  root.querySelectorAll("[data-copy]").forEach(b => b.onclick = () => {
+    const done = () => toast("Link copied");
+    if (navigator.clipboard) navigator.clipboard.writeText(location.href).then(done, () => toast("Copy the address bar to share"));
+    else toast("Copy the address bar to share");
+  });
+  root.querySelectorAll(".seg button").forEach(b => b.setAttribute("aria-pressed", b.classList.contains("on")));
+}
+function keyNav(e, box, pick) {
+  const items = [...box.querySelectorAll("a")];
+  if (e.key === "Escape") { box.hidden = true; return; }
+  if (box.hidden || !items.length) return;
+  let i = items.findIndex(a => a.classList.contains("act"));
+  if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+    e.preventDefault();
+    i = e.key === "ArrowDown" ? (i + 1) % items.length : (i <= 0 ? items.length - 1 : i - 1);
+    items.forEach((a, j) => a.classList.toggle("act", j === i)); items[i].scrollIntoView({ block: "nearest" });
+  } else if (e.key === "Enter") { e.preventDefault(); pick(items[Math.max(0, i)]); }
+}
+function searchHits(q, kind, filter) {
+  return SEARCH.filter(x => (!kind || x.k === kind) && x.s.includes(q) && (!filter || filter(x)))
+    .sort((a, b) => (b.n.toLowerCase() === q) - (a.n.toLowerCase() === q) || b.s.startsWith(q) - a.s.startsWith(q) || b.w - a.w).slice(0, 14);
+}
+function hitHTML(x, attr) {
+  return `<a ${attr}>${x.k === "t" ? logoHTML(TEAM.get(x.id)?.logo || D.tlogos[x.id] || "", x.n) : ""}<b>${esc(x.n)}</b>${x.k === "p" ? abroadPill(PLAYER.get(x.id)) : ""}<small>${esc(x.sub)}</small></a>`;
+}
+function picker(id, ph) { return `<div class="picker"><input id="${id}" type="text" placeholder="${esc(ph)}" autocomplete="off" aria-label="${esc(ph)}"><div class="res" hidden></div></div>`; }
+function bindPicker(root, id, kind, onPick, filter) {
+  const inp = $("#" + id, root); if (!inp) return; const box = inp.nextElementSibling;
+  inp.oninput = debounce(() => {
+    const q = inp.value.trim().toLowerCase(); if (!q) { box.hidden = true; return; }
+    box.innerHTML = searchHits(q, kind, filter).map(x => hitHTML(x, `href="#" data-id="${x.id}"`)).join("") || `<div class="empty">No match</div>`;
+    box.hidden = false;
+  }, 120);
+  inp.onkeydown = e => keyNav(e, box, a => onPick(+a.dataset.id));
+  box.onclick = e => { const a = e.target.closest("a[data-id]"); if (!a) return; e.preventDefault(); onPick(+a.dataset.id); };
+}
+function formChart(rows, { w = 640, h = 170 } = {}) {
+  const pts = rows.filter(r => r[1] != null);
+  if (pts.length < 3) return `<div class="empty">Not enough rated maps</div>`;
+  const pad = { l: 34, r: 10, t: 10, b: 22 };
+  const ys = pts.map(r => r[1]); const mn = Math.min(0.4, ...ys), mx = Math.max(1.6, ...ys);
+  const x = i => pad.l + i * (w - pad.l - pad.r) / (pts.length - 1);
+  const y = v => pad.t + (mx - v) * (h - pad.t - pad.b) / (mx - mn);
+  let g = "";
+  for (let v = Math.ceil(mn * 2) / 2; v <= mx; v += 0.5) g += `<line class="chart-grid" x1="${pad.l}" x2="${w - pad.r}" y1="${y(v)}" y2="${y(v)}" ${v === 1 ? 'stroke-dasharray="4 3"' : ""}/><text x="${pad.l - 6}" y="${y(v) + 3}" text-anchor="end">${v.toFixed(1)}</text>`;
+  const roll = pts.map((_, i) => { const a = pts.slice(Math.max(0, i - 4), i + 1); return a.reduce((s, r) => s + r[1], 0) / a.length; });
+  const line = roll.map((v, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join("");
+  const dots = pts.map((r, i) => `<circle cx="${x(i).toFixed(1)}" cy="${y(r[1]).toFixed(1)}" r="3.2" fill="${r[7] ? "var(--pos)" : "var(--neg)"}" opacity=".85"><title>${esc(r[0])} · ${esc(tname(r[3]))} · ${esc(r[5] || "")} · ${fmt(r[1])}</title></circle>`).join("");
+  const xl = `<text x="${pad.l}" y="${h - 6}">${esc(pts[0][0])}</text><text x="${w - pad.r}" y="${h - 6}" text-anchor="end">${esc(pts[pts.length - 1][0])}</text>`;
+  return `<svg viewBox="0 0 ${w} ${h}" width="100%" role="img" aria-label="Map ratings over the last ${pts.length} maps">${g}${dots}<path class="chart-line" d="${line}"/>${xl}</svg>`;
+}
+function multiForm(list, { w = 760, h = 200 } = {}) {
+  const series = list.map(([p, c]) => { const pts = (p.recent || []).filter(r => r[1] != null); return { p, c, v: pts.map((_, i) => { const a = pts.slice(Math.max(0, i - 4), i + 1); return a.reduce((s, r) => s + r[1], 0) / a.length; }) }; }).filter(s => s.v.length >= 3);
+  if (!series.length) return `<div class="empty">No recent maps to chart</div>`;
+  const n = Math.max(...series.map(s => s.v.length)); const all = series.flatMap(s => s.v);
+  const mn = Math.min(0.7, ...all), mx = Math.max(1.3, ...all); const pad = { l: 34, r: 10, t: 10, b: 22 };
+  const x = i => pad.l + i * (w - pad.l - pad.r) / Math.max(1, n - 1);
+  const y = v => pad.t + (mx - v) * (h - pad.t - pad.b) / (mx - mn);
+  let g = ""; for (let v = Math.ceil(mn * 10) / 10; v <= mx + 1e-9; v += 0.2) g += `<line class="chart-grid" x1="${pad.l}" x2="${w - pad.r}" y1="${y(v)}" y2="${y(v)}"/><text x="${pad.l - 6}" y="${y(v) + 3}" text-anchor="end">${v.toFixed(1)}</text>`;
+  const lines = series.map(s => { const off = n - s.v.length; return `<path d="${s.v.map((v, i) => `${i ? "L" : "M"}${x(i + off).toFixed(1)},${y(v).toFixed(1)}`).join("")}" fill="none" stroke="${s.c}" stroke-width="2.2"/>`; }).join("");
+  return `<svg viewBox="0 0 ${w} ${h}" width="100%" role="img" aria-label="Five-map rolling rating">${g}${lines}<text x="${pad.l}" y="${h - 6}">${n} maps ago</text><text x="${w - pad.r}" y="${h - 6}" text-anchor="end">latest</text></svg>`;
+}
+
+/* ---- Abroad ---- */
+const A_DEF = { sort: "adj", dir: -1, region: "all", minMaps: 3, active: true };
+const aState = Object.assign({}, A_DEF);
+V.abroad = () => {
+  const all = D.players.filter(p => p.abroad);
+  const regions = [...new Set(all.map(p => p.abroad.region || "Unknown"))].sort();
+  const pool = all.filter(p => (aState.region === "all" || (p.abroad.region || "Unknown") === aState.region) && (!aState.active || p.active) && (p.cur?.maps || 0) >= aState.minMaps);
+  const cols = [
+    { k: "name", h: "Player", stick: true, v: p => p.name.toLowerCase(), f: p => `<a href="#player-${p.id}"><b>${esc(p.name)}</b></a><div class="small muted">${esc(p.real || "")}</div>` },
+    { k: "team", h: "Team", v: p => tname(p.team).toLowerCase(), f: p => teamLink(p.team) },
+    { k: "region", h: "Region", v: p => p.abroad.region || "", f: p => `<span class="pill abroad">${esc(p.abroad.region || "Unknown")}</span>` },
+    { k: "role", h: "Role", v: p => p.role, f: p => `<span style="color:${ROLE_COLORS[p.role]}">${p.role}</span>` },
+    { k: "age", h: "Age", v: p => p.age, n: true, f: p => p.age ?? "–" },
+    { k: "maps", h: "Maps (12m)", v: p => p.cur?.maps ?? 0, n: true, f: p => p.cur?.maps ?? 0 },
+    { k: "adj", h: "Adj. rating", t: "Opponent-adjusted; opponent level estimated from the event", v: p => p.cur?.adj, n: true, f: p => `<b>${fmt(p.cur?.adj)}</b>` },
+    { k: "rating", h: "Rating", v: p => p.cur?.rating, n: true, f: p => fmt(p.cur?.rating) },
+    { k: "acs", h: "ACS", v: p => p.cur?.acs, n: true, f: p => fmt(p.cur?.acs, 0) },
+    { k: "kd", h: "K/D", v: p => p.cur?.kd, n: true, f: p => fmt(p.cur?.kd) },
+    { k: "last", h: "Last match", v: p => p.last, f: p => `<span class="small">${esc(p.last)}</span>` },
+  ];
+  const html = `
+  <div class="sec-head"><div><div class="eyebrow">Indians abroad</div><h1>Indian players outside South Asia</h1>
+  <p class="lede">Players with an Indian flag on VLR who play for teams in other regions. They also appear in the main player tables, tagged <span class="pill abroad">Abroad</span>. Their stats cover matches since 2024; opponent strength for adjusted ratings is estimated from the event level.</p></div></div>
+  <div class="sec filters">
+    <label>Region<span class="seg" id="areg">${["all", ...regions].map(r => `<button type="button" data-v="${esc(r)}" class="${aState.region === r ? "on" : ""}">${r === "all" ? "All regions" : esc(r)}</button>`).join("")}</span></label>
+    <label for="amin">Min maps (12m)<input id="amin" type="number" min="0" value="${aState.minMaps}"></label>
+    <label class="chk"><input id="aact" type="checkbox" ${aState.active ? "checked" : ""}> Active only</label>
+    <span class="count">${pool.length} players</span>${toolbar("abTbl", "indian-players-abroad.csv")}
+  </div>
+  <div class="sec panel flush">${table("abTbl", cols, pool, aState)}</div>
+  <p class="note">Found by scanning every roster in VLR's regional rankings, plus Liquipedia's Indian-nationality players. Someone missing? Add their VLR player id to <code>data/abroad_extra.json</code> in the <a href="https://github.com/alan-r-henry/indian-valorant-index" target="_blank" rel="noopener">repository</a> or open an issue.</p>`;
+  return { html, bind(root) {
+    bindSort(root, aState, render, { name: 1, team: 1, region: 1, role: 1, age: 1 });
+    root.querySelectorAll("#areg button").forEach(b => b.onclick = () => { aState.region = b.dataset.v; render(); });
+    $("#amin", root).onchange = e => { aState.minMaps = +e.target.value || 0; render(); };
+    $("#aact", root).onchange = e => { aState.active = e.target.checked; render(); };
+  } };
+};
+
+/* ---- Compare players ---- */
+const CMP_DEF = { p: [], per: "cur" };
+const cmpState = Object.assign({}, CMP_DEF);
+V.compare = () => {
+  const ps = cmpState.p.map(id => PLAYER.get(+id)).filter(Boolean).slice(0, 4);
+  const colors = ["#f0a63a", "#7aa7ff", "#3fbf9f", "#e8615a"];
+  const years = [...new Set(D.players.flatMap(p => Object.keys(p.seasons)))].sort().reverse();
+  const st = p => pstat(p, cmpState.per);
+  const M = [["adj", "Adj. rating", 2], ["rating", "Rating 2.0", 2], ["acs", "ACS", 0], ["kd", "K/D", 2], ["kast", "KAST", 0, "%"], ["adr", "ADR", 0], ["kpr", "Kills / round", 2], ["apr", "Assists / round", 2],
+    ["fkpr", "First kills / round", 3], ["fdpr", "First deaths / round", 3, null, true], ["fkpct", "Opening duels won", 0, "x%"], ["hs", "Headshot %", 0, "%"], ["p90", "Peak (P90)", 2], ["sd", "Consistency σ", 2, null, true],
+    ["rt_atk", "Attack rating", 2], ["rt_def", "Defence rating", 2], ["maps", "Maps", 0]];
+  const val = (p, k) => st(p)?.[k];
+  const show = (v, m) => v == null ? "–" : m[3] === "%" ? pctRaw(v) : m[3] === "x%" ? pct(v) : fmt(v, m[2]);
+  const rows = M.map(m => {
+    const vs = ps.map(p => val(p, m[0])); const ok = vs.filter(v => v != null);
+    const best = ok.length > 1 ? (m[4] ? Math.min(...ok) : Math.max(...ok)) : null;
+    const lo = Math.min(...ok), hi = Math.max(...ok);
+    return `<tr><td>${m[1]}</td>${vs.map((v, i) => `<td class="n ${v != null && v === best ? "best" : ""}">${show(v, m)}${v != null && ok.length > 1 && hi > lo ? `<div><span class="bar-cell" style="width:${Math.round(8 + 52 * (m[4] ? hi - v : v - lo) / (hi - lo))}px;background:${colors[i]}"></span></div>` : ""}</td>`).join("")}</tr>`;
+  }).join("");
+  const info = [["Team", p => teamLink(p.team)], ["Role", p => `<span style="color:${ROLE_COLORS[p.role]}">${p.role}</span>`], ["Age", p => p.age ?? "–"], ["Main agents", p => p.agents.slice(0, 3).map(a => agName(a[0])).join(", ")], ["Career maps", p => p.career.maps], ["Region", p => p.abroad ? `<span class="pill abroad">Abroad · ${esc(p.abroad.region || "?")}</span>` : "South Asia"]]
+    .map(([lab, f]) => `<tr><td>${lab}</td>${ps.map(p => `<td class="n">${f(p)}</td>`).join("")}</tr>`).join("");
+  const suggest = D.players.filter(p => p.flag === "in" && p.active && !p.gc && p.cur && p.cur.maps >= 20 && p.cur.adj != null).sort((a, b) => b.cur.adj - a.cur.adj).slice(0, 4).map(p => p.id);
+  const html = `
+  <div class="sec-head"><div><div class="eyebrow">Compare</div><h1>Compare players</h1><p class="lede">Up to four players side by side: every stat for the chosen period, the best value in each row highlighted, plus recent form.</p></div></div>
+  <div class="sec filters">
+    <div class="slots">${ps.map((p, i) => `<span class="slot"><i style="background:${colors[i]}"></i>${esc(p.name)}<button type="button" data-rm="${p.id}" aria-label="Remove ${esc(p.name)}">×</button></span>`).join("")}
+    ${ps.length < 4 ? picker("cmpadd", ps.length ? "Add a player" : "Search a player to compare") : ""}</div>
+    <label for="cper">Period<select id="cper"><option value="cur">Last 12 months</option>${years.map(y => `<option value="${y}">${y} season</option>`).join("")}<option value="career">Career</option></select></label>
+    <span class="toolbar">${ps.length ? `<button type="button" class="btn" id="cclr">Clear</button>` : `<button type="button" class="btn" id="csug">Try the top four</button>`}<button type="button" class="btn" data-copy>Copy link</button></span>
+  </div>
+  ${ps.length ? `
+  <div class="sec panel flush"><div class="tw"><table class="cmp"><thead><tr><th class="pl"></th>${ps.map((p, i) => `<th class="pl n"><a href="#player-${p.id}" style="border-bottom:3px solid ${colors[i]}">${esc(p.name)}</a></th>`).join("")}</tr></thead><tbody>${info}${rows}</tbody></table></div></div>
+  <div class="sec panel"><h3>Form · five-map rolling rating</h3><div class="legend" style="margin-bottom:8px">${ps.map((p, i) => `<span><i style="background:${colors[i]}"></i>${esc(p.name)}</span>`).join("")}</div>${multiForm(ps.map((p, i) => [p, colors[i]]))}</div>` : `<div class="sec empty">Pick players above, or press “Try the top four”.</div>`}`;
+  return { html, bind(root) {
+    const set = ids => { cmpState.p = ids.slice(0, 4).map(String); render(); };
+    $("#cper", root).value = cmpState.per;
+    $("#cper", root).onchange = e => { cmpState.per = e.target.value; render(); };
+    root.querySelectorAll("[data-rm]").forEach(b => b.onclick = () => set(cmpState.p.filter(x => +x !== +b.dataset.rm)));
+    bindPicker(root, "cmpadd", "p", id => { if (!cmpState.p.map(Number).includes(id)) set([...cmpState.p, id]); setTimeout(() => $("#cmpadd")?.focus()); });
+    $("#cclr", root) && ($("#cclr", root).onclick = () => set([]));
+    $("#csug", root) && ($("#csug", root).onclick = () => set(suggest));
+  } };
+};
+
+/* ---- Head-to-head + predictor ---- */
+const H_DEF = { a: 0, b: 0 };
+const hState = Object.assign({}, H_DEF);
+const winP = (ra, rb) => 1 / (1 + Math.pow(10, (rb - ra) / 400));
+const bo3 = p => p * p * (3 - 2 * p);
+const bo5 = p => p * p * p * (10 - 15 * p + 6 * p * p);
+V.h2h = () => {
+  const A = TEAM.get(+hState.a), B = TEAM.get(+hState.b);
+  const side = (t, key, right) => t ? `<div class="side ${right ? "r" : ""}">${logoHTML(t.logo, t.name, true)}<div style="min-width:0"><h2 style="text-transform:none"><a href="#team-${t.id}">${esc(t.name)}</a></h2><div class="small muted">Rating ${t.rating} · ${t.series[0]}–${t.series[1]} series${t.inactive ? " · inactive" : ""}</div><button type="button" class="btn" data-clear="${key}" style="margin-top:6px">Change</button></div></div>`
+    : `<div class="side ${right ? "r" : ""}">${picker("h2h" + key, right ? "Pick the second team" : "Pick a team")}</div>`;
+  let body = "";
+  if (A && B) {
+    const p = winP(A.elo, B.elo);
+    const meet = D.matches.filter(m => m.t.includes(A.id) && m.t.includes(B.id)).slice().reverse();
+    let sw = 0, sl = 0, mw = 0, ml = 0;
+    for (const m of meet) { const ai = m.t[0] === A.id ? 0 : 1; if (m.sc[ai] > m.sc[1 - ai]) sw++; else if (m.sc[ai] < m.sc[1 - ai]) sl++; mw += m.sc[ai]; ml += m.sc[1 - ai]; }
+    const bar = (q, lab) => `<div style="display:grid;grid-template-columns:52px 1fr;gap:10px;align-items:center"><span class="small muted">${lab}</span><div class="prob"><span style="width:${Math.max(q * 100, 9)}%;background:color-mix(in srgb, var(--accent) 70%, transparent);color:var(--accent-ink)">${pct(q)}</span><span style="flex:1;justify-content:flex-end;background:color-mix(in srgb, var(--info) 45%, transparent)">${pct(1 - q)}</span></div></div>`;
+    const maps = [...new Set([...Object.keys(A.mapstats), ...Object.keys(B.mapstats)])].filter(m => m !== "?" && ((A.mapstats[m]?.p || 0) + (B.mapstats[m]?.p || 0)) >= 3)
+      .sort((x, y) => ((B.mapstats[y]?.recent || 0) + (A.mapstats[y]?.recent || 0)) - ((B.mapstats[x]?.recent || 0) + (A.mapstats[x]?.recent || 0)));
+    const wr = s => s && s.p ? s.w / s.p : null;
+    const cellWr = (s, other) => { const v = wr(s), o = wr(other); return `<td class="n ${v != null && o != null && v > o ? "win" : ""}">${v == null ? "–" : pct(v)} <span class="muted small">${s?.p || 0}</span></td>`; };
+    const stat = (lab, f, better = 1) => { const va = f(A), vb = f(B); const fa = typeof va === "number" ? va : null, fb = typeof vb === "number" ? vb : null;
+      return `<tr><td class="n ${fa != null && fb != null && (fa - fb) * better > 0 ? "win" : ""}">${typeof va === "number" && !Number.isInteger(va) ? va.toFixed(2) : va}</td><td style="text-align:center" class="muted small">${lab}</td><td class="${fa != null && fb != null && (fb - fa) * better > 0 ? "win" : ""}">${typeof vb === "number" && !Number.isInteger(vb) ? vb.toFixed(2) : vb}</td></tr>`; };
+    const titles = t => t.events.filter(e => /^1/.test(e.place)).length;
+    const mwr = t => +(100 * t.maps[0] / Math.max(1, t.maps[0] + t.maps[1])).toFixed(1);
+    const rd = t => +((t.rounds[0] - t.rounds[1]) / Math.max(1, t.maps[0] + t.maps[1])).toFixed(2);
+    body = `
+    ${!!A.gc !== !!B.gc ? `<p class="note">One of these is a Game Changers team. The two circuits use separate rating pools, so the odds below are not meaningful.</p>` : ""}
+    ${A.inactive || B.inactive ? `<p class="note">At least one team is inactive on VLR, so its rating is where it finished.</p>` : ""}
+    <div class="sec grid g2">
+      <div class="panel"><h3>If they met today</h3><div class="grid" style="gap:10px;margin-top:6px">${bar(p, "Map")}${bar(bo3(p), "Bo3")}${bar(bo5(p), "Bo5")}</div>
+      <p class="note">Win chances from the raw Elo gap (${A.elo} vs ${B.elo}): ${esc(A.name)} in marigold, ${esc(B.name)} in blue. Series odds treat maps as independent and know nothing about roster changes, map vetoes or form.</p></div>
+      <div class="panel flush"><div style="padding:14px 16px 6px"><h3>Tale of the tape</h3></div><div class="tw"><table><tbody>
+        ${stat("Rating", t => t.rating)}${stat("Peak", t => t.peak)}${stat("Series W–L", t => `${t.series[0]}–${t.series[1]}`)}${stat("Map win %", mwr)}${stat("Round diff / map", rd)}${stat("Titles", titles)}${stat("Maps played", t => t.nmaps)}
+        <tr><td class="n">${formBar(A.form)}</td><td style="text-align:center" class="muted small">Form</td><td>${formBar(B.form)}</td></tr>
+      </tbody></table></div></div>
+    </div>
+    <div class="sec grid g2">
+      <div class="panel flush"><div style="padding:14px 16px 6px"><h3>Map pools</h3><p class="note">Win % and maps played, all recorded maps; higher win rate in green.</p></div><div class="tw"><table><thead><tr><th>Map</th><th class="n">${esc(A.name)}</th><th class="n">${esc(B.name)}</th></tr></thead><tbody>
+        ${maps.map(m => `<tr><td><b>${esc(m)}</b></td>${cellWr(A.mapstats[m], B.mapstats[m])}${cellWr(B.mapstats[m], A.mapstats[m])}</tr>`).join("")}
+      </tbody></table></div></div>
+      <div class="panel flush"><div style="padding:14px 16px 6px"><h3>Meetings · ${esc(A.name)} ${sw}–${sl} in series, ${mw}–${ml} in maps</h3></div>${meet.map(matchRow).join("") || `<div class="empty">They have never met in the recorded data</div>`}</div>
+    </div>`;
+  }
+  const html = `
+  <div class="sec-head"><div><div class="eyebrow">Head-to-head</div><h1>Head-to-head and match odds</h1><p class="lede">Pick two teams to see every meeting, their map pools side by side, and the win chances their ratings imply.</p></div>
+  <span class="toolbar">${A && B ? `<button type="button" class="btn" id="hswap">Swap</button>` : ""}<button type="button" class="btn" data-copy>Copy link</button></span></div>
+  <div class="sec panel"><div class="vs">${side(A, "a")}<div class="mid">vs</div>${side(B, "b", true)}</div></div>
+  ${body || `<div class="sec empty">Choose two teams. Tip: open any team page and press “Head-to-head”.</div>`}`;
+  return { html, bind(root) {
+    bindPicker(root, "h2ha", "t", id => { hState.a = id; render(); setTimeout(() => $("#h2hb")?.focus()); });
+    bindPicker(root, "h2hb", "t", id => { hState.b = id; render(); });
+    root.querySelectorAll("[data-clear]").forEach(b => b.onclick = () => { hState[b.dataset.clear] = 0; render(); setTimeout(() => $("#h2h" + b.dataset.clear)?.focus()); });
+    $("#hswap", root) && ($("#hswap", root).onclick = () => { [hState.a, hState.b] = [hState.b, hState.a]; render(); });
+  } };
+};
+
+/* ---- Results browser ---- */
+const R_DEF = { q: "", tier: "all", year: "all", scope: "all", page: 1 };
+const rState = Object.assign({}, R_DEF);
+V.results = () => {
+  const years = [...new Set(D.matches.map(m => m.d.slice(0, 4)))].sort().reverse();
+  const q = rState.q.trim().toLowerCase();
+  const ind = id => !!TEAM.get(id)?.indian;
+  const list = D.matches.filter(m => {
+    if (rState.year !== "all" && !m.d.startsWith(rState.year)) return false;
+    const ev = EVENT.get(m.e);
+    if (rState.tier !== "all" && ev?.tier !== rState.tier) return false;
+    if (rState.scope === "intl" && !(ind(m.t[0]) !== ind(m.t[1]) && !(TEAM.has(m.t[0]) && TEAM.has(m.t[1])))) return false;
+    if (rState.scope === "derby" && !(ind(m.t[0]) && ind(m.t[1]))) return false;
+    if (q && !(tname(m.t[0]).toLowerCase().includes(q) || tname(m.t[1]).toLowerCase().includes(q) || (ev?.title || "").toLowerCase().includes(q))) return false;
+    return true;
+  }).reverse();
+  const per = 40, pages = Math.max(1, Math.ceil(list.length / per)); const page = Math.min(Math.max(1, rState.page), pages);
+  const pager = `<div class="pager"><button type="button" class="btn" data-pg="${page - 1}" ${page <= 1 ? "disabled" : ""}>← Newer</button><span class="small muted">Page ${page} of ${pages}</span><button type="button" class="btn" data-pg="${page + 1}" ${page >= pages ? "disabled" : ""}>Older →</button></div>`;
+  const html = `
+  <div class="sec-head"><div><div class="eyebrow">Results</div><h1>Every recorded series</h1><p class="lede">${D.matches.length.toLocaleString()} series involving South Asian teams, newest first. Search by team or event.</p></div></div>
+  <div class="sec filters">
+    <label for="rq">Team or event<input id="rq" type="text" value="${esc(rState.q)}" placeholder="e.g. Revenant, VCSA"></label>
+    <label for="rtier">Circuit<select id="rtier"><option value="all">All circuits</option>${Object.entries(TIER_LABEL).map(([k, v]) => `<option value="${k}" ${rState.tier === k ? "selected" : ""}>${v}</option>`).join("")}</select></label>
+    <label for="ryr">Year<select id="ryr"><option value="all">All years</option>${years.map(y => `<option ${rState.year === y ? "selected" : ""}>${y}</option>`).join("")}</select></label>
+    <label>Matchups<span class="seg" id="rscope">${[["all", "All"], ["derby", "Indian vs Indian"], ["intl", "Indian vs foreign"]].map(([k, v]) => `<button type="button" data-v="${k}" class="${rState.scope === k ? "on" : ""}">${v}</button>`).join("")}</span></label>
+    <span class="count">${list.length.toLocaleString()} series</span><span class="toolbar"><button type="button" class="btn" data-copy>Copy link</button></span>
+  </div>
+  <div class="sec panel flush">${list.slice((page - 1) * per, page * per).map(matchRow).join("") || `<div class="empty">No series match</div>`}${pages > 1 ? pager : ""}</div>`;
+  return { html, bind(root) {
+    const re = () => { rState.page = 1; render(); };
+    $("#rq", root).oninput = debounce(e => { rState.q = e.target.value; re(); setTimeout(() => { const i = $("#rq"); if (i) { i.focus(); i.setSelectionRange(i.value.length, i.value.length); } }); }, 300);
+    $("#rtier", root).onchange = e => { rState.tier = e.target.value; re(); };
+    $("#ryr", root).onchange = e => { rState.year = e.target.value; re(); };
+    root.querySelectorAll("#rscope button").forEach(b => b.onclick = () => { rState.scope = b.dataset.v; re(); });
+    root.querySelectorAll("[data-pg]").forEach(b => b.onclick = () => { rState.page = +b.dataset.pg; render(); window.scrollTo(0, 0); });
+  } };
+};
+
 /* ---------- static editorial content ---------- */
 const STORIES = [
   ["Global Esports' last, best season", "India's VCT Pacific partner beat Paper Rex to reach Masters London, then came back from 0–2 against Nongshim RedForce to win VCT Pacific Stage 2, the first Pacific title for an Indian organisation. They went out in the Champions 2026 group stage (9th–12th) and on 19 October announced they were leaving esports to become GE Studios."],
@@ -828,7 +1205,7 @@ const STORIES = [
   ["2027 brings open qualifiers back", "Riot replaces Pacific Stages with Kickoff and two Cups. South Asia has no direct Cup slot: two teams from the South Asia qualifier go to the Kickoff Last Chance Qualifier, and South Asia's road to Cups runs through the post-Kickoff LCQ."],
 ];
 const UPCOMING = [
-  ["VCT 2027 Pacific Kickoff: South Asia Qualifier", "Open qualifier from 17 November 2026; two teams reach the Kickoff Last Chance Qualifier against Oceania and SEA opposition."],
+  ["VCT 2027 Pacific Kickoff: South Asia Qualifier", "Under way since 17 November 2026; two teams reach the Kickoff Last Chance Qualifier against Oceania and SEA opposition. Results land here as VLR records them."],
   ["VCT Pacific Kickoff 2027", "Bangkok, early 2027. Cup 1 follows in Manila and Cup 2 in Tokyo."],
   ["Free agency after Global Esports", "GE's VCT roster is on the market, along with the best-rated VCSA players, before Kickoff rosters lock."],
 ];
@@ -843,30 +1220,68 @@ const HISTORY = [
 
 /* ---------- router ---------- */
 function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
+// View state lives in the URL (#players?role=Duelist&ageMax=21) so any filtered view can be shared.
+const QS = { teams: [tState, T_DEF, "tstate2"], players: [pState, P_DEF, "pstate2"], circuit: [cState, C_DEF, "cstate"], events: [eState, E_DEF, "estate"],
+  abroad: [aState, A_DEF], compare: [cmpState, CMP_DEF], h2h: [hState, H_DEF], results: [rState, R_DEF] };
+function parseHash() {
+  const h = decodeURI(location.hash || "#overview").slice(1); const qi = h.indexOf("?");
+  const path = qi < 0 ? h : h.slice(0, qi), qs = qi < 0 ? "" : h.slice(qi + 1);
+  const [name, id] = path.split(/-(.+)/); return { path, name, id, qs };
+}
+function applyQuery(st, def, qs) {
+  for (const k of Object.keys(def)) st[k] = Array.isArray(def[k]) ? def[k].slice() : def[k];
+  for (const [k, v] of new URLSearchParams(qs)) {
+    if (!(k in def)) continue; const d = def[k];
+    st[k] = Array.isArray(d) ? v.split(",").filter(Boolean) : typeof d === "number" ? (+v || 0) : typeof d === "boolean" ? (v === "true" || v === "1") : v;
+  }
+}
+function toQuery(st, def) {
+  return Object.keys(def).filter(k => JSON.stringify(st[k]) !== JSON.stringify(def[k]))
+    .map(k => k + "=" + encodeURIComponent(Array.isArray(st[k]) ? st[k].join(",") : String(st[k])).replace(/%2C/g, ",")).join("&");
+}
+function onNav() {
+  const { name, qs } = parseHash(); const q = QS[name];
+  if (q && qs) applyQuery(q[0], q[1], qs);
+  render();
+}
 function render() {
-  const h = (location.hash || "#overview").slice(1);
-  let [name, id] = h.split(/-(.+)/);
-  if (!V[name]) name = "overview";
+  let { path, name, id } = parseHash();
+  if (!V[name]) { name = "overview"; path = "overview"; }
   document.querySelectorAll("#tabs a").forEach(a => a.classList.toggle("on", a.getAttribute("href") === "#" + (name === "team" ? "teams" : name === "player" ? "players" : name === "event" ? "events" : name)));
   const out = V[name](id);
   const root = $("#view");
   const y = window.scrollY;
   if (typeof out === "string") root.innerHTML = out; else { root.innerHTML = out.html; out.bind(root); }
-  if (render.last !== h) window.scrollTo(0, 0); else window.scrollTo(0, y);
-  render.last = h;
+  bindWidgets(root);
+  const q = QS[name];
+  if (q) {
+    if (q[2]) store.set(q[2], q[0]);
+    const qs = toQuery(q[0], q[1]); const want = "#" + path + (qs ? "?" + qs : "");
+    if (decodeURI(location.hash) !== decodeURI(want)) history.replaceState(null, "", want);
+  }
+  const titles = { overview: "", teams: "Team rankings", players: "Players", abroad: "Indians abroad", compare: "Compare players", h2h: "Head-to-head", results: "Results", circuit: "Circuit tracker", events: "Tournaments", meta: "Meta", records: "Records", about: "Method",
+    team: TEAM.get(+id)?.name, player: PLAYER.get(+id)?.name, event: EVENT.get(+id)?.title };
+  document.title = (titles[name] ? titles[name] + " · " : "") + "Indian Valorant Index";
+  if (render.last !== path) window.scrollTo(0, 0); else window.scrollTo(0, y);
+  render.last = path;
 }
-window.addEventListener("hashchange", render);
+window.addEventListener("hashchange", onNav);
 
 /* search */
-const SEARCH = [...D.teams.filter(t => t.series[0] + t.series[1] > 0).map(t => ({ k: "t", id: t.id, n: t.name, s: (t.name + " " + (t.tag || "")).toLowerCase(), sub: t.indian ? "Team" : "Team · " + (t.country || "") })),
-  ...D.players.map(p => ({ k: "p", id: p.id, n: p.name, s: (p.name + " " + (p.real || "")).toLowerCase(), sub: tname(p.team) }))];
+const SEARCH = [...D.teams.filter(t => t.series[0] + t.series[1] > 0).map(t => ({ k: "t", id: t.id, n: t.name, s: (t.name + " " + (t.tag || "")).toLowerCase(), sub: t.indian ? "Team" : "Team · " + (t.country || ""),
+    w: (t.indian ? 2 : 0) + (t.active ? 3 : 0) + Math.log1p(t.series[0] + t.series[1]) })),
+  ...D.players.map(p => ({ k: "p", id: p.id, n: p.name, s: (p.name + " " + (p.real || "")).toLowerCase(), sub: tname(p.team),
+    w: (p.active ? 3 : 0) + (p.flag === "in" ? 1 : 0) + Math.log1p(p.career.maps) }))];
 $("#q").addEventListener("input", debounce(e => {
   const q = e.target.value.trim().toLowerCase(); const box = $("#qres");
   if (q.length < 2) { box.hidden = true; return; }
-  const hits = SEARCH.filter(x => x.s.includes(q)).sort((a, b) => (a.s.startsWith(q) ? 0 : 1) - (b.s.startsWith(q) ? 0 : 1)).slice(0, 14);
-  box.innerHTML = hits.map(x => `<a href="#${x.k === "t" ? "team" : "player"}-${x.id}">${x.k === "t" ? (tlogo(x.id) ? `<img class="logo" src="${tlogo(x.id)}" alt="">` : "") : ""}<b>${esc(x.n)}</b><small>${esc(x.sub)}</small></a>`).join("") || `<div class="empty">No match</div>`;
+  box.innerHTML = searchHits(q).map(x => hitHTML(x, `href="#${x.k === "t" ? "team" : "player"}-${x.id}"`)).join("") || `<div class="empty">No match</div>`;
   box.hidden = false;
 }, 150));
+$("#q").addEventListener("keydown", e => keyNav(e, $("#qres"), a => { location.hash = a.getAttribute("href"); $("#qres").hidden = true; $("#q").value = ""; $("#q").blur(); }));
+document.addEventListener("keydown", e => {
+  if (e.key === "/" && !/^(INPUT|SELECT|TEXTAREA)$/.test(document.activeElement?.tagName || "")) { e.preventDefault(); $("#q").focus(); }
+});
 document.addEventListener("click", e => { if (!e.target.closest(".search")) $("#qres").hidden = true; if (!e.target.closest(".colpick")) { const m = $("#pcolmenu"); if (m) m.hidden = true; } });
 $("#qres").addEventListener("click", () => { $("#qres").hidden = true; $("#q").value = ""; });
 
@@ -877,6 +1292,8 @@ let theme = store.get("theme", null); applyTheme(theme);
 themeBtn.onclick = () => { theme = theme === null ? "light" : theme === "light" ? "dark" : null; store.set("theme", theme); applyTheme(theme); };
 
 $("#asof").textContent = "data to " + D.generated;
-$("#foot").innerHTML = `Built from VLR.gg match data and Liquipedia (CC BY-SA) player bios · snapshot ${esc(D.generated)} · ${D.matches.length.toLocaleString()} series · ${D.players.length.toLocaleString()} players · ${D.teams.length.toLocaleString()} teams. Not affiliated with Riot Games.`;
-render();
+$("#foot").innerHTML = `Built from VLR.gg match data and Liquipedia (CC BY-SA) player bios · snapshot ${esc(D.generated)} · ${D.matches.length.toLocaleString()} series · ${D.players.length.toLocaleString()} players · ${D.teams.length.toLocaleString()} teams. Not affiliated with Riot Games. · <a href="https://github.com/alan-r-henry/indian-valorant-index" target="_blank" rel="noopener">Source on GitHub</a>`;
+onNav();
 </script>
+</body>
+</html>

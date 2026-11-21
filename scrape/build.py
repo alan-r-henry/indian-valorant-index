@@ -1,5 +1,5 @@
 """Turn crawled VLR + Liquipedia data into the site's data file (site/data.js)."""
-import functools, sys, os, re, json, math, statistics, collections, datetime as dt
+import hashlib, functools, sys, os, re, json, math, statistics, collections, datetime as dt
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import vlr, lp, events as EV
 
@@ -18,6 +18,10 @@ AGENT_ROLE = {
     "sage": "Sentinel", "cypher": "Sentinel", "killjoy": "Sentinel", "chamber": "Sentinel", "deadlock": "Sentinel",
     "vyse": "Sentinel", "veto": "Sentinel",
 }
+
+
+def _i(x):
+    return None if x is None else int(round(x))
 
 
 def pdate(s):
@@ -47,9 +51,12 @@ def classify_event(title):
 TIER_ORDER = ["international", "vct_pacific", "ascension", "challengers", "national", "gc", "third_party"]
 
 
-def load_matches():
+def load_matches(fname="matches.jsonl"):
     ms = {}
-    for line in open(os.path.join(DATA, "matches.jsonl"), encoding="utf8"):
+    fn = os.path.join(DATA, fname)
+    if not os.path.exists(fn):
+        return []
+    for line in open(fn, encoding="utf8"):
         line = line.strip()
         if not line:
             continue
@@ -63,12 +70,28 @@ def load_matches():
     return sorted(ms.values(), key=lambda d: d["date"])
 
 
+def abroad_opp_elo(title):
+    """Matches between two non-South-Asian teams carry no Elo here, so estimate the opponent's level from the event."""
+    t = (title or "").lower()
+    if re.search(r'masters|champions 20\d\d|vct 20\d\d: (americas|emea|pacific|china)|(americas|emea|pacific|china) (league|stage|kickoff)', t) and "challengers" not in t:
+        return 1950.0
+    if re.search(r'challengers|ascension|last chance', t):
+        return 1650.0
+    return 1550.0
+
+
 def map_rows(m):
     return [g for g in m.get("games", []) if g["gid"] != "all" and g.get("score")]
 
 
 def main():
     matches = load_matches()
+    known = {m["id"] for m in matches}
+    abroad_matches = [m for m in load_matches("abroad_matches.jsonl") if m["id"] not in known]
+    abroad_fn = os.path.join(DATA, "abroad_players.json")
+    abroad_info = {int(k): v for k, v in json.load(open(abroad_fn, encoding="utf8")).items()} if os.path.exists(abroad_fn) else {}
+    region_of_team = {v["team_id"]: v["region"] for v in abroad_info.values() if v.get("team_id") and v.get("region")}
+    print("abroad matches", len(abroad_matches), "abroad players", len(abroad_info))
     teams_raw = json.load(open(os.path.join(DATA, "teams_raw.json"), encoding="utf8"))
     print("matches", len(matches), "teams", len(teams_raw))
 
@@ -93,7 +116,8 @@ def main():
     def team_nat(tid):
         t = teams_raw.get(str(tid), {})
         c = lineup.get(tid, collections.Counter())
-        tot = sum(c.values())
+        # "un" = no nationality set on VLR; judge the team on players whose flag is known
+        tot = sum(v for k, v in c.items() if k not in ("un", ""))
         frac_in = c["in"] / tot if tot else 0
         frac_sa = sum(v for k, v in c.items() if k in SA) / tot if tot else 0
         flag = t.get("flag", "")
@@ -322,10 +346,11 @@ def main():
     # ---------- players ----------
     P = {}
     mrows = []        # compact per-map player rows for adjusted ratings
-    for m in matches:
+    for m in matches + abroad_matches:
         a, b = m["teams"][0]["id"], m["teams"][1]["id"]
         d = pdate(m["date"])
         tier = classify_event(m.get("event", ""))
+        is_abroad = a not in T and b not in T
         for g in map_rows(m):
             rounds = g["score"][0] + g["score"][1]
             if rounds < 13:
@@ -338,6 +363,8 @@ def main():
                 opp = (b, a)[side]
                 involved = tid in T or p["flag"] == "in"
                 if not involved:
+                    continue
+                if is_abroad and p["flag"] != "in":
                     continue
                 s = p["s"]
                 def v(k, j=0):
@@ -352,14 +379,15 @@ def main():
                            rt=v("rating2"), acs=v("acs"), k=v("kills"), dth=v("deaths"), a=v("assists"),
                            kast=v("kast"), adr=v("adr"), hs=v("hsp"), fk=v("fb"), fd=v("fd"),
                            rt_t=v("rating2", 1), rt_ct=v("rating2", 2), acs_t=v("acs", 1), acs_ct=v("acs", 2),
-                           opp_elo=(elo[1 - side] if elo else None), team_elo=(elo[side] if elo else None))
+                           opp_elo=(elo[1 - side] if elo else (abroad_opp_elo(m.get("event", "")) if is_abroad else None)),
+                           team_elo=(elo[side] if elo else None), est=bool(is_abroad and not elo))
                 pp["rows"].append(row)
 
     # opponent adjustment: regress rating on opponent elo (rows with both)
     xs, ys_ = [], []
     for pp in P.values():
         for r in pp["rows"]:
-            if r["rt"] is not None and r["opp_elo"] is not None:
+            if r["rt"] is not None and r["opp_elo"] is not None and not r.get("est"):
                 xs.append(r["opp_elo"])
                 ys_.append(r["rt"])
     beta = 0.0
@@ -444,6 +472,24 @@ def main():
         for r in tt["roster"]:
             roster_of.setdefault(r["pid"], []).append((tid, r))
 
+    def is_foreign_team(tid):
+        """True only for teams that are clearly outside South Asia (not just unclassified small Indian teams)."""
+        if tid in T:
+            return False
+        if tid in region_of_team:
+            return True
+        t = teams_raw.get(str(tid), {})
+        if t.get("flag") in SA:
+            return False
+        c = lineup.get(tid) or {}
+        tot = sum(v for k, v in c.items() if k not in ("un", ""))
+        if tot and sum(v for k, v in c.items() if k in SA) / tot >= 0.5:
+            return False
+        if tot:
+            return True
+        return t.get("flag", "") not in ("", "un") or tid in abroad_team_ids
+
+    abroad_team_ids = {t["id"] for m in abroad_matches for t in m["teams"]}
     players_out = []
     for pid, pp in P.items():
         allrows = sorted(pp["rows"], key=lambda r: r["d"])
@@ -514,8 +560,15 @@ def main():
                   social={k: (lpr or {}).get(k, "") for k in ("twitter", "twitch", "youtube", "instagram") if (lpr or {}).get(k)},
                   career=agg(rows), cur=last365, seasons=seasons, maps=bymap, ags=byag, tiers=bytier,
                   teams=teams_played[-12:],
-                  best=[dict(d=r["d"], mid=r["mid"], map=r["map"], ag=r["ag"], rt=r["rt"], acs=r["acs"], k=r["k"], dth=r["dth"], a=r["a"], opp=r["opp"]) for r in best],
-                  indian_team=bool(indian_team_rows), gc=is_gc)
+                  best=[dict(d=r["d"], mid=r["mid"], map=r["map"], ag=r["ag"], rt=r["rt"], acs=r["acs"], k=_i(r["k"]), dth=_i(r["dth"]), a=_i(r["a"]), opp=r["opp"]) for r in best],
+                  # last 30 maps for the form chart: [date, rating, acs, opp, match, map, agent, won, k, d, a]
+                  recent=[[r["d"], r["rt"], _i(r["acs"]), r["opp"], r["mid"], r["map"], r["ag"], int(bool(r["won"])), _i(r["k"]), _i(r["dth"]), _i(r["a"])]
+                          for r in rows[-30:]] if (NOW - dt.datetime.strptime(last["d"], "%Y-%m-%d")).days <= 365 else [],
+                  indian_team=bool(indian_team_rows), gc=is_gc,
+                  abroad=(dict(region=region_of_team.get(cur_tid) or (abroad_info.get(pid) or {}).get("region", "")
+                               or teams_raw.get(str(cur_tid), {}).get("country", ""),
+                               team_flag=(abroad_info.get(pid) or {}).get("team_flag", "") or teams_raw.get(str(cur_tid), {}).get("flag", ""))
+                          if pp["flag"] == "in" and is_foreign_team(cur_tid) else None))
         players_out.append(po)
 
     # ---------- meta: agents & maps across Indian-team maps ----------
@@ -575,6 +628,12 @@ def main():
     for m in matches:
         for t in m["teams"]:
             opp_names[t["id"]] = t["name"]
+    used_abroad = {p["team"] for p in players_out} | {r[3] for p in players_out for r in p.get("recent", [])} | {b["opp"] for p in players_out for b in p["best"]}
+    for m in abroad_matches:
+        for t in m["teams"]:
+            if t["id"] in used_abroad:
+                opp_names.setdefault(t["id"], t["name"])
+    abroad_logos = {v["team_id"]: v.get("team_logo", "") for v in abroad_info.values() if v.get("team_id")}
     out = dict(
         generated=NOW.strftime("%Y-%m-%d"),
         beta=beta,
@@ -583,7 +642,7 @@ def main():
         events=events_out,
         matches=match_out,
         names={str(k): v for k, v in opp_names.items()},
-        tlogos={str(k): teams_raw.get(str(k), {}).get("logo", "") for k in opp_names},
+        tlogos={str(k): teams_raw.get(str(k), {}).get("logo", "") or abroad_logos.get(k, "") for k in opp_names},
         agent_month={k: dict(v) for k, v in sorted(agent_month.items())},
         map_month={k: dict(v) for k, v in sorted(map_month.items())},
         map_side={k: v for k, v in map_side.items() if k},
@@ -592,6 +651,13 @@ def main():
     os.makedirs(os.path.join(ROOT, "site"), exist_ok=True)
     s = json.dumps(out, ensure_ascii=False, separators=(",", ":"))
     open(os.path.join(ROOT, "site", "data.js"), "w", encoding="utf8").write("window.IVI_DATA=" + s + ";")
+    # cache-bust: point index.html at this exact data file so browsers don't keep last week's copy
+    ix = os.path.join(ROOT, "site", "index.html")
+    ver = hashlib.md5(s.encode("utf8")).hexdigest()[:10]
+    html = open(ix, encoding="utf8").read()
+    html2 = re.sub(r'src="data\.js(\?v=[0-9a-f]+)?"', f'src="data.js?v={ver}"', html)
+    if html2 != html:
+        open(ix, "w", encoding="utf8", newline="\n").write(html2)
     print("teams", len(team_list), "indian ranked", len(ranked), "players", len(players_out), "events", len(events_out),
           "matches", len(match_out), "bytes", len(s))
 

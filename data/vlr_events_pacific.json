@@ -1,12 +1,12 @@
 [
 {
-"id": 3228,
-"href": "/event/3228/predator-league-2027-thailand",
-"title": "Predator League 2027: Thailand",
+"id": 3213,
+"href": "/event/3213/predator-league-2027-indonesia",
+"title": "Predator League 2027: Indonesia",
 "status": "ongoing",
-"prize": "$5,999",
-"dates": "Nov 10—18",
-"flag": "th"
+"prize": "$5,624",
+"dates": "Nov 10—22",
+"flag": "id"
 },
 {
 "id": 3172,
@@ -18,19 +18,28 @@
 "flag": "ph"
 },
 {
-"id": 3213,
-"href": "/event/3213/predator-league-2027-indonesia",
-"title": "Predator League 2027: Indonesia",
+"id": 3239,
+"href": "/event/3239/predator-league-2027-malaysia",
+"title": "Predator League 2027: Malaysia",
 "status": "ongoing",
-"prize": "$5,624",
-"dates": "Nov 10—22",
-"flag": "id"
+"prize": "$4,886",
+"dates": "Nov 14—22",
+"flag": "my"
+},
+{
+"id": 3234,
+"href": "/event/3234/predator-league-2027-india",
+"title": "Predator League 2027: India",
+"status": "ongoing",
+"prize": "$5,324",
+"dates": "Nov 16—22",
+"flag": "in"
 },
 {
 "id": 3206,
 "href": "/event/3206/vct-2027-pacific-kickoff-south-asia-qualifier",
 "title": "VCT 2027: Pacific Kickoff - South Asia Qualifier",
-"status": "upcoming",
+"status": "ongoing",
 "prize": "$0",
 "dates": "Nov 17—29",
 "flag": "un"
@@ -39,7 +48,7 @@
 "id": 3205,
 "href": "/event/3205/vct-2027-pacific-kickoff-oceania-qualifier",
 "title": "VCT 2027: Pacific Kickoff - Oceania Qualifier",
-"status": "upcoming",
+"status": "ongoing",
 "prize": "$0",
 "dates": "Nov 21—29",
 "flag": "au"
@@ -52,6 +61,15 @@
 "prize": "$0",
 "dates": "Nov 22—Dec 12",
 "flag": "jp"
+},
+{
+"id": 3237,
+"href": "/event/3237/asia-esports-championship-2026",
+"title": "Asia Esports Championship 2026",
+"status": "upcoming",
+"prize": "$3,284",
+"dates": "Nov 22—28",
+"flag": "tw"
 },
 {
 "id": 3203,
@@ -135,6 +153,15 @@
 "flag": "us"
 },
 {
+"id": 3236,
+"href": "/event/3236/vct-2027-pacific-kickoff-last-chance",
+"title": "VCT 2027: Pacific Kickoff - Last Chance",
+"status": "upcoming",
+"prize": "$0",
+"dates": "Dec 17—20",
+"flag": "un"
+},
+{
 "id": 3181,
 "href": "/event/3181/vct-2027-pacific-kickoff",
 "title": "VCT 2027: Pacific Kickoff",
@@ -198,6 +225,15 @@
 "flag": "sa"
 },
 {
+"id": 3228,
+"href": "/event/3228/predator-league-2027-thailand",
+"title": "Predator League 2027: Thailand",
+"status": "completed",
+"prize": "$5,999",
+"dates": "Nov 10—18",
+"flag": "th"
+},
+{
 "id": 3212,
 "href": "/event/3212/predator-league-2027-vietnam",
 "title": "Predator League 2027: Vietnam",
@@ -223,6 +259,15 @@
 "prize": "$6,344",
 "dates": "Nov 7—15",
 "flag": "jp"
+},
+{
+"id": 3235,
+"href": "/event/3235/predator-league-2027-mongolia",
+"title": "Predator League 2027: Mongolia",
+"status": "completed",
+"prize": "$7,000",
+"dates": "Nov 14",
+"flag": "mn"
 },
 {
 "id": 3220,
@@ -1170,13 +1215,13 @@
 "flag": "us"
 },
 {
-"id": 2629,
-"href": "/event/2629/predator-league-2026-thailand",
-"title": "Predator League 2026: Thailand",
+"id": 2665,
+"href": "/event/2665/predator-league-2026-indonesia",
+"title": "Predator League 2026: Indonesia",
 "status": "completed",
-"prize": "$7,651",
+"prize": "$6,485",
 "dates": "Oct 28—Nov 16",
-"flag": "th"
+"flag": "id"
 },
 {
 "id": 2643,
@@ -1188,13 +1233,13 @@
 "flag": "ph"
 },
 {
-"id": 2665,
-"href": "/event/2665/predator-league-2026-indonesia",
-"title": "Predator League 2026: Indonesia",
+"id": 2629,
+"href": "/event/2629/predator-league-2026-thailand",
+"title": "Predator League 2026: Thailand",
 "status": "completed",
-"prize": "$6,485",
+"prize": "$7,651",
 "dates": "Oct 28—Nov 16",
-"flag": "id"
+"flag": "th"
 },
 {
 "id": 2628,
@@ -1746,15 +1791,6 @@
 "flag": "cn"
 },
 {
-"id": 2310,
-"href": "/event/2310/challengers-2025-japan-stage-2",
-"title": "Challengers 2025: Japan Stage 2",
-"status": "completed",
-"prize": "$26,311",
-"dates": "Mar 7—May 18",
-"flag": "jp"
-},
-{
 "id": 2361,
 "href": "/event/2361/challengers-2025-southeast-asia-stage-2",
 "title": "Challengers 2025: Southeast Asia Stage 2",
@@ -1762,6 +1798,15 @@
 "prize": "$50,000",
 "dates": "Mar 17—May 18",
 "flag": "un"
+},
+{
+"id": 2310,
+"href": "/event/2310/challengers-2025-japan-stage-2",
+"title": "Challengers 2025: Japan Stage 2",
+"status": "completed",
+"prize": "$26,311",
+"dates": "Mar 7—May 18",
+"flag": "jp"
 },
 {
 "id": 2453,
@@ -2070,13 +2115,13 @@
 "flag": "in"
 },
 {
-"id": 2173,
-"href": "/event/2173/challengers-league-2024-japan-split-3",
-"title": "Challengers League 2024 Japan: Split 3",
+"id": 2297,
+"href": "/event/2297/on-live-valorant-series-2024-week-4",
+"title": "ON Live Valorant Series 2024: Week 4",
 "status": "completed",
-"prize": "$0",
-"dates": "Aug 19—Dec 22",
-"flag": "jp"
+"prize": "$6,349",
+"dates": "Dec 16—22",
+"flag": "vn"
 },
 {
 "id": 2291,
@@ -2088,22 +2133,13 @@
 "flag": "un"
 },
 {
-"id": 2297,
-"href": "/event/2297/on-live-valorant-series-2024-week-4",
-"title": "ON Live Valorant Series 2024: Week 4",
+"id": 2173,
+"href": "/event/2173/challengers-league-2024-japan-split-3",
+"title": "Challengers League 2024 Japan: Split 3",
 "status": "completed",
-"prize": "$6,349",
-"dates": "Dec 16—22",
-"flag": "vn"
-},
-{
-"id": 2225,
-"href": "/event/2225/soop-valorant-league-2024",
-"title": "SOOP Valorant League 2024",
-"status": "completed",
-"prize": "$87,497",
-"dates": "Dec 10—15",
-"flag": "kr"
+"prize": "$0",
+"dates": "Aug 19—Dec 22",
+"flag": "jp"
 },
 {
 "id": 2224,
@@ -2113,6 +2149,15 @@
 "prize": "$0",
 "dates": "Dec 14—15",
 "flag": "jp"
+},
+{
+"id": 2225,
+"href": "/event/2225/soop-valorant-league-2024",
+"title": "SOOP Valorant League 2024",
+"status": "completed",
+"prize": "$87,497",
+"dates": "Dec 10—15",
+"flag": "kr"
 },
 {
 "id": 2266,
@@ -2214,15 +2259,6 @@
 "flag": "jp"
 },
 {
-"id": 2262,
-"href": "/event/2262/on-live-valorant-series-2024-week-1",
-"title": "ON Live Valorant Series 2024: Week 1",
-"status": "completed",
-"prize": "$1,821",
-"dates": "Nov 17—24",
-"flag": "vn"
-},
-{
 "id": 2223,
 "href": "/event/2223/challengers-league-2024-southeast-asia",
 "title": "Challengers League 2024 Southeast Asia",
@@ -2230,6 +2266,15 @@
 "prize": "$75,000",
 "dates": "Oct 25—Nov 24",
 "flag": "un"
+},
+{
+"id": 2262,
+"href": "/event/2262/on-live-valorant-series-2024-week-1",
+"title": "ON Live Valorant Series 2024: Week 1",
+"status": "completed",
+"prize": "$1,821",
+"dates": "Nov 17—24",
+"flag": "vn"
 },
 {
 "id": 2171,
@@ -2529,15 +2574,6 @@
 "flag": "kr"
 },
 {
-"id": 2055,
-"href": "/event/2055/wdg-challengers-league-2024-korea-split-2",
-"title": "WDG Challengers League 2024 Korea: Split 2",
-"status": "completed",
-"prize": "$54,672",
-"dates": "Apr 30—Jul 27",
-"flag": "kr"
-},
-{
 "id": 2160,
 "href": "/event/2160/oredoo-nation-gamers-land-seasonal-championship",
 "title": "Oredoo Nation Gamers' Land Seasonal Championship",
@@ -2545,6 +2581,15 @@
 "prize": "$651",
 "dates": "Jul 14—27",
 "flag": "mv"
+},
+{
+"id": 2055,
+"href": "/event/2055/wdg-challengers-league-2024-korea-split-2",
+"title": "WDG Challengers League 2024 Korea: Split 2",
+"status": "completed",
+"prize": "$54,672",
+"dates": "Apr 30—Jul 27",
+"flag": "kr"
 },
 {
 "id": 2017,
@@ -3528,13 +3573,13 @@
 "flag": "un"
 },
 {
-"id": 1444,
-"href": "/event/1444/challengers-league-thailand-split-1",
-"title": "Challengers League Thailand: Split 1",
+"id": 1474,
+"href": "/event/1474/challengers-league-vietnam-split-1",
+"title": "Challengers League Vietnam: Split 1",
 "status": "completed",
-"prize": "$23,865",
-"dates": "Jan 13—Mar 12",
-"flag": "th"
+"prize": "$26,358",
+"dates": "Feb 7—Mar 12",
+"flag": "vn"
 },
 {
 "id": 1445,
@@ -3546,13 +3591,13 @@
 "flag": "tw"
 },
 {
-"id": 1474,
-"href": "/event/1474/challengers-league-vietnam-split-1",
-"title": "Challengers League Vietnam: Split 1",
+"id": 1444,
+"href": "/event/1444/challengers-league-thailand-split-1",
+"title": "Challengers League Thailand: Split 1",
 "status": "completed",
-"prize": "$26,358",
-"dates": "Feb 7—Mar 12",
-"flag": "vn"
+"prize": "$23,865",
+"dates": "Jan 13—Mar 12",
+"flag": "th"
 },
 {
 "id": 1437,
@@ -3564,15 +3609,6 @@
 "flag": "sg"
 },
 {
-"id": 1345,
-"href": "/event/1345/challengers-league-oceania-split-1",
-"title": "Challengers League Oceania: Split 1",
-"status": "completed",
-"prize": "$33,177",
-"dates": "Dec 15—Mar 12",
-"flag": "au"
-},
-{
 "id": 1431,
 "href": "/event/1431/challengers-league-indonesia-split-1",
 "title": "Challengers League Indonesia: Split 1",
@@ -3580,6 +3616,15 @@
 "prize": "$25,000",
 "dates": "Jan 7—Mar 12",
 "flag": "id"
+},
+{
+"id": 1345,
+"href": "/event/1345/challengers-league-oceania-split-1",
+"title": "Challengers League Oceania: Split 1",
+"status": "completed",
+"prize": "$33,177",
+"dates": "Dec 15—Mar 12",
+"flag": "au"
 },
 {
 "id": 1442,
@@ -3672,15 +3717,6 @@
 "flag": "kr"
 },
 {
-"id": 1426,
-"href": "/event/1426/rumble-royale-x-riot-community-brawl-week-4",
-"title": "RUMBLE ROYALE X Riot Community Brawl: Week 4",
-"status": "completed",
-"prize": "$270",
-"dates": "Dec 17—18",
-"flag": "ph"
-},
-{
 "id": 1390,
 "href": "/event/1390/riot-games-one-pro-invitational-online-2022",
 "title": "Riot Games ONE Pro Invitational Online 2022",
@@ -3697,6 +3733,15 @@
 "prize": "$15,000",
 "dates": "Dec 18",
 "flag": "kr"
+},
+{
+"id": 1426,
+"href": "/event/1426/rumble-royale-x-riot-community-brawl-week-4",
+"title": "RUMBLE ROYALE X Riot Community Brawl: Week 4",
+"status": "completed",
+"prize": "$270",
+"dates": "Dec 17—18",
+"flag": "ph"
 },
 {
 "id": 1393,
@@ -3897,15 +3942,6 @@
 "flag": "vn"
 },
 {
-"id": 1261,
-"href": "/event/1261/daejeon-valorant-invitational",
-"title": "Daejeon Valorant Invitational",
-"status": "completed",
-"prize": "$3,487",
-"dates": "Oct 15—16",
-"flag": "kr"
-},
-{
 "id": 1237,
 "href": "/event/1237/champions-tour-game-changers-east-asia-qualifier",
 "title": "Champions Tour Game Changers East Asia: Qualifier",
@@ -3913,6 +3949,15 @@
 "prize": "$0",
 "dates": "Oct 12—16",
 "flag": "un"
+},
+{
+"id": 1261,
+"href": "/event/1261/daejeon-valorant-invitational",
+"title": "Daejeon Valorant Invitational",
+"status": "completed",
+"prize": "$3,487",
+"dates": "Oct 15—16",
+"flag": "kr"
 },
 {
 "id": 1218,
@@ -5670,13 +5715,13 @@
 "flag": "in"
 },
 {
-"id": 379,
-"href": "/event/379/champions-tour-indonesia-stage-2-challengers-1",
-"title": "Champions Tour Indonesia Stage 2: Challengers 1",
+"id": 386,
+"href": "/event/386/champions-tour-thailand-stage-2-challengers-1",
+"title": "Champions Tour Thailand Stage 2: Challengers 1",
 "status": "completed",
-"prize": "$1,662",
+"prize": "$4,354",
 "dates": "Mar 26—Apr 4",
-"flag": "id"
+"flag": "th"
 },
 {
 "id": 384,
@@ -5688,13 +5733,13 @@
 "flag": "tw"
 },
 {
-"id": 386,
-"href": "/event/386/champions-tour-thailand-stage-2-challengers-1",
-"title": "Champions Tour Thailand Stage 2: Challengers 1",
+"id": 379,
+"href": "/event/379/champions-tour-indonesia-stage-2-challengers-1",
+"title": "Champions Tour Indonesia Stage 2: Challengers 1",
 "status": "completed",
-"prize": "$4,354",
+"prize": "$1,662",
 "dates": "Mar 26—Apr 4",
-"flag": "th"
+"flag": "id"
 },
 {
 "id": 373,
@@ -6129,6 +6174,15 @@
 "flag": "th"
 },
 {
+"id": 194,
+"href": "/event/194/first-strike-indonesia",
+"title": "First Strike: Indonesia",
+"status": "completed",
+"prize": "$6,793",
+"dates": "Dec 2—6",
+"flag": "id"
+},
+{
 "id": 195,
 "href": "/event/195/first-strike-hong-kong-taiwan",
 "title": "First Strike: Hong Kong & Taiwan",
@@ -6138,13 +6192,13 @@
 "flag": "tw"
 },
 {
-"id": 194,
-"href": "/event/194/first-strike-indonesia",
-"title": "First Strike: Indonesia",
+"id": 189,
+"href": "/event/189/first-strike-korea",
+"title": "First Strike: Korea",
 "status": "completed",
-"prize": "$6,793",
-"dates": "Dec 2—6",
-"flag": "id"
+"prize": "$100,000",
+"dates": "Nov 12—Dec 6",
+"flag": "kr"
 },
 {
 "id": 193,
@@ -6163,15 +6217,6 @@
 "prize": "$10,000",
 "dates": "Nov 21—Dec 6",
 "flag": "ph"
-},
-{
-"id": 189,
-"href": "/event/189/first-strike-korea",
-"title": "First Strike: Korea",
-"status": "completed",
-"prize": "$100,000",
-"dates": "Nov 12—Dec 6",
-"flag": "kr"
 },
 {
 "id": 185,
