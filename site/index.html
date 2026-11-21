@@ -1,0 +1,882 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Indian Valorant Index</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: sticky command bar + one routed view; dense data tables in scroll wells; profiles as full views. */
+:root {
+  --bg: #0e1016;
+  --panel: #151821;
+  --panel2: #1b1f2b;
+  --line: #272c3a;
+  --fg: #e9e7e1;
+  --muted: #8d92a3;
+  --accent: #f0a63a;        /* marigold */
+  --accent-ink: #1a1206;
+  --accent-soft: rgba(240,166,58,.14);
+  --pos: #3fbf9f;
+  --neg: #e8615a;
+  --info: #7aa7ff;
+  --gold: #f4c95d; --silver: #c9ced8; --bronze: #d38b5d;
+  --display: "Rajdhani", "Arial Narrow", system-ui, sans-serif;
+  --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) {
+  --bg: #f3f4f7; --panel: #ffffff; --panel2: #eef0f5; --line: #dde0e8; --fg: #161923; --muted: #5d6476;
+  --accent: #b86e07; --accent-ink: #ffffff; --accent-soft: rgba(184,110,7,.12);
+  --pos: #11876b; --neg: #c33b33; --info: #2f62d0; --gold: #b8860b; --silver: #7c8594; --bronze: #a0582c; color-scheme: light; } }
+:root[data-theme="light"] {
+  --bg: #f3f4f7; --panel: #ffffff; --panel2: #eef0f5; --line: #dde0e8; --fg: #161923; --muted: #5d6476;
+  --accent: #b86e07; --accent-ink: #ffffff; --accent-soft: rgba(184,110,7,.12);
+  --pos: #11876b; --neg: #c33b33; --info: #2f62d0; --gold: #b8860b; --silver: #7c8594; --bronze: #a0582c; color-scheme: light; }
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 14px; line-height: 1.45; margin: 0; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--panel); }
+a { color: inherit; text-decoration: none; }
+a:hover { color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.num, td.n, th.n { font-variant-numeric: tabular-nums; }
+.wrap { max-width: 1320px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+/* top bar */
+header.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--panel); border-bottom: 1px solid var(--line); }
+.bar .wrap { display: flex; align-items: center; gap: 18px; padding-block: 10px; flex-wrap: wrap; }
+.brand { display: flex; align-items: baseline; gap: 10px; font-family: var(--display); font-weight: 700; font-size: 22px; letter-spacing: .02em; white-space: nowrap; }
+.brand .mark { width: 18px; height: 18px; background: var(--accent); clip-path: polygon(0 0, 100% 0, 100% 62%, 62% 100%, 0 100%); align-self: center; }
+.brand small { font-family: var(--body); font-weight: 500; font-size: 11px; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; }
+nav.tabs { display: flex; gap: 2px; overflow-x: auto; flex: 1; min-width: 0; scrollbar-width: none; }
+nav.tabs a { font-family: var(--display); font-weight: 600; font-size: 15px; letter-spacing: .04em; text-transform: uppercase; padding: 6px 11px; color: var(--muted); white-space: nowrap; border-bottom: 2px solid transparent; }
+nav.tabs a.on { color: var(--fg); border-bottom-color: var(--accent); }
+.search { position: relative; }
+.search input { background: var(--panel2); border: 1px solid var(--line); color: var(--fg); padding: 7px 10px; width: 210px; font: inherit; border-radius: 3px; }
+.search .res { position: absolute; right: 0; top: 100%; margin-top: 4px; width: 300px; max-height: 360px; overflow: auto; background: var(--panel); border: 1px solid var(--line); z-index: 40; box-shadow: 0 10px 30px rgba(0,0,0,.35); }
+.search .res a { display: flex; gap: 8px; padding: 7px 10px; align-items: center; border-bottom: 1px solid var(--line); }
+.search .res a small { color: var(--muted); margin-left: auto; }
+.themebtn { background: none; border: 1px solid var(--line); color: var(--muted); padding: 6px 9px; border-radius: 3px; cursor: pointer; font: inherit; }
+
+main { padding-block: 22px 60px; }
+h1, h2, h3 { font-family: var(--display); font-weight: 700; letter-spacing: .01em; text-wrap: balance; margin: 0; }
+h1 { font-size: 34px; line-height: 1.05; }
+h2 { font-size: 22px; text-transform: uppercase; letter-spacing: .04em; }
+h3 { font-size: 17px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+.eyebrow { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.lede { color: var(--muted); max-width: 70ch; margin: 6px 0 0; }
+.sec { margin-top: 28px; display: grid; gap: 12px; }
+.sec-head { display: flex; align-items: end; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.grid { display: grid; gap: 16px; }
+.g2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); }
+.g3 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+.g4 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 14px 16px; min-width: 0; }
+.panel.flush { padding: 0; }
+.panel > h3 { margin-bottom: 10px; }
+.muted { color: var(--muted); }
+.small { font-size: 12px; }
+.pill { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; letter-spacing: .04em; padding: 1px 7px; border-radius: 99px; border: 1px solid var(--line); color: var(--muted); white-space: nowrap; }
+.pill.acc { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+.pill.pos { color: var(--pos); border-color: color-mix(in srgb, var(--pos) 50%, transparent); }
+.pill.neg { color: var(--neg); border-color: color-mix(in srgb, var(--neg) 50%, transparent); }
+.tier { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 2px 6px; border-radius: 2px; background: var(--panel2); color: var(--muted); white-space: nowrap; }
+.tier.international { background: var(--accent); color: var(--accent-ink); }
+.tier.vct_pacific { background: color-mix(in srgb, var(--accent) 35%, var(--panel2)); color: var(--fg); }
+.tier.ascension { background: color-mix(in srgb, var(--info) 30%, var(--panel2)); color: var(--fg); }
+.tier.challengers { background: color-mix(in srgb, var(--pos) 25%, var(--panel2)); color: var(--fg); }
+.tier.gc { background: color-mix(in srgb, #c86bd6 30%, var(--panel2)); color: var(--fg); }
+.tier.national { background: color-mix(in srgb, #ff8a3d 30%, var(--panel2)); color: var(--fg); }
+
+/* stat tiles */
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+.tile { background: var(--panel); padding: 12px 14px; min-width: 0; }
+.tile b { display: block; font-family: var(--display); font-size: 28px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+.tile span { font-size: 11px; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; }
+
+/* tables */
+.tw { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { padding: 7px 9px; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { font-size: 11px; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); font-weight: 600; position: sticky; top: 0; background: var(--panel); cursor: pointer; user-select: none; }
+th.n, td.n { text-align: right; }
+th.sorted { color: var(--accent); }
+th .arr { font-size: 9px; }
+tbody tr:hover { background: var(--panel2); }
+td.rank { font-family: var(--display); font-weight: 700; font-size: 16px; color: var(--muted); width: 36px; }
+tr.top3 td.rank { color: var(--accent); }
+.tlink { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; }
+.logo { width: 22px; height: 22px; object-fit: contain; flex: none; }
+.logo.lg { width: 64px; height: 64px; }
+.flag { font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: .05em; }
+.form { display: inline-flex; gap: 2px; }
+.form i { width: 7px; height: 14px; display: inline-block; border-radius: 1px; }
+.form i.W { background: var(--pos); } .form i.L { background: var(--neg); opacity: .8; }
+.bar-cell { display: inline-block; height: 6px; background: var(--accent); border-radius: 1px; vertical-align: middle; }
+.heat { border-radius: 2px; padding: 2px 6px; }
+
+/* filters */
+.filters { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: end; background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 12px 14px; }
+.filters label { display: grid; gap: 4px; font-size: 11px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; font-weight: 600; }
+.filters select, .filters input[type=number], .filters input[type=text] { background: var(--panel2); color: var(--fg); border: 1px solid var(--line); padding: 6px 8px; font: inherit; font-size: 13px; border-radius: 3px; min-width: 0; }
+.filters input[type=number] { width: 72px; }
+.seg { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--line); border-radius: 3px; overflow: hidden; max-width: 100%; }
+.seg button { background: var(--panel2); color: var(--muted); border: 0; padding: 6px 10px; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; border-right: 1px solid var(--line); }
+.seg button:last-child { border-right: 0; }
+.seg button.on { background: var(--accent); color: var(--accent-ink); }
+.chk { display: inline-flex !important; grid-auto-flow: column; align-items: center; gap: 6px !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 13px !important; color: var(--fg) !important; font-weight: 500 !important; }
+.count { font-size: 12px; color: var(--muted); margin-left: auto; align-self: center; }
+.colpick { position: relative; }
+.colpick .menu { position: absolute; top: 100%; right: 0; z-index: 15; background: var(--panel); border: 1px solid var(--line); padding: 8px 10px; display: grid; gap: 4px; width: 220px; box-shadow: 0 10px 30px rgba(0,0,0,.3); }
+
+/* profile header */
+.phead { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
+.phead .who { min-width: 0; flex: 1; }
+.phead .meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.kv { display: grid; grid-template-columns: max-content 1fr; gap: 6px 14px; font-size: 13px; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; }
+.back { font-size: 12px; color: var(--muted); display: inline-block; margin-bottom: 10px; }
+
+/* percentile bars */
+.pct { display: grid; grid-template-columns: 110px 1fr 54px; gap: 8px; align-items: center; font-size: 12px; }
+.pct .track { height: 8px; background: var(--panel2); border-radius: 2px; position: relative; overflow: hidden; }
+.pct .fill { position: absolute; inset: 0 auto 0 0; background: var(--accent); }
+.pct .v { text-align: right; font-variant-numeric: tabular-nums; }
+
+/* match list */
+.mrow { display: grid; grid-template-columns: 82px 1fr auto 1fr; gap: 10px; align-items: center; padding: 8px 12px; border-bottom: 1px solid var(--line); font-size: 13px; }
+.mrow .t2 { text-align: right; justify-self: end; }
+.mrow .sc { font-family: var(--display); font-weight: 700; font-size: 17px; font-variant-numeric: tabular-nums; min-width: 48px; text-align: center; }
+.mrow .ev { grid-column: 1 / -1; font-size: 11px; color: var(--muted); margin-top: -4px; }
+.win { color: var(--pos); } .loss { color: var(--neg); }
+
+/* story cards */
+.story { border-left: 3px solid var(--accent); padding: 4px 0 4px 12px; }
+.story b { font-family: var(--display); font-size: 17px; display: block; }
+.story p { margin: 3px 0 0; color: var(--muted); max-width: 65ch; }
+.timeline { display: grid; gap: 0; }
+.tl { display: grid; grid-template-columns: 74px 1fr; gap: 12px; padding: 8px 0; border-bottom: 1px dashed var(--line); }
+.tl .y { font-family: var(--display); font-weight: 700; color: var(--accent); font-size: 16px; }
+
+svg text { fill: var(--muted); font-size: 10px; font-family: var(--body); }
+.chart-line { fill: none; stroke: var(--accent); stroke-width: 2; }
+.chart-area { fill: var(--accent-soft); }
+.chart-grid { stroke: var(--line); stroke-width: 1; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: var(--muted); }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
+.empty { padding: 24px; text-align: center; color: var(--muted); }
+.note { font-size: 12px; color: var(--muted); max-width: 80ch; }
+.matrix td { text-align: center; font-size: 12px; }
+.matrix td:first-child { text-align: left; }
+.stage { display: inline-block; min-width: 34px; padding: 2px 5px; border-radius: 2px; font-weight: 600; font-size: 11px; }
+footer { border-top: 1px solid var(--line); padding-block: 18px; color: var(--muted); font-size: 12px; }
+@media (max-width: 640px) {
+  h1 { font-size: 27px; }
+  .brand small { display: none; }
+  nav.tabs { order: 3; flex-basis: 100%; }
+  .search { order: 4; flex-basis: 100%; }
+  .search input { width: 100%; }
+  .search .res { width: 100%; }
+  .themebtn#themebtn { margin-left: auto; }
+  .mrow { grid-template-columns: 1fr auto 1fr; }
+  .mrow .dt { grid-column: 1 / -1; font-size: 11px; color: var(--muted); }
+  .pct { grid-template-columns: 90px 1fr 48px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="#overview"><span class="mark"></span>Indian Valorant Index <small id="asof"></small></a>
+    <nav class="tabs" id="tabs">
+      <a href="#overview">Overview</a><a href="#teams">Team rankings</a><a href="#players">Players</a><a href="#circuit">Circuit tracker</a><a href="#events">Tournaments</a><a href="#meta">Meta</a><a href="#records">Records</a><a href="#about">Method</a>
+    </nav>
+    <div class="search"><input id="q" type="text" placeholder="Search team or player" autocomplete="off" aria-label="Search teams and players"><div class="res" id="qres" hidden></div></div>
+    <button class="themebtn" id="themebtn" type="button" aria-label="Switch colour theme">Theme</button>
+  </div>
+</header>
+<main class="wrap" id="view"><div class="empty">Loading data…</div></main>
+<footer><div class="wrap" id="foot"></div></footer>
+
+<script src="data.js" charset="utf-8"></script>
+<script>
+"use strict";
+const D = window.IVI_DATA;
+const $ = (s, el = document) => el.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const fmt = (v, d = 2) => v == null || isNaN(v) ? "–" : (+v).toFixed(d);
+const pct = (v, d = 0) => v == null || isNaN(v) ? "–" : (v * 100).toFixed(d) + "%";
+const pctRaw = (v, d = 0) => v == null || isNaN(v) ? "–" : (+v).toFixed(d) + "%";
+const sgn = v => (v > 0 ? "+" : "") + v;
+const img = u => u ? (u.startsWith("//") ? "https:" + u : (u.startsWith("/") ? "https://www.vlr.gg" + u : u)) : "";
+const NOW = new Date(D.generated + "T00:00:00");
+const daysAgo = d => Math.round((NOW - new Date(d + "T00:00:00")) / 864e5);
+const store = { get(k, d) { try { const v = localStorage.getItem("ivi_" + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem("ivi_" + k, JSON.stringify(v)); } catch (e) {} } };
+
+const TEAM = new Map(D.teams.map(t => [t.id, t]));
+const PLAYER = new Map(D.players.map(p => [p.id, p]));
+const EVENT = new Map(D.events.map(e => [e.id, e]));
+const MATCH = new Map(D.matches.map(m => [m.id, m]));
+const tname = id => TEAM.get(id)?.name || D.names[id] || "Team " + id;
+const tlogo = id => img(TEAM.get(id)?.logo || D.tlogos[id] || "");
+const TIER_ORDER = ["international", "vct_pacific", "ascension", "challengers", "national", "gc", "third_party"];
+const TIER_LABEL = { international: "International", vct_pacific: "VCT Pacific", ascension: "Ascension / LCQ", challengers: "Challengers SA", national: "National team", gc: "Game Changers", third_party: "Cups & leagues" };
+const ROLE_COLORS = { Duelist: "#e8615a", Initiator: "#3fbf9f", Controller: "#7aa7ff", Sentinel: "#f0a63a", Flex: "#a58bd8" };
+const AG = a => a ? a.charAt(0).toUpperCase() + a.slice(1).replace("kayo", "KAY/O") : "–";
+const agName = a => a === "kayo" ? "KAY/O" : AG(a);
+
+function teamLink(id, withLogo = true) {
+  const t = TEAM.get(id), nm = esc(tname(id)), lg = tlogo(id);
+  const inner = (withLogo && lg ? `<img class="logo" src="${lg}" alt="" loading="lazy">` : "") + `<span>${nm}</span>`;
+  return t ? `<a class="tlink" href="#team-${id}">${inner}</a>` : `<span class="tlink">${inner}</span>`;
+}
+function playerLink(id) { const p = PLAYER.get(id); return p ? `<a href="#player-${id}"><b>${esc(p.name)}</b></a>` : "–"; }
+function formBar(f) { return `<span class="form" aria-label="Recent form ${f.join("")}">${f.slice(-8).map(x => `<i class="${x}"></i>`).join("")}</span>`; }
+function tierTag(t) { return `<span class="tier ${t}">${TIER_LABEL[t] || t}</span>`; }
+
+/* ---------- derived ---------- */
+const INDIAN = D.teams.filter(t => t.indian);
+function teamPool(opts) {
+  const win = opts.win || "now";
+  const since = win === "now" ? isoAgo(365) : win === "2026" ? "2026-01-01" : win === "2y" ? isoAgo(730) : "0000";
+  return D.teams.filter(t => (opts.scope === "sa" ? true : t.indian) && !!t.gc === (opts.circ === "gc") && t.last && t.last >= since && (win !== "now" || !t.inactive)
+    && (win === "2026" ? (t.y["2026"] ? t.y["2026"].series[0] + t.y["2026"].series[1] : 0) : t.series[0] + t.series[1]) >= (opts.minSeries ?? 1));
+}
+function isoAgo(days) { return new Date(NOW - days * 864e5).toISOString().slice(0, 10); }
+function rankTeams(list) { return list.slice().sort((a, b) => b.rating - a.rating); }
+const RANKED = rankTeams(teamPool({ scope: "in", win: "now", circ: "open" }));
+const RANKED_GC = rankTeams(teamPool({ scope: "in", win: "now", circ: "gc" }));
+RANKED.forEach((t, i) => t.rank = i + 1);
+function ratingAgo(t, days) {
+  const cut = new Date(NOW - days * 864e5).toISOString().slice(0, 7);
+  let r = null; for (const [m, v] of t.hist) { if (m <= cut) r = v; }
+  return r;
+}
+function seasonDelta(t) {
+  let before = null, last = null;
+  for (const [m, v] of t.hist) { if (m < "2026-01") before = v; last = v; }
+  return before == null || !t.last || t.last < "2026" ? null : t.elo - before;
+}
+function bestMap(t) {
+  let best = null;
+  for (const [m, s] of Object.entries(t.mapstats)) { if (s.p >= 4 && m !== "?" && (!best || s.w / s.p > best[1])) best = [m, s.w / s.p, s.p]; }
+  return best;
+}
+
+/* ---------- charts ---------- */
+function lineChart(points, { w = 640, h = 180, yfmt = v => Math.round(v), label = "" } = {}) {
+  if (!points.length) return `<div class="empty">No history yet</div>`;
+  const pad = { l: 38, r: 10, t: 10, b: 22 };
+  const ys = points.map(p => p[1]); let mn = Math.min(...ys), mx = Math.max(...ys);
+  if (mx - mn < 40) { mn -= 20; mx += 20; }
+  const x = i => pad.l + (points.length === 1 ? (w - pad.l - pad.r) / 2 : i * (w - pad.l - pad.r) / (points.length - 1));
+  const y = v => pad.t + (mx - v) * (h - pad.t - pad.b) / (mx - mn);
+  const ticks = 4, grid = [];
+  for (let i = 0; i <= ticks; i++) { const v = mn + (mx - mn) * i / ticks; grid.push(`<line class="chart-grid" x1="${pad.l}" x2="${w - pad.r}" y1="${y(v)}" y2="${y(v)}"/><text x="${pad.l - 6}" y="${y(v) + 3}" text-anchor="end">${yfmt(v)}</text>`); }
+  const d = points.map((p, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${y(p[1]).toFixed(1)}`).join("");
+  const area = d + `L${x(points.length - 1)},${h - pad.b}L${x(0)},${h - pad.b}Z`;
+  const step = Math.max(1, Math.ceil(points.length / 8));
+  const xl = points.map((p, i) => i % step === 0 || i === points.length - 1 ? `<text x="${x(i)}" y="${h - 6}" text-anchor="middle">${esc(p[0])}</text>` : "").join("");
+  const last = points[points.length - 1];
+  return `<svg viewBox="0 0 ${w} ${h}" width="100%" role="img" aria-label="${esc(label)}">${grid.join("")}<path class="chart-area" d="${area}"/><path class="chart-line" d="${d}"/><circle cx="${x(points.length - 1)}" cy="${y(last[1])}" r="3.5" fill="var(--accent)"/>${xl}</svg>`;
+}
+function spark(points, w = 90, h = 24) {
+  if (!points || points.length < 2) return "";
+  const ys = points.map(p => p[1]); const mn = Math.min(...ys), mx = Math.max(...ys) || 1, rg = (mx - mn) || 1;
+  const d = points.map((p, i) => `${i ? "L" : "M"}${(i * w / (points.length - 1)).toFixed(1)},${(h - 2 - (p[1] - mn) * (h - 4) / rg).toFixed(1)}`).join("");
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true"><path d="${d}" fill="none" stroke="var(--accent)" stroke-width="1.5"/></svg>`;
+}
+function multiLine(series, months, { w = 760, h = 240, yfmt = v => (v * 100).toFixed(0) + "%" } = {}) {
+  const pad = { l: 40, r: 10, t: 10, b: 22 };
+  const all = series.flatMap(s => s.v); const mx = Math.max(...all, 0.01);
+  const x = i => pad.l + i * (w - pad.l - pad.r) / Math.max(1, months.length - 1);
+  const y = v => pad.t + (mx - v) * (h - pad.t - pad.b) / mx;
+  let g = ""; for (let i = 0; i <= 4; i++) { const v = mx * i / 4; g += `<line class="chart-grid" x1="${pad.l}" x2="${w - pad.r}" y1="${y(v)}" y2="${y(v)}"/><text x="${pad.l - 6}" y="${y(v) + 3}" text-anchor="end">${yfmt(v)}</text>`; }
+  const step = Math.max(1, Math.ceil(months.length / 9));
+  const xl = months.map((m, i) => i % step === 0 ? `<text x="${x(i)}" y="${h - 6}" text-anchor="middle">${m}</text>` : "").join("");
+  const lines = series.map(s => `<path d="${s.v.map((v, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join("")}" fill="none" stroke="${s.c}" stroke-width="2"/>`).join("");
+  return `<svg viewBox="0 0 ${w} ${h}" width="100%" role="img" aria-label="Pick rate over time">${g}${lines}${xl}</svg>`;
+}
+const PALETTE = ["#f0a63a", "#3fbf9f", "#7aa7ff", "#e8615a", "#c86bd6", "#9fd45a", "#ff8a3d", "#5fd0e6", "#d9d36a", "#b5a3ff"];
+
+/* ---------- sortable table helper ---------- */
+function table(id, cols, rows, state, opts = {}) {
+  const key = state.sort, dir = state.dir;
+  const col = cols.find(c => c.k === key) || cols[0];
+  const sorted = rows.slice().sort((a, b) => {
+    const va = col.v(a), vb = col.v(b);
+    const na = va == null || (typeof va === "number" && isNaN(va)), nb = vb == null || (typeof vb === "number" && isNaN(vb));
+    if (na && nb) return 0; if (na) return 1; if (nb) return -1;
+    return (va > vb ? 1 : va < vb ? -1 : 0) * dir;
+  });
+  const lim = opts.limit ? sorted.slice(0, opts.limit) : sorted;
+  const head = cols.map(c => `<th class="${c.n ? "n" : ""} ${c.k === key ? "sorted" : ""}" data-k="${c.k}" title="${esc(c.t || c.h)}">${c.h}${c.k === key ? ` <span class="arr">${dir < 0 ? "▼" : "▲"}</span>` : ""}</th>`).join("");
+  const body = lim.map((r, i) => `<tr class="${i < 3 && opts.rankCol ? "top3" : ""}">${cols.map(c => `<td class="${c.n ? "n" : ""} ${c.cls || ""}">${c.f ? c.f(r, i) : esc(c.v(r))}</td>`).join("")}</tr>`).join("");
+  return `<div class="tw"><table id="${id}"><thead><tr>${head}</tr></thead><tbody>${body || `<tr><td colspan="${cols.length}" class="empty">Nothing matches these filters</td></tr>`}</tbody></table></div>`;
+}
+function bindSort(root, state, rerender, defDir = {}) {
+  root.querySelectorAll("th[data-k]").forEach(th => th.onclick = () => {
+    const k = th.dataset.k;
+    if (state.sort === k) state.dir *= -1; else { state.sort = k; state.dir = defDir[k] ?? -1; }
+    rerender();
+  });
+}
+
+/* ---------- views ---------- */
+const V = {};
+
+V.overview = () => {
+  const yr = "2026";
+  const top10 = RANKED.slice(0, 10);
+  const recent = D.matches.filter(m => INDIAN.some(t => t.id === m.t[0] || t.id === m.t[1])).slice(-14).reverse();
+  const curPlayers = D.players.filter(p => p.active && !p.gc && p.flag === "in" && p.cur && p.cur.maps >= 10 && p.cur.adj != null).sort((a, b) => b.cur.adj - a.cur.adj).slice(0, 10);
+  const ev26 = D.events.filter(e => e.start.startsWith(yr));
+  const indMatches26 = D.matches.filter(m => m.d.startsWith(yr) && (TEAM.get(m.t[0])?.indian || TEAM.get(m.t[1])?.indian));
+  const totalMaps = D.matches.reduce((s, m) => s + m.m.length, 0);
+  return `
+  <section>
+    <div class="eyebrow">India · Asia-Pacific · data to ${esc(D.generated)}</div>
+    <h1>The Indian Valorant scene, in one place</h1>
+    <p class="lede">Rankings, player stats, tournament results and circuit progress for Indian teams and players, built from ${D.matches.length.toLocaleString()} series and ${totalMaps.toLocaleString()} maps on VLR.gg plus player bios from Liquipedia. Team strength uses a map-level rating that accounts for who you beat; player ratings are adjusted for opponent strength.</p>
+  </section>
+  <div class="sec tiles">
+    <div class="tile"><b>${INDIAN.filter(t => t.active).length}</b><span>Active Indian teams</span></div>
+    <div class="tile"><b>${D.players.filter(p => p.active && p.flag === "in").length}</b><span>Active Indian players</span></div>
+    <div class="tile"><b>${indMatches26.length}</b><span>Series in ${yr}</span></div>
+    <div class="tile"><b>${ev26.length}</b><span>Events in ${yr}</span></div>
+    <div class="tile"><b>${D.events.length}</b><span>Events tracked</span></div>
+    <div class="tile"><b>${D.players.filter(p => p.flag === "in").length.toLocaleString()}</b><span>Indian players in data</span></div>
+  </div>
+  <div class="sec grid g2">
+    <div class="panel flush">
+      <div style="padding:14px 16px 6px" class="sec-head"><h3>Top 10 teams</h3><a class="small muted" href="#teams">Full top 100 →</a></div>
+      <div class="tw"><table><thead><tr><th>#</th><th>Team</th><th class="n">Rating</th><th>Trend</th><th>Form</th></tr></thead><tbody>
+      ${top10.map((t, i) => `<tr class="${i < 3 ? "top3" : ""}"><td class="rank">${i + 1}</td><td>${teamLink(t.id)}</td><td class="n"><b>${t.rating}</b></td><td>${spark(t.hist.slice(-12))}</td><td>${formBar(t.form)}</td></tr>`).join("")}
+      </tbody></table></div>
+    </div>
+    <div class="panel flush">
+      <div style="padding:14px 16px 6px" class="sec-head"><h3>Top 10 players · last 12 months</h3><a class="small muted" href="#players">All players →</a></div>
+      <div class="tw"><table><thead><tr><th>#</th><th>Player</th><th>Team</th><th>Role</th><th class="n" title="Rating adjusted for opponent strength">Adj. rating</th><th class="n">ACS</th></tr></thead><tbody>
+      ${curPlayers.map((p, i) => `<tr class="${i < 3 ? "top3" : ""}"><td class="rank">${i + 1}</td><td>${playerLink(p.id)}</td><td>${teamLink(p.team)}</td><td><span class="small" style="color:${ROLE_COLORS[p.role]}">${p.role}</span></td><td class="n"><b>${fmt(p.cur.adj)}</b></td><td class="n">${fmt(p.cur.acs, 0)}</td></tr>`).join("")}
+      </tbody></table></div>
+    </div>
+  </div>
+  <div class="sec grid g2">
+    <div class="panel"><h3>2026 storylines</h3><div class="grid" style="gap:14px">${STORIES.map(s => `<div class="story"><b>${esc(s[0])}</b><p>${s[1]}</p></div>`).join("")}</div></div>
+    <div class="panel flush"><div style="padding:14px 16px 6px"><h3>Latest results</h3></div>${recent.map(matchRow).join("")}</div>
+  </div>
+  <div class="sec grid g2">
+    <div class="panel"><h3>Coming up</h3><div class="grid" style="gap:12px">${UPCOMING.map(s => `<div class="story"><b>${esc(s[0])}</b><p>${s[1]}</p></div>`).join("")}</div></div>
+    <div class="panel"><h3>How the scene got here</h3><div class="timeline">${HISTORY.map(h => `<div class="tl"><div class="y">${h[0]}</div><div>${h[1]}</div></div>`).join("")}</div></div>
+  </div>
+  ${rollOfHonour()}`;
+};
+
+function rollOfHonour() {
+  const evs = D.events.filter(e => (e.tier === "challengers" || e.tier === "ascension" || e.tier === "gc") && e.places.some(p => /^1/.test(p.place)) && /south asia|ascension|last chance|india/i.test(e.title)).sort((a, b) => b.start.localeCompare(a.start));
+  const row = e => { const w = e.places.find(p => /^1/.test(p.place)), r = e.places.find(p => /^2/.test(p.place));
+    const who = p => p ? (p.team_id ? teamLink(p.team_id) : esc(p.team)) : "–";
+    return `<tr><td class="small">${esc(e.start.slice(0, 7))}</td><td><a href="#event-${e.id}">${esc(e.title)}</a></td><td>${tierTag(e.tier)}</td><td>${who(w)}</td><td>${who(r)}</td></tr>`; };
+  return `<div class="sec panel flush"><div style="padding:14px 16px 6px"><h3>Roll of honour: Riot's South Asia circuit</h3><p class="note">Winners and runners-up of Challengers South Asia splits, Ascension and Last Chance qualifiers, and Game Changers South Asia, from VLR placement tables.</p></div>
+  <div class="tw"><table><thead><tr><th>Date</th><th>Event</th><th>Circuit</th><th>Winner</th><th>Runner-up</th></tr></thead><tbody>${evs.map(row).join("") || `<tr><td colspan="5" class="empty">No placements recorded</td></tr>`}</tbody></table></div></div>`;
+}
+
+function matchRow(m) {
+  const [a, b] = m.t; const [sa, sb] = m.sc; const ev = EVENT.get(m.e);
+  return `<div class="mrow"><span class="dt small muted">${m.d}</span><span>${teamLink(a)}</span><span class="sc"><span class="${sa > sb ? "win" : "loss"}">${sa}</span>–<span class="${sb > sa ? "win" : "loss"}">${sb}</span></span><span class="t2">${teamLink(b)}</span>
+  <span class="ev">${ev ? `<a href="#event-${ev.id}">${esc(ev.title)}</a>` : ""} · ${esc(m.s)}${m.m.length ? " · " + m.m.map(x => `${esc(x[0] || "?")} ${x[1]}-${x[2]}`).join(", ") : ""} · <a href="https://www.vlr.gg/${m.id}" target="_blank" rel="noopener">VLR ↗</a></span></div>`;
+}
+
+/* ---- Teams ranking ---- */
+const tState = Object.assign({ sort: "rating", dir: -1, scope: "in", circ: "open", win: "now", minSeries: 1, q: "", limit: 100 }, store.get("tstate2", {}));
+const WIN_LABEL = { now: "Active now", "2026": "2026 season", "2y": "Last 2 years", all: "All-time" };
+V.teams = () => {
+  const pool = teamPool(tState).filter(t => !tState.q || t.name.toLowerCase().includes(tState.q.toLowerCase()) || (t.tag || "").toLowerCase() === tState.q.toLowerCase());
+  const ranked = rankTeams(teamPool(tState)); const pos = new Map(ranked.map((t, i) => [t.id, i + 1]));
+  const cols = [
+    { k: "rank", h: "#", v: t => pos.get(t.id), n: true, cls: "rank", f: t => pos.get(t.id) },
+    { k: "name", h: "Team", v: t => t.name.toLowerCase(), f: t => `${teamLink(t.id)} ${t.indian ? "" : `<span class="flag">${esc((t.flag || "").toUpperCase())}</span>`}` },
+    { k: "rating", h: "Rating", t: "Map-level Elo, discounted for teams with few maps; 1500 = new Indian team", v: t => t.rating, n: true, f: t => `<b>${t.rating}</b>${t.nmaps < 15 ? ` <span class="pill" title="Fewer than 15 maps: rating still settling">prov.</span>` : ""}` },
+    { k: "elo", h: "Elo", t: "Raw Elo before the small-sample discount", v: t => t.elo, n: true },
+    { k: "d26", h: "2026 Δ", t: "Elo change since the end of 2025", v: t => seasonDelta(t), n: true, f: t => { const d = seasonDelta(t); if (d == null) return "–"; return `<span class="${d > 0 ? "win" : d < 0 ? "loss" : ""}">${sgn(d)}</span>`; } },
+    { k: "peak", h: "Peak", v: t => t.peak, n: true },
+    { k: "trend", h: "Trend", v: t => 0, f: t => spark(t.hist.slice(-12)) },
+    { k: "series", h: "Series", t: "Series won–lost (all time)", v: t => t.series[0] / Math.max(1, t.series[0] + t.series[1]), n: true, f: t => `${t.series[0]}–${t.series[1]}` },
+    { k: "mapw", h: "Map W%", v: t => t.maps[0] / Math.max(1, t.maps[0] + t.maps[1]), n: true, f: t => pct(t.maps[0] / Math.max(1, t.maps[0] + t.maps[1])) },
+    { k: "rd", h: "RD/map", t: "Average round difference per map", v: t => (t.rounds[0] - t.rounds[1]) / Math.max(1, t.maps[0] + t.maps[1]), n: true, f: t => { const v = (t.rounds[0] - t.rounds[1]) / Math.max(1, t.maps[0] + t.maps[1]); return `<span class="${v > 0 ? "win" : "loss"}">${v > 0 ? "+" : ""}${v.toFixed(2)}</span>`; } },
+    { k: "y26", h: "2026", t: "2026 series record", v: t => t.y["2026"] ? t.y["2026"].series[0] - t.y["2026"].series[1] : null, n: true, f: t => t.y["2026"] ? `${t.y["2026"].series[0]}–${t.y["2026"].series[1]}` : "–" },
+    { k: "form", h: "Form", v: t => t.form.slice(-5).filter(x => x === "W").length, f: t => formBar(t.form) },
+    { k: "best", h: "Best map", v: t => bestMap(t)?.[1] ?? null, f: t => { const b = bestMap(t); return b ? `${esc(b[0])} <span class="muted small">${pct(b[1])}</span>` : "–"; } },
+    { k: "titles", h: "Titles", t: "1st-place finishes on VLR", v: t => t.events.filter(e => /^1/.test(e.place)).length, n: true },
+    { k: "last", h: "Last match", v: t => t.last, f: t => t.last ? `<span class="small">${daysAgo(t.last)}d ago</span>` : "–" },
+  ];
+  const html = `
+  <div class="sec-head"><div><div class="eyebrow">Team rankings${tState.circ === "gc" ? " · Game Changers" : ""}</div><h1>${Math.min(tState.limit, pool.length) === pool.length ? "" : "Top " + tState.limit + " "}${tState.scope === "sa" ? "South Asian" : "Indian"} ${tState.circ === "gc" ? "Game Changers " : ""}teams · ${WIN_LABEL[tState.win]}</h1>
+  <p class="lede">Ranked by a map-level Elo that rewards margin and opponent strength, carried across every recorded series since 2020 (including matches against SEA, Pacific and international teams). Idle teams drift back toward the average.</p></div></div>
+  <div class="sec filters" id="tf">
+    <label>Circuit<span class="seg" id="tcirc"><button type="button" data-v="open" class="${tState.circ === "open" ? "on" : ""}">Open</button><button type="button" data-v="gc" class="${tState.circ === "gc" ? "on" : ""}">Game Changers</button></span></label>
+    <label>Scope<span class="seg" id="tscope"><button type="button" data-v="in" class="${tState.scope === "in" ? "on" : ""}">Indian teams</button><button type="button" data-v="sa" class="${tState.scope === "sa" ? "on" : ""}">All South Asia</button></span></label>
+    <label>Show<span class="seg" id="tlim">${[25, 50, 100, 250].map(n => `<button type="button" data-v="${n}" class="${tState.limit === n ? "on" : ""}">${n}</button>`).join("")}</span></label>
+    <label for="tmin">Min series<input id="tmin" type="number" min="0" value="${tState.minSeries}"></label>
+    <label for="tq">Name<input id="tq" type="text" value="${esc(tState.q)}" placeholder="Filter"></label>
+    <label>Window<span class="seg" id="twin">${Object.entries(WIN_LABEL).map(([k, v]) => `<button type="button" data-v="${k}" class="${tState.win === k ? "on" : ""}">${v}</button>`).join("")}</span></label>
+    <span class="count">${pool.length} teams</span>
+  </div>
+  <div class="sec panel flush" id="tt">${table("teamsTbl", cols, pool, tState, { limit: tState.limit, rankCol: true })}</div>
+  <p class="note"><b>Active now</b> = played in the last 12 months and not marked inactive or disbanded on VLR (S8UL and Global Esports, for example, are inactive). <b>2026 season</b> includes every team that played in 2026, whatever its status now. Rating is the map Elo minus a small-sample discount of 150 × e<sup>−maps/10</sup>, so teams with only a handful of maps (marked prov.) don't jump the table. 1500 is where a new Indian team starts; foreign teams act as fixed reference points (1600–1700, 1850 for VCT Pacific teams, 2050 for teams met at Masters or Champions). The rating shown is the latest one, so for inactive teams it is where they finished. Click a column to sort.</p>`;
+  return { html, bind(root) {
+    const re = () => { store.set("tstate2", tState); render(); };
+    bindSort(root, tState, re, { name: 1, rank: 1 });
+    root.querySelectorAll("#tscope button").forEach(b => b.onclick = () => { tState.scope = b.dataset.v; re(); });
+    root.querySelectorAll("#tcirc button").forEach(b => b.onclick = () => { tState.circ = b.dataset.v; re(); });
+    root.querySelectorAll("#tlim button").forEach(b => b.onclick = () => { tState.limit = +b.dataset.v; re(); });
+    $("#tmin", root).onchange = e => { tState.minSeries = +e.target.value || 0; re(); };
+    $("#tq", root).oninput = debounce(e => { tState.q = e.target.value; re(); }, 250);
+    root.querySelectorAll("#twin button").forEach(b => b.onclick = () => { tState.win = b.dataset.v; re(); });
+  } };
+};
+
+/* ---- Players ---- */
+const PCOLS_ALL = [
+  ["rating", "Rating", "VLR Rating 2.0, round-weighted", 2],
+  ["adj", "Adj. rating", "Rating 2.0 adjusted for the strength of the opponents faced", 2],
+  ["acs", "ACS", "Average combat score", 0],
+  ["kd", "K/D", "Kills per death", 2],
+  ["kast", "KAST", "% of rounds with a kill, assist, survival or trade", 0, "%"],
+  ["adr", "ADR", "Average damage per round", 0],
+  ["kpr", "KPR", "Kills per round", 2],
+  ["apr", "APR", "Assists per round", 2],
+  ["fkpr", "FKPR", "First kills per round", 3],
+  ["fdpr", "FDPR", "First deaths per round", 3],
+  ["fkpct", "FK%", "Share of opening duels won", 0, "x%"],
+  ["hs", "HS%", "Headshot %", 0, "%"],
+  ["p90", "Peak", "90th-percentile map rating: how high they hit on a good day", 2],
+  ["sd", "Consistency", "Standard deviation of map rating (lower = steadier)", 2],
+  ["rt_atk", "Atk rtg", "Rating on attack halves", 2],
+  ["rt_def", "Def rtg", "Rating on defence halves", 2],
+  ["maps", "Maps", "Maps played in the period", 0],
+  ["wins", "Map W%", "Maps won", 0, "w%"],
+];
+const pState = Object.assign({ sort: "adj", dir: -1, period: "cur", nat: "in", circ: "open", role: "all", agent: "all", ageMin: "", ageMax: "", ageUnknown: true, minMaps: 8, active: true, team: "", q: "", limit: 100,
+  cols: ["rating", "adj", "acs", "kd", "kast", "adr", "kpr", "apr", "fkpr", "fdpr", "fkpct", "hs", "p90", "maps"] }, store.get("pstate2", {}));
+function pstat(p, period) { return period === "cur" ? p.cur : period === "career" ? p.career : (p.seasons[period] || null); }
+V.players = () => {
+  const years = [...new Set(D.players.flatMap(p => Object.keys(p.seasons)))].sort().reverse();
+  const agents = Object.keys(D.agent_role).sort();
+  const pool = D.players.filter(p => {
+    const s = pstat(p, pState.period); if (!s || s.maps < pState.minMaps) return false;
+    if (!!p.gc !== (pState.circ === "gc")) return false;
+    if (pState.nat === "in" && p.flag !== "in") return false;
+    if (pState.nat === "imp" && p.flag === "in") return false;
+    if (pState.nat === "abroad" && (p.flag !== "in" || TEAM.get(p.team)?.indian)) return false;
+    if (pState.active && !p.active) return false;
+    if (pState.role === "igl" ? !p.igl : (pState.role !== "all" && p.role !== pState.role)) return false;
+    if (pState.agent !== "all" && !p.agents.some(a => a[0] === pState.agent)) return false;
+    if (pState.ageMin !== "" || pState.ageMax !== "") {
+      if (p.age == null) { if (!pState.ageUnknown) return false; }
+      else { if (pState.ageMin !== "" && p.age < +pState.ageMin) return false; if (pState.ageMax !== "" && p.age > +pState.ageMax) return false; }
+    }
+    if (pState.team && !tname(p.team).toLowerCase().includes(pState.team.toLowerCase())) return false;
+    if (pState.q && !(p.name + " " + (p.real || "")).toLowerCase().includes(pState.q.toLowerCase())) return false;
+    return true;
+  });
+  const cols = [
+    { k: "rank", h: "#", v: p => 0, cls: "rank", f: (p, i) => i + 1 },
+    { k: "name", h: "Player", v: p => p.name.toLowerCase(), f: p => `${playerLink(p.id)}${p.flag !== "in" ? ` <span class="flag">${esc(p.flag.toUpperCase())}</span>` : ""}${p.igl ? ` <span class="pill acc" title="In-game leader">IGL</span>` : ""}<div class="small muted">${esc(p.real || "")}</div>` },
+    { k: "team", h: "Team", v: p => tname(p.team).toLowerCase(), f: p => teamLink(p.team) },
+    { k: "role", h: "Role", v: p => p.role, f: p => `<span style="color:${ROLE_COLORS[p.role]}">${p.role}</span>` },
+    { k: "age", h: "Age", v: p => p.age, n: true, f: p => p.age ?? "–" },
+    { k: "agents", h: "Agents", v: p => p.agents[0]?.[0], f: p => `<span class="small">${p.agents.slice(0, 3).map(a => agName(a[0])).join(", ")}</span>` },
+    ...PCOLS_ALL.filter(c => pState.cols.includes(c[0])).map(c => ({ k: c[0], h: c[1], t: c[2], n: true,
+      v: p => { const s = pstat(p, pState.period); if (!s) return null; if (c[0] === "wins") return s.wins / s.maps; return s[c[0]]; },
+      f: p => { const s = pstat(p, pState.period); if (!s) return "–"; const v = c[0] === "wins" ? s.wins / s.maps : s[c[0]];
+        if (c[4] === "%") return pctRaw(v); if (c[4] === "x%" || c[4] === "w%") return pct(v); const txt = fmt(v, c[3]); return c[0] === "adj" ? `<b>${txt}</b>` : txt; } })),
+  ];
+  const html = `
+  <div class="sec-head"><div><div class="eyebrow">Players</div><h1>Top ${pState.limit} players</h1>
+  <p class="lede">Every map recorded on VLR for Indian players and for anyone playing on an Indian team. Filter by age, role, agent, team and period; sort by any stat. <b>Adj. rating</b> corrects Rating 2.0 for how strong the opponents were, so a 1.10 against Pacific teams is worth more than a 1.10 in an open qualifier.</p></div></div>
+  <div class="sec filters">
+    <label for="pper">Period<select id="pper"><option value="cur">Last 12 months</option>${years.map(y => `<option value="${y}">${y} season</option>`).join("")}<option value="career">Career</option></select></label>
+    <label>Circuit<span class="seg" id="pcirc"><button type="button" data-v="open" class="${pState.circ === "open" ? "on" : ""}">Open</button><button type="button" data-v="gc" class="${pState.circ === "gc" ? "on" : ""}">Game Changers</button></span></label>
+    <label>Players<span class="seg" id="pnat"><button type="button" data-v="in" class="${pState.nat === "in" ? "on" : ""}">Indian</button><button type="button" data-v="imp" class="${pState.nat === "imp" ? "on" : ""}">Imports on Indian teams</button><button type="button" data-v="abroad" class="${pState.nat === "abroad" ? "on" : ""}">Indians abroad</button><button type="button" data-v="all" class="${pState.nat === "all" ? "on" : ""}">All</button></span></label>
+    <label for="prole">Role<select id="prole">${["all", "Duelist", "Initiator", "Controller", "Sentinel", "Flex", "igl"].map(r => `<option value="${r}" ${pState.role === r ? "selected" : ""}>${r === "all" ? "Any role" : r === "igl" ? "IGLs (Liquipedia)" : r}</option>`).join("")}</select></label>
+    <label for="pag">Agent<select id="pag"><option value="all">Any agent</option>${agents.map(a => `<option value="${a}" ${pState.agent === a ? "selected" : ""}>${agName(a)}</option>`).join("")}</select></label>
+    <label for="pamin">Age from<input id="pamin" type="number" min="12" max="45" value="${pState.ageMin}" placeholder="any"></label>
+    <label for="pamax">to<input id="pamax" type="number" min="12" max="45" value="${pState.ageMax}" placeholder="any"></label>
+    <label class="chk"><input id="paunk" type="checkbox" ${pState.ageUnknown ? "checked" : ""}> Keep unknown ages</label>
+    <label for="pmin">Min maps<input id="pmin" type="number" min="0" value="${pState.minMaps}"></label>
+    <label for="pteam">Team<input id="pteam" type="text" value="${esc(pState.team)}" placeholder="any"></label>
+    <label for="pq">Name<input id="pq" type="text" value="${esc(pState.q)}" placeholder="search"></label>
+    <label class="chk"><input id="pact" type="checkbox" ${pState.active ? "checked" : ""}> Active only</label>
+    <label>Show<span class="seg" id="plim">${[25, 50, 100, 500].map(n => `<button type="button" data-v="${n}" class="${pState.limit === n ? "on" : ""}">${n}</button>`).join("")}</span></label>
+    <div class="colpick"><button type="button" class="themebtn" id="pcolbtn">Columns</button><div class="menu" id="pcolmenu" hidden>${PCOLS_ALL.map(c => `<label class="chk"><input type="checkbox" data-c="${c[0]}" ${pState.cols.includes(c[0]) ? "checked" : ""}> ${c[1]} <span class="muted small">${c[2]}</span></label>`).join("")}</div></div>
+    <span class="count">${pool.length} players</span>
+  </div>
+  <div class="sec panel flush">${table("plTbl", cols, pool, pState, { limit: pState.limit, rankCol: true })}</div>
+  <p class="note">Ages come from Liquipedia birth dates and are missing for many lower-tier players; untick "Keep unknown ages" to see only players with a known age. Roles come from the agents played over the last 12 months (55%+ on one class, otherwise Flex). Pre-2022 VLR pages carry no Rating or KAST, so career figures for long-serving players lean on recent seasons.</p>`;
+  return { html, bind(root) {
+    const re = () => { store.set("pstate2", pState); render(); };
+    bindSort(root, pState, re, { name: 1, team: 1, role: 1, sd: 1, fdpr: 1, age: 1 });
+    $("#pper", root).value = pState.period;
+    $("#pper", root).onchange = e => { pState.period = e.target.value; re(); };
+    root.querySelectorAll("#pnat button").forEach(b => b.onclick = () => { pState.nat = b.dataset.v; re(); });
+    root.querySelectorAll("#pcirc button").forEach(b => b.onclick = () => { pState.circ = b.dataset.v; re(); });
+    root.querySelectorAll("#plim button").forEach(b => b.onclick = () => { pState.limit = +b.dataset.v; re(); });
+    $("#prole", root).onchange = e => { pState.role = e.target.value; re(); };
+    $("#pag", root).onchange = e => { pState.agent = e.target.value; re(); };
+    $("#pamin", root).onchange = e => { pState.ageMin = e.target.value; re(); };
+    $("#pamax", root).onchange = e => { pState.ageMax = e.target.value; re(); };
+    $("#paunk", root).onchange = e => { pState.ageUnknown = e.target.checked; re(); };
+    $("#pmin", root).onchange = e => { pState.minMaps = +e.target.value || 0; re(); };
+    $("#pteam", root).oninput = debounce(e => { pState.team = e.target.value; re(); }, 300);
+    $("#pq", root).oninput = debounce(e => { pState.q = e.target.value; re(); }, 300);
+    $("#pact", root).onchange = e => { pState.active = e.target.checked; re(); };
+    $("#pcolbtn", root).onclick = () => { $("#pcolmenu", root).hidden = !$("#pcolmenu", root).hidden; };
+    root.querySelectorAll("#pcolmenu input").forEach(c => c.onchange = () => { const k = c.dataset.c; pState.cols = c.checked ? [...pState.cols, k] : pState.cols.filter(x => x !== k); store.set("pstate2", pState); render(); setTimeout(() => { const m = $("#pcolmenu"); if (m) m.hidden = false; }); });
+  } };
+};
+
+/* ---- Circuit tracker ---- */
+const STAGE_RANK = [
+  [/grand final|^final|final stage/i, 7, "Final"], [/playoff|upper|lower|semifinal|knockout/i, 6, "Playoffs"],
+  [/group|league|regular|round robin|swiss|main event|chapter/i, 5, "Main"], [/qualifier playoffs|qualifier #?\d? ?playoff/i, 4, "Q-Playoffs"],
+  [/last chance/i, 3, "OQ-LC"], [/open qualifier|qualifier/i, 2, "OQ"], [/promotion|relegation/i, 4, "Promo/Rel"],
+];
+function stageOf(stages) {
+  let best = [0, "–"];
+  for (const s of stages) for (const [re, r, lab] of STAGE_RANK) if (re.test(s)) { if (r > best[0]) best = [r, lab]; break; }
+  return best;
+}
+const cState = Object.assign({ tier: "challengers", years: "2025-2026" }, store.get("cstate", {}));
+V.circuit = () => {
+  const tiers = ["challengers", "ascension", "vct_pacific", "international", "gc", "national", "third_party"];
+  const evs = D.events.filter(e => e.tier === cState.tier && (cState.years === "all" || cState.years.split("-").some(y => e.start.startsWith(y)) || (cState.years === "2025-2026" && e.start >= "2025"))).sort((a, b) => a.start.localeCompare(b.start));
+  const evIds = new Set(evs.map(e => e.id));
+  const rows = new Map();
+  for (const t of D.teams) {
+    if (!t.indian) continue;
+    for (const e of t.events) if (evIds.has(e.e)) { if (!rows.has(t.id)) rows.set(t.id, {}); rows.get(t.id)[e.e] = e; }
+  }
+  const scoreTeam = id => { const r = rows.get(id); let s = 0; for (const e of Object.values(r)) { const st = stageOf(e.st); s += st[0] * 10 + (e.place && /^1/.test(e.place) ? 30 : e.place && /^2/.test(e.place) ? 20 : 0) + e.w; } return s; };
+  const teamIds = [...rows.keys()].sort((a, b) => scoreTeam(b) - scoreTeam(a)).slice(0, 150);
+  const cell = e => {
+    if (!e) return `<td class="muted">·</td>`;
+    const st = stageOf(e.st); const place = e.place ? e.place.replace(/(st|nd|rd|th)/g, "") : "";
+    const strong = place ? (/^1$/.test(place) ? "var(--gold)" : /^2$/.test(place) ? "var(--silver)" : /^3/.test(place) ? "var(--bronze)" : "var(--accent)") : null;
+    const bg = strong ? `background:color-mix(in srgb, ${strong} 30%, transparent)` : `background:color-mix(in srgb, var(--accent) ${st[0] * 5}%, transparent)`;
+    return `<td title="${esc(e.st.join(" → "))} · series ${e.w}-${e.l} · maps ${e.mw}-${e.ml}"><span class="stage" style="${bg}">${place ? esc(place) : st[1]}</span><div class="small muted">${e.w}-${e.l}</div></td>`;
+  };
+  const html = `
+  <div class="sec-head"><div><div class="eyebrow">Circuit tracker</div><h1>How Indian teams fare, event by event</h1>
+  <p class="lede">Each cell is a team's deepest stage in that event (OQ = open qualifier, OQ-LC = last-chance open qualifier, Q-Playoffs, Main, Playoffs, Final) or its final placing where VLR records one, with series W–L below. Hover a cell for the full path.</p></div></div>
+  <div class="sec filters">
+    <label>Circuit<span class="seg" id="ctier">${tiers.map(t => `<button type="button" data-v="${t}" class="${cState.tier === t ? "on" : ""}">${TIER_LABEL[t]}</button>`).join("")}</span></label>
+    <label>Years<span class="seg" id="cyrs">${["2025-2026", "2026", "2025", "2024", "2023", "all"].map(y => `<button type="button" data-v="${y}" class="${cState.years === y ? "on" : ""}">${y === "all" ? "All" : y.replace("-", "–")}</button>`).join("")}</span></label>
+    <span class="count">${evs.length} events · ${teamIds.length} teams</span>
+  </div>
+  <div class="sec panel flush"><div class="tw"><table class="matrix"><thead><tr><th>Team</th>${evs.map(e => `<th title="${esc(e.title)}"><a href="#event-${e.id}">${esc(shortEv(e.title))}</a><div class="small muted" style="text-transform:none;letter-spacing:0">${e.start.slice(0, 7)}</div></th>`).join("")}</tr></thead>
+  <tbody>${teamIds.map(id => `<tr><td>${teamLink(id)}</td>${evs.map(e => cell(rows.get(id)[e.id])).join("")}</tr>`).join("") || `<tr><td class="empty">No Indian teams recorded in this circuit for these years</td></tr>`}</tbody></table></div></div>
+  ${intlSummary()}`;
+  return { html, bind(root) {
+    root.querySelectorAll("#ctier button").forEach(b => b.onclick = () => { cState.tier = b.dataset.v; store.set("cstate", cState); render(); });
+    root.querySelectorAll("#cyrs button").forEach(b => b.onclick = () => { cState.years = b.dataset.v; store.set("cstate", cState); render(); });
+  } };
+};
+function shortEv(t) {
+  return t.replace(/Challengers League/i, "VCL").replace(/Challengers/i, "VCL").replace(/Champions Tour/i, "VCT").replace(/Game Changers/i, "GC").replace(/South Asia/i, "SA").replace(/Open Qualifier/i, "OQ").replace(/Southeast Asia/i, "SEA").replace(/: /g, " ").slice(0, 34);
+}
+function intlSummary() {
+  const tiers = ["international", "vct_pacific", "ascension"];
+  const rows = [];
+  for (const t of INDIAN) for (const e of t.events) if (tiers.includes(e.tier)) rows.push([t, e]);
+  rows.sort((a, b) => b[1].d.localeCompare(a[1].d));
+  return `<div class="sec panel flush"><div style="padding:14px 16px 6px"><h3>Indian teams beyond South Asia</h3><p class="note">Every VCT international, VCT Pacific and Ascension / Last Chance Qualifier appearance.</p></div>
+  <div class="tw"><table><thead><tr><th>Date</th><th>Team</th><th>Event</th><th>Circuit</th><th class="n">Series</th><th class="n">Maps</th><th>Result</th></tr></thead><tbody>
+  ${rows.map(([t, e]) => `<tr><td class="small">${e.d}</td><td>${teamLink(t.id)}</td><td><a href="#event-${e.e}">${esc(EVENT.get(e.e)?.title || "")}</a></td><td>${tierTag(e.tier)}</td><td class="n">${e.w}–${e.l}</td><td class="n">${e.mw}–${e.ml}</td><td>${esc(e.place || stageOf(e.st)[1])}</td></tr>`).join("") || `<tr><td colspan="7" class="empty">None recorded</td></tr>`}
+  </tbody></table></div></div>`;
+}
+
+/* ---- Events ---- */
+const eState = Object.assign({ tier: "all", year: "all", q: "" }, store.get("estate", {}));
+V.events = () => {
+  const years = [...new Set(D.events.map(e => e.start.slice(0, 4)).filter(Boolean))].sort().reverse();
+  const list = D.events.filter(e => (eState.tier === "all" || e.tier === eState.tier) && (eState.year === "all" || e.start.startsWith(eState.year)) && (!eState.q || e.title.toLowerCase().includes(eState.q.toLowerCase())) && e.ind.length);
+  const html = `
+  <div class="sec-head"><div><div class="eyebrow">Tournaments</div><h1>Every event with an Indian team</h1>
+  <p class="lede">${D.events.filter(e => e.ind.length).length} events from 2020 to now: Riot's Challengers South Asia and its open qualifiers, Game Changers, Ascension and Last Chance Qualifiers, VCT Pacific and international events, national-team play, and third-party cups.</p></div></div>
+  <div class="sec filters">
+    <label for="etier">Circuit<select id="etier"><option value="all">All circuits</option>${Object.entries(TIER_LABEL).map(([k, v]) => `<option value="${k}" ${eState.tier === k ? "selected" : ""}>${v}</option>`).join("")}</select></label>
+    <label for="eyr">Year<select id="eyr"><option value="all">All years</option>${years.map(y => `<option ${eState.year === y ? "selected" : ""}>${y}</option>`).join("")}</select></label>
+    <label for="eq">Name<input id="eq" type="text" value="${esc(eState.q)}" placeholder="search"></label>
+    <span class="count">${list.length} events</span>
+  </div>
+  <div class="sec panel flush"><div class="tw"><table><thead><tr><th>Dates</th><th>Event</th><th>Circuit</th><th class="n">Prize</th><th>Winner</th><th>Best Indian result</th><th class="n">Indian teams</th></tr></thead><tbody>
+  ${list.map(e => { const w = e.places.find(p => /^1/.test(p.place)); const best = bestIndian(e);
+    return `<tr><td class="small">${esc(e.dates || e.start)}</td><td><a href="#event-${e.id}"><b>${esc(e.title)}</b></a></td><td>${tierTag(e.tier)}</td><td class="n small">${esc(e.prize)}</td><td>${w ? (w.team_id ? teamLink(w.team_id) : esc(w.team)) : "–"}</td><td>${best ? `${teamLink(best[0])} <span class="muted small">${esc(best[1])}</span>` : "–"}</td><td class="n">${e.ind.length}</td></tr>`; }).join("")}
+  </tbody></table></div></div>`;
+  return { html, bind(root) {
+    const re = () => { store.set("estate", eState); render(); };
+    $("#etier", root).onchange = e => { eState.tier = e.target.value; re(); };
+    $("#eyr", root).onchange = e => { eState.year = e.target.value; re(); };
+    $("#eq", root).oninput = debounce(e => { eState.q = e.target.value; re(); }, 300);
+  } };
+};
+function placeNum(p) { const m = /^(\d+)/.exec(p || ""); return m ? +m[1] : 999; }
+function bestIndian(e) {
+  let best = null;
+  for (const [tid, place, w, l] of e.ind) {
+    const t = TEAM.get(tid); if (!t) continue;
+    const ev = t.events.find(x => x.e === e.id); const st = ev ? stageOf(ev.st) : [0, "–"];
+    const score = place ? 1000 - placeNum(place) : st[0] * 10 + w;
+    if (!best || score > best[2]) best = [tid, place ? place : st[1] + ` (${w}-${l})`, score];
+  }
+  return best;
+}
+
+/* ---- Meta ---- */
+V.meta = () => {
+  const months = Object.keys(D.agent_month).filter(m => m >= "2024-01");
+  const tot = months.map(m => Object.values(D.agent_month[m]).reduce((a, b) => a + b, 0));
+  const totals = {}; months.slice(-6).forEach(m => { for (const [a, n] of Object.entries(D.agent_month[m])) totals[a] = (totals[a] || 0) + n; });
+  const topAgents = Object.entries(totals).sort((a, b) => b[1] - a[1]).slice(0, 8).map(x => x[0]);
+  // 3-month rolling share of team compositions: each composition has 5 agents
+  const series = topAgents.map((a, i) => ({ a, c: PALETTE[i], v: months.map((m, j) => { let n = 0, t = 0; for (let k = Math.max(0, j - 2); k <= j; k++) { n += D.agent_month[months[k]][a] || 0; t += tot[k]; } return t ? n / (t / 5) : 0; }) }));
+  const recentPicks = Object.entries(totals).sort((a, b) => b[1] - a[1]);
+  const recentTotal = recentPicks.reduce((s, x) => s + x[1], 0) / 5;
+  const mapTot = {}; Object.entries(D.map_month).filter(([m]) => m >= months[Math.max(0, months.length - 12)]).forEach(([, o]) => { for (const [k, v] of Object.entries(o)) if (k && k !== "null") mapTot[k] = (mapTot[k] || 0) + v; });
+  const mapsSorted = Object.entries(mapTot).sort((a, b) => b[1] - a[1]);
+  const mx = mapsSorted[0]?.[1] || 1;
+  const sides = Object.entries(D.map_side).filter(([m, v]) => v[2] >= 20).map(([m, v]) => [m, v[0] / (v[0] + v[1]), v[2]]).sort((a, b) => b[1] - a[1]);
+  const roleShare = {}; for (const [a, n] of recentPicks) { const r = D.agent_role[a] || "?"; roleShare[r] = (roleShare[r] || 0) + n; }
+  return `
+  <div class="sec-head"><div><div class="eyebrow">Meta</div><h1>What Indian teams pick</h1><p class="lede">Agent and map trends across every map involving an Indian team. Pick rate is the share of team compositions that included the agent (three-month rolling average in the chart).</p></div></div>
+  <div class="sec panel"><h3>Agent pick rate, top 8 of the last six months</h3><div class="legend" style="margin-bottom:8px">${series.map(s => `<span><i style="background:${s.c}"></i>${agName(s.a)}</span>`).join("")}</div>${multiLine(series, months)}</div>
+  <div class="sec grid g3">
+    <div class="panel flush"><div style="padding:14px 16px 6px"><h3>Agents · last six months</h3></div><div class="tw"><table><thead><tr><th>Agent</th><th>Role</th><th class="n">Pick rate</th><th></th></tr></thead><tbody>
+    ${recentPicks.slice(0, 22).map(([a, n]) => `<tr><td><b>${agName(a)}</b></td><td class="small" style="color:${ROLE_COLORS[D.agent_role[a]] || "inherit"}">${D.agent_role[a] || "?"}</td><td class="n">${pct(n / recentTotal)}</td><td><span class="bar-cell" style="width:${Math.round(80 * n / recentPicks[0][1])}px"></span></td></tr>`).join("")}
+    </tbody></table></div></div>
+    <div class="panel flush"><div style="padding:14px 16px 6px"><h3>Maps played · last 12 months</h3></div><div class="tw"><table><thead><tr><th>Map</th><th class="n">Maps</th><th></th></tr></thead><tbody>
+    ${mapsSorted.map(([m, n]) => `<tr><td><b>${esc(m)}</b></td><td class="n">${n}</td><td><span class="bar-cell" style="width:${Math.round(110 * n / mx)}px"></span></td></tr>`).join("")}
+    </tbody></table></div></div>
+    <div class="panel flush"><div style="padding:14px 16px 6px"><h3>Attack-side round win %</h3><p class="note">All recorded maps, minimum 20.</p></div><div class="tw"><table><thead><tr><th>Map</th><th class="n">Atk</th><th class="n">Def</th><th class="n">Maps</th></tr></thead><tbody>
+    ${sides.map(([m, a, n]) => `<tr><td><b>${esc(m)}</b></td><td class="n ${a > .5 ? "win" : ""}">${pct(a, 1)}</td><td class="n ${a < .5 ? "win" : ""}">${pct(1 - a, 1)}</td><td class="n">${n}</td></tr>`).join("")}
+    </tbody></table></div></div>
+  </div>
+  <div class="sec panel"><h3>Role mix of picks · last six months</h3><div class="grid g4">${Object.entries(roleShare).filter(([r]) => r !== "?").sort((a, b) => b[1] - a[1]).map(([r, n]) => `<div><div class="small muted">${r}</div><div style="font-family:var(--display);font-size:26px;font-weight:700;color:${ROLE_COLORS[r]}">${pct(n / (recentTotal * 5), 1)}</div></div>`).join("")}</div></div>`;
+};
+
+/* ---- Records ---- */
+V.records = () => {
+  const titles = INDIAN.map(t => [t, t.events.filter(e => /^1/.test(e.place))]).filter(x => x[1].length).sort((a, b) => b[1].length - a[1].length).slice(0, 15);
+  const earn = INDIAN.filter(t => t.winnings).map(t => [t, +t.winnings.replace(/[$,]/g, "")]).sort((a, b) => b[1] - a[1]).slice(0, 15);
+  const peaks = INDIAN.slice().sort((a, b) => b.peak - a.peak).slice(0, 15);
+  const games = [];
+  for (const p of D.players) if (p.flag === "in") for (const b of p.best) games.push([p, b]);
+  games.sort((a, b) => b[1].rt - a[1].rt);
+  const longest = INDIAN.map(t => [t, t.nmaps]).sort((a, b) => b[1] - a[1]).slice(0, 15);
+  const vets = D.players.filter(p => p.flag === "in").sort((a, b) => b.career.maps - a.career.maps).slice(0, 15);
+  const career = D.players.filter(p => p.flag === "in" && p.career.rated >= 150).sort((a, b) => b.career.adj - a.career.adj).slice(0, 15);
+  const box = (title, head, rows) => `<div class="panel flush"><div style="padding:14px 16px 6px"><h3>${title}</h3></div><div class="tw"><table><thead><tr>${head.map((h, i) => `<th class="${i === head.length - 1 ? "n" : ""}">${h}</th>`).join("")}</tr></thead><tbody>${rows.join("")}</tbody></table></div></div>`;
+  return `<div class="sec-head"><div><div class="eyebrow">Records</div><h1>Record book</h1><p class="lede">All-time leaders among Indian teams and players in the recorded data.</p></div></div>
+  <div class="sec grid g2">
+  ${box("Most titles", ["Team", "Titles"], titles.map(([t, e]) => `<tr><td>${teamLink(t.id)}</td><td class="n"><b>${e.length}</b></td></tr>`))}
+  ${box("Prize money (VLR)", ["Team", "Winnings"], earn.map(([t, v]) => `<tr><td>${teamLink(t.id)}</td><td class="n">$${v.toLocaleString()}</td></tr>`))}
+  ${box("Highest peak rating", ["Team", "Peak", "Rating"], peaks.map(t => `<tr><td>${teamLink(t.id)}</td><td class="small muted">${esc(t.peak_date || "")}</td><td class="n"><b>${t.peak}</b></td></tr>`))}
+  ${box("Best single-map ratings", ["Player", "Map", "Agent", "K/D/A", "Rating"], games.slice(0, 15).map(([p, b]) => `<tr><td>${playerLink(p.id)}</td><td class="small">${esc(b.map)} · <a href="https://www.vlr.gg/${b.mid}" target="_blank" rel="noopener">${b.d}</a></td><td class="small">${agName(b.ag)}</td><td class="small">${b.k}/${b.dth}/${b.a}</td><td class="n"><b>${fmt(b.rt)}</b></td></tr>`))}
+  ${box("Best career adj. rating (150+ rated maps)", ["Player", "Maps", "Adj."], career.map(p => `<tr><td>${playerLink(p.id)}</td><td class="small">${p.career.rated}</td><td class="n"><b>${fmt(p.career.adj)}</b></td></tr>`))}
+  ${box("Most maps played (player)", ["Player", "Since", "Maps"], vets.map(p => `<tr><td>${playerLink(p.id)}</td><td class="small muted">${p.first.slice(0, 4)}</td><td class="n">${p.career.maps}</td></tr>`))}
+  ${box("Most maps played (team)", ["Team", "Maps"], longest.map(([t, n]) => `<tr><td>${teamLink(t.id)}</td><td class="n">${n}</td></tr>`))}
+  </div>`;
+};
+
+/* ---- About ---- */
+V.about = () => `
+  <div class="sec-head"><div><div class="eyebrow">Method</div><h1>Sources and method</h1></div></div>
+  <div class="sec grid g2">
+  <div class="panel"><h3>What counts as Indian</h3><p>A team counts as Indian when VLR lists its country as India, or when at least half of its recent lineups are Indian players. That covers Indian organisations on the Asia-Pacific (Mumbai) side, the Challengers South Asia ecosystem, and Indian rosters that entered SEA or Pacific events. Players count when VLR flags them as Indian; imports on Indian teams appear under a separate filter. Other South Asian teams (Bangladesh, Pakistan, Nepal, Sri Lanka, Maldives) are in the data as opponents and appear under "All South Asia" in the rankings.</p></div>
+  <div class="panel"><h3>Team rating</h3><p>Elo over individual maps, run in date order over every recorded series since 2020. Each map moves ratings by K × margin factor × (result − expectation), where the margin factor grows with round difference (log) and is damped for heavy favourites. New teams use K = 40 for their first 15 maps, then 24. Indian and South Asian teams start at 1500; foreign teams start at 1600–1700, or 1850 if first seen in VCT Pacific or international events. After 60+ idle days a rating relaxes toward 1500 (8% per 90 days). The table ranks on that Elo minus a small-sample discount (150 × e<sup>−maps/10</sup>), so a team with ten maps gives up about 55 points and a team with fifty gives up one. Game Changers matches use a separate rating pool, since that circuit mostly plays within itself.</p></div>
+  <div class="panel"><h3>Player stats</h3><p>Per-map lines from VLR match pages: Rating 2.0, ACS, kills, deaths, assists, KAST, ADR, HS%, first kills and deaths, with attack and defence splits. Rates are weighted by rounds. <b>Adj. rating</b> subtracts β × (opponent Elo − 1500) from each map's rating before averaging, where β is fitted by regressing map rating on opponent Elo across all the data: each extra 100 Elo of opponent strength costs a typical player ${fmt(-D.beta * 100, 3)} rating, so that much is added back. <b>Peak</b> is the 90th-percentile map rating and <b>Consistency</b> is its standard deviation. Ideas taken from 1trick.gg (Elevated's site: opponent-adjusted ratings, peak games, sample sizes) and from VLR and Liquipedia (stat sets and results), plus things they don't show for India: opponent-adjusted ratings, age and role filters, and circuit-by-circuit tracking.</p></div>
+  <div class="panel"><h3>Sources</h3><ul class="small" style="padding-left:18px;margin:0;display:grid;gap:4px">
+    <li><a href="https://www.vlr.gg" target="_blank" rel="noopener">VLR.gg</a>: matches, maps, player stats, rosters, placements, prize money.</li>
+    <li><a href="https://liquipedia.net/valorant" target="_blank" rel="noopener">Liquipedia VALORANT</a> (CC BY-SA): birth dates, IGL tags, real names, socials.</li>
+    <li><a href="https://www.1trick.gg" target="_blank" rel="noopener">1trick.gg</a> (Elevated): reference for adjusted ratings and scouting layout.</li>
+    <li>News reports for storylines: Sheep Esports, The Bridge, Outlook Respawn, Mykhel, VLR news.</li>
+  </ul><p class="note">Data snapshot ${esc(D.generated)}. Matches VLR hasn't recorded (some small community cups and early open-qualifier rounds) are missing. Forfeits and maps under 13 rounds are excluded. "Indians abroad" only covers Indian players whose foreign teams met Indian opposition or played in South Asian events.</p></div>
+  </div>`;
+
+/* ---- Team profile ---- */
+V.team = id => {
+  const t = TEAM.get(+id); if (!t) return `<div class="empty">Team not found</div>`;
+  const rk = (t.gc ? RANKED_GC : RANKED).findIndex(x => x.id === t.id) + 1;
+  const players = t.roster.filter(r => r.role === "player" || r.role.includes("sub"));
+  const staff = t.roster.filter(r => !(r.role === "player" || r.role.includes("sub")));
+  const recentPlayers = D.players.filter(p => p.team === t.id && p.active).sort((a, b) => (b.cur?.maps || 0) - (a.cur?.maps || 0));
+  const ms = D.matches.filter(m => m.t.includes(t.id)).slice(-25).reverse();
+  const mp = Object.entries(t.mapstats).filter(([m]) => m !== "?").sort((a, b) => b[1].p - a[1].p);
+  const placings = t.events.filter(e => e.place);
+  const tierRec = {};
+  for (const e of t.events) { const r = tierRec[e.tier] || (tierRec[e.tier] = { n: 0, w: 0, l: 0, best: null }); r.n++; r.w += e.w; r.l += e.l; const pn = placeNum(e.place); if (pn < 999 && (!r.best || pn < placeNum(r.best.place))) r.best = e; }
+  const wr = t.maps[0] / Math.max(1, t.maps[0] + t.maps[1]);
+  return `<a class="back" href="#teams">← Team rankings</a>
+  <div class="phead">${t.logo ? `<img class="logo lg" src="${img(t.logo)}" alt="">` : ""}<div class="who"><div class="eyebrow">${esc(t.country || "")} ${t.tag ? "· " + esc(t.tag) : ""}</div><h1>${esc(t.name)}</h1>
+  <div class="meta">${rk ? `<span class="pill acc">#${rk} in India${t.gc ? " · Game Changers" : ""}</span>` : `<span class="pill ${t.inactive ? "neg" : ""}">${t.inactive ? "Inactive on VLR" : "Not ranked (no match in 12 months)"}</span>`}${t.vlr_rank ? `<span class="pill">VLR #${t.vlr_rank} Asia-Pacific</span>` : ""}${t.winnings ? `<span class="pill">${esc(t.winnings)} won</span>` : ""}${t.streak ? `<span class="pill ${t.streak[0] === "W" ? "pos" : "neg"}">${t.streak[0] === "W" ? "Won" : "Lost"} ${t.streak.slice(1)} in a row</span>` : ""}
+  ${t.links.slice(0, 3).map(l => `<a class="pill" href="${esc(l)}" target="_blank" rel="noopener">${esc(l.replace(/^https?:\/\/(www\.)?/, "").slice(0, 28))} ↗</a>`).join("")}<a class="pill" href="https://www.vlr.gg/team/${t.id}" target="_blank" rel="noopener">VLR ↗</a></div></div></div>
+  <div class="sec tiles"><div class="tile"><b>${t.rating}</b><span>Rating</span></div><div class="tile"><b>${t.peak}</b><span>Peak (${esc((t.peak_date || "").slice(0, 7))})</span></div><div class="tile"><b>${t.series[0]}–${t.series[1]}</b><span>Series</span></div><div class="tile"><b>${pct(wr)}</b><span>Map win rate</span></div><div class="tile"><b>${((t.rounds[0] - t.rounds[1]) / Math.max(1, t.maps[0] + t.maps[1])).toFixed(2)}</b><span>Round diff / map</span></div><div class="tile"><b>${placings.filter(e => /^1/.test(e.place)).length}</b><span>Titles</span></div></div>
+  <div class="sec grid g2">
+    <div class="panel"><h3>Rating history</h3>${lineChart(t.hist.map(([m, v]) => [m, v]), { label: "Team rating by month" })}</div>
+    <div class="panel flush"><div style="padding:14px 16px 6px"><h3>Current players</h3></div><div class="tw"><table><thead><tr><th>Player</th><th>Role</th><th class="n">Maps</th><th class="n">Rating</th><th class="n">Adj.</th><th class="n">ACS</th></tr></thead><tbody>
+    ${(recentPlayers.length ? recentPlayers : []).slice(0, 8).map(p => `<tr><td>${playerLink(p.id)} ${p.flag !== "in" ? `<span class="flag">${esc(p.flag.toUpperCase())}</span>` : ""}</td><td class="small" style="color:${ROLE_COLORS[p.role]}">${p.role}</td><td class="n">${p.cur?.maps ?? "–"}</td><td class="n">${fmt(p.cur?.rating)}</td><td class="n"><b>${fmt(p.cur?.adj)}</b></td><td class="n">${fmt(p.cur?.acs, 0)}</td></tr>`).join("") || `<tr><td colspan="6" class="empty">No recent lineup</td></tr>`}
+    </tbody></table></div>${staff.length ? `<div style="padding:8px 16px 14px" class="small muted">Staff: ${staff.map(s => `${esc(s.alias)} (${esc(s.role)})`).join(", ")}</div>` : ""}${players.length ? `<div style="padding:0 16px 14px" class="small muted">VLR roster: ${players.map(s => esc(s.alias) + (s.role.includes("sub") ? " (sub)" : "")).join(", ")}</div>` : ""}</div>
+  </div>
+  <div class="sec grid g2">
+    <div class="panel flush"><div style="padding:14px 16px 6px"><h3>Map pool</h3><p class="note">All recorded maps; picks and bans from veto notes where VLR has them.</p></div><div class="tw"><table><thead><tr><th>Map</th><th class="n">Played</th><th class="n">Win %</th><th class="n">RD/map</th><th class="n">Picked</th><th class="n">Banned</th><th class="n">Last 12m</th></tr></thead><tbody>
+    ${mp.map(([m, s]) => `<tr><td><b>${esc(m)}</b></td><td class="n">${s.p}</td><td class="n ${s.w / s.p >= .5 ? "win" : "loss"}">${pct(s.w / s.p)}</td><td class="n">${((s.rf - s.ra) / s.p).toFixed(1)}</td><td class="n">${s.vpick || s.pick || 0}</td><td class="n">${s.vban || 0}</td><td class="n">${s.recent}</td></tr>`).join("")}
+    </tbody></table></div></div>
+    <div class="panel flush"><div style="padding:14px 16px 6px"><h3>By circuit</h3></div><div class="tw"><table><thead><tr><th>Circuit</th><th class="n">Events</th><th class="n">Series</th><th>Best</th></tr></thead><tbody>
+    ${TIER_ORDER.filter(k => tierRec[k]).map(k => `<tr><td>${tierTag(k)}</td><td class="n">${tierRec[k].n}</td><td class="n">${tierRec[k].w}–${tierRec[k].l}</td><td class="small">${tierRec[k].best ? `${esc(tierRec[k].best.place)} · <a href="#event-${tierRec[k].best.e}">${esc(EVENT.get(tierRec[k].best.e)?.title || "")}</a>` : "–"}</td></tr>`).join("")}
+    </tbody></table></div>
+    <div style="padding:14px 16px 6px"><h3>Most-played opponents</h3></div><div class="tw"><table><thead><tr><th>Opponent</th><th class="n">W–L</th></tr></thead><tbody>${t.h2h.map(([o, w, l]) => `<tr><td>${teamLink(o)}</td><td class="n">${w}–${l}</td></tr>`).join("")}</tbody></table></div></div>
+  </div>
+  <div class="sec panel flush"><div style="padding:14px 16px 6px"><h3>Event history</h3></div><div class="tw"><table><thead><tr><th>Date</th><th>Event</th><th>Circuit</th><th>Reached</th><th class="n">Series</th><th class="n">Maps</th><th>Place</th><th class="n">Prize</th></tr></thead><tbody>
+  ${t.events.map(e => `<tr><td class="small">${e.d}</td><td><a href="#event-${e.e}">${esc(EVENT.get(e.e)?.title || "")}</a></td><td>${tierTag(e.tier)}</td><td class="small">${esc(stageOf(e.st)[1])}</td><td class="n">${e.w}–${e.l}</td><td class="n">${e.mw}–${e.ml}</td><td>${e.place ? `<b>${esc(e.place)}</b>` : "–"}</td><td class="n small">${esc(e.prize || "")}</td></tr>`).join("")}
+  </tbody></table></div></div>
+  <div class="sec panel flush"><div style="padding:14px 16px 6px"><h3>Recent series</h3></div>${ms.map(matchRow).join("")}</div>`;
+};
+
+/* ---- Player profile ---- */
+function percentile(p, key, pool, lowerBetter) {
+  const vals = pool.map(x => x.cur?.[key]).filter(v => v != null).sort((a, b) => a - b);
+  const v = p.cur?.[key]; if (v == null || !vals.length) return null;
+  let i = 0; while (i < vals.length && vals[i] <= v) i++;
+  const r = i / vals.length; return lowerBetter ? 1 - r : r;
+}
+V.player = id => {
+  const p = PLAYER.get(+id); if (!p) return `<div class="empty">Player not found</div>`;
+  const s = p.cur || p.career;
+  const peers = D.players.filter(x => x.active && !!x.gc === !!p.gc && x.cur && x.cur.maps >= 20 && (p.role === "Flex" || x.role === p.role));
+  const metrics = [["adj", "Adj. rating"], ["acs", "ACS"], ["kd", "K/D"], ["kast", "KAST"], ["adr", "ADR"], ["kpr", "Kills / round"], ["apr", "Assists / round"], ["fkpr", "First kills / rd"], ["fdpr", "First deaths / rd", true], ["fkpct", "Opening win %"], ["hs", "Headshot %"]];
+  const seasons = Object.entries(p.seasons);
+  const totalRoles = Object.values(p.roles).reduce((a, b) => a + b, 0) || 1;
+  const sv = (x, k, d = 2) => x ? (k === "kast" || k === "hs" ? pctRaw(x[k]) : k === "fkpct" ? pct(x[k]) : fmt(x[k], d)) : "–";
+  return `<a class="back" href="#players">← Players</a>
+  <div class="phead"><div class="who"><div class="eyebrow">${esc(p.flag.toUpperCase())} · ${esc(p.role)}${p.igl ? " · IGL" : ""}${p.age ? " · age " + p.age : ""}${p.staff ? " · " + esc(p.staff) : ""}</div><h1>${esc(p.name)}</h1>
+  <div class="muted">${esc(p.real || "")}</div>
+  <div class="meta">${teamLink(p.team)}<span class="pill ${p.active ? "pos" : ""}">${p.active ? "Active" : "Last played " + esc(p.last)}</span>${p.lp ? `<a class="pill" href="https://liquipedia.net/valorant/${encodeURIComponent(p.lp.replace(/ /g, "_"))}" target="_blank" rel="noopener">Liquipedia ↗</a>` : ""}<a class="pill" href="https://www.vlr.gg/player/${p.id}" target="_blank" rel="noopener">VLR ↗</a>${Object.entries(p.social || {}).map(([k, v]) => `<a class="pill" target="_blank" rel="noopener" href="${k === "twitter" ? "https://x.com/" + esc(v) : k === "twitch" ? "https://twitch.tv/" + esc(v) : k === "instagram" ? "https://instagram.com/" + esc(v) : "https://youtube.com/" + esc(v)}">${k} ↗</a>`).join("")}</div></div></div>
+  <div class="sec tiles"><div class="tile"><b>${fmt(s.adj)}</b><span>Adj. rating · 12m</span></div><div class="tile"><b>${fmt(s.rating)}</b><span>Rating 2.0</span></div><div class="tile"><b>${fmt(s.acs, 0)}</b><span>ACS</span></div><div class="tile"><b>${fmt(s.kd)}</b><span>K/D</span></div><div class="tile"><b>${pctRaw(s.kast)}</b><span>KAST</span></div><div class="tile"><b>${s.maps} <small class="muted" style="font-size:14px">/ ${p.career.maps}</small></b><span>Maps · 12m / career</span></div></div>
+  <div class="sec grid g2">
+    <div class="panel"><h3>Percentile vs active ${p.role === "Flex" ? "players" : p.role + "s"} · last 12 months</h3><div class="grid" style="gap:7px">${p.cur ? metrics.map(([k, lab, low]) => { const r = percentile(p, k, peers, low); return `<div class="pct"><span>${lab}</span><span class="track"><span class="fill" style="width:${r == null ? 0 : Math.round(r * 100)}%"></span></span><span class="v">${r == null ? "–" : Math.round(r * 100)}</span></div>`; }).join("") : `<div class="empty">No maps in the last 12 months</div>`}</div><p class="note">Compared with ${peers.length} active players in the same role with 20+ maps.</p></div>
+    <div class="panel"><h3>Profile</h3><dl class="kv">
+      <dt>Role mix</dt><dd>${Object.entries(p.roles).sort((a, b) => b[1] - a[1]).map(([r, n]) => `<span style="color:${ROLE_COLORS[r] || "inherit"}">${r} ${pct(n / totalRoles)}</span>`).join(" · ")}</dd>
+      <dt>Born</dt><dd>${esc(p.birth || "unknown")}</dd>
+      <dt>Attack / defence</dt><dd>${fmt(s.rt_atk)} / ${fmt(s.rt_def)} rating · ${fmt(s.acs_atk, 0)} / ${fmt(s.acs_def, 0)} ACS</dd>
+      <dt>Peak (P90)</dt><dd>${fmt(s.p90)} · consistency σ ${fmt(s.sd)}</dd>
+      <dt>Opening duels</dt><dd>${s.fk} won, ${s.fd} lost (${pct(s.fkpct)})</dd>
+      <dt>First seen</dt><dd>${esc(p.first)}</dd>
+      <dt>Teams</dt><dd>${p.teams.slice().reverse().map(([tid, a, b]) => `${teamLink(tid, false)} <span class="muted small">${a.slice(0, 7)}–${b.slice(0, 7)}</span>`).join("<br>")}</dd>
+    </dl></div>
+  </div>
+  <div class="sec panel flush"><div style="padding:14px 16px 6px"><h3>By season</h3></div><div class="tw"><table><thead><tr><th>Season</th><th class="n">Maps</th><th class="n">Map W%</th><th class="n">Rating</th><th class="n">Adj.</th><th class="n">ACS</th><th class="n">K/D</th><th class="n">KAST</th><th class="n">ADR</th><th class="n">FKPR</th><th class="n">FDPR</th><th class="n">HS%</th></tr></thead><tbody>
+  ${seasons.reverse().map(([y, x]) => `<tr><td><b>${y}</b></td><td class="n">${x.maps}</td><td class="n">${pct(x.wins / x.maps)}</td><td class="n">${sv(x, "rating")}</td><td class="n"><b>${sv(x, "adj")}</b></td><td class="n">${sv(x, "acs", 0)}</td><td class="n">${sv(x, "kd")}</td><td class="n">${sv(x, "kast")}</td><td class="n">${sv(x, "adr", 0)}</td><td class="n">${sv(x, "fkpr", 3)}</td><td class="n">${sv(x, "fdpr", 3)}</td><td class="n">${sv(x, "hs")}</td></tr>`).join("")}
+  <tr><td><b>Career</b></td><td class="n">${p.career.maps}</td><td class="n">${pct(p.career.wins / p.career.maps)}</td><td class="n">${sv(p.career, "rating")}</td><td class="n"><b>${sv(p.career, "adj")}</b></td><td class="n">${sv(p.career, "acs", 0)}</td><td class="n">${sv(p.career, "kd")}</td><td class="n">${sv(p.career, "kast")}</td><td class="n">${sv(p.career, "adr", 0)}</td><td class="n">${sv(p.career, "fkpr", 3)}</td><td class="n">${sv(p.career, "fdpr", 3)}</td><td class="n">${sv(p.career, "hs")}</td></tr>
+  </tbody></table></div></div>
+  <div class="sec grid g2">
+    <div class="panel flush"><div style="padding:14px 16px 6px"><h3>Agents (career)</h3></div><div class="tw"><table><thead><tr><th>Agent</th><th class="n">Maps</th><th class="n">Win %</th><th class="n">Rating</th><th class="n">ACS</th><th class="n">K/D</th></tr></thead><tbody>
+    ${Object.entries(p.ags).sort((a, b) => b[1].maps - a[1].maps).map(([a, x]) => `<tr><td><b>${agName(a)}</b> <span class="small" style="color:${ROLE_COLORS[D.agent_role[a]] || "inherit"}">${D.agent_role[a] || ""}</span></td><td class="n">${x.maps}</td><td class="n">${pct(x.wins / x.maps)}</td><td class="n">${fmt(x.rating)}</td><td class="n">${fmt(x.acs, 0)}</td><td class="n">${fmt(x.kd)}</td></tr>`).join("")}
+    </tbody></table></div></div>
+    <div class="panel flush"><div style="padding:14px 16px 6px"><h3>Maps (career)</h3></div><div class="tw"><table><thead><tr><th>Map</th><th class="n">Maps</th><th class="n">Win %</th><th class="n">Rating</th><th class="n">ACS</th><th class="n">K/D</th></tr></thead><tbody>
+    ${Object.entries(p.maps).sort((a, b) => b[1].maps - a[1].maps).map(([m, x]) => `<tr><td><b>${esc(m)}</b></td><td class="n">${x.maps}</td><td class="n">${pct(x.wins / x.maps)}</td><td class="n">${fmt(x.rating)}</td><td class="n">${fmt(x.acs, 0)}</td><td class="n">${fmt(x.kd)}</td></tr>`).join("")}
+    </tbody></table></div></div>
+  </div>
+  <div class="sec grid g2">
+    <div class="panel flush"><div style="padding:14px 16px 6px"><h3>By circuit (career)</h3></div><div class="tw"><table><thead><tr><th>Circuit</th><th class="n">Maps</th><th class="n">Rating</th><th class="n">ACS</th><th class="n">K/D</th></tr></thead><tbody>
+    ${TIER_ORDER.filter(k => p.tiers[k]).map(k => `<tr><td>${tierTag(k)}</td><td class="n">${p.tiers[k].maps}</td><td class="n">${fmt(p.tiers[k].rating)}</td><td class="n">${fmt(p.tiers[k].acs, 0)}</td><td class="n">${fmt(p.tiers[k].kd)}</td></tr>`).join("")}
+    </tbody></table></div></div>
+    <div class="panel flush"><div style="padding:14px 16px 6px"><h3>Best games</h3></div><div class="tw"><table><thead><tr><th>Date</th><th>Opponent</th><th>Map</th><th>Agent</th><th class="n">K/D/A</th><th class="n">ACS</th><th class="n">Rating</th></tr></thead><tbody>
+    ${p.best.map(b => `<tr><td class="small"><a href="https://www.vlr.gg/${b.mid}" target="_blank" rel="noopener">${b.d}</a></td><td>${teamLink(b.opp)}</td><td>${esc(b.map)}</td><td>${agName(b.ag)}</td><td class="n">${b.k}/${b.dth}/${b.a}</td><td class="n">${fmt(b.acs, 0)}</td><td class="n"><b>${fmt(b.rt)}</b></td></tr>`).join("")}
+    </tbody></table></div></div>
+  </div>`;
+};
+
+/* ---- Event page ---- */
+V.event = id => {
+  const e = EVENT.get(+id); if (!e) return `<div class="empty">Event not found</div>`;
+  const ms = D.matches.filter(m => m.e === e.id).slice().reverse();
+  const teamRes = [];
+  for (const t of D.teams) { const x = t.events.find(v => v.e === e.id); if (x) teamRes.push([t, x]); }
+  teamRes.sort((a, b) => placeNum(a[1].place) - placeNum(b[1].place) || stageOf(b[1].st)[0] - stageOf(a[1].st)[0] || b[1].w - a[1].w);
+  return `<a class="back" href="#events">← Tournaments</a>
+  <div class="phead">${e.logo ? `<img class="logo lg" src="${img(e.logo)}" alt="">` : ""}<div class="who"><div class="eyebrow">${esc(e.series.filter(Boolean).join(" · "))}</div><h1>${esc(e.title)}</h1><div class="meta">${tierTag(e.tier)}<span class="pill">${esc(e.dates || e.start)}</span>${e.prize ? `<span class="pill">${esc(e.prize)}</span>` : ""}<a class="pill" href="https://www.vlr.gg/event/${e.id}" target="_blank" rel="noopener">VLR ↗</a></div></div></div>
+  <div class="sec grid g2">
+    <div class="panel flush"><div style="padding:14px 16px 6px"><h3>Placements</h3></div><div class="tw"><table><thead><tr><th>Place</th><th>Team</th><th class="n">Prize</th><th>Note</th></tr></thead><tbody>
+    ${e.places.map(p => `<tr><td><b>${esc(p.place.replace(/ /g, ""))}</b></td><td>${p.team_id ? teamLink(p.team_id) : esc(p.team)}</td><td class="n small">${esc(p.prize)}</td><td class="small muted">${esc(p.note)}</td></tr>`).join("") || `<tr><td colspan="4" class="empty">VLR has no placement table for this event</td></tr>`}
+    </tbody></table></div></div>
+    <div class="panel flush"><div style="padding:14px 16px 6px"><h3>South Asian teams in this event</h3></div><div class="tw"><table><thead><tr><th>Team</th><th>Reached</th><th class="n">Series</th><th class="n">Maps</th></tr></thead><tbody>
+    ${teamRes.map(([t, x]) => `<tr><td>${teamLink(t.id)}</td><td class="small">${x.place ? `<b>${esc(x.place)}</b>` : esc(stageOf(x.st)[1])} <span class="muted">${esc(x.last)}</span></td><td class="n">${x.w}–${x.l}</td><td class="n">${x.mw}–${x.ml}</td></tr>`).join("")}
+    </tbody></table></div></div>
+  </div>
+  <div class="sec panel flush"><div style="padding:14px 16px 6px"><h3>Series (${ms.length})</h3></div>${ms.map(matchRow).join("")}</div>`;
+};
+
+/* ---------- static editorial content ---------- */
+const STORIES = [
+  ["Global Esports' last, best season", "India's VCT Pacific partner beat Paper Rex to reach Masters London, then came back from 0–2 against Nongshim RedForce to win VCT Pacific Stage 2, the first Pacific title for an Indian organisation. They went out in the Champions 2026 group stage (9th–12th) and on 19 October announced they were leaving esports to become GE Studios."],
+  ["S8UL and No Salary Peek split the VCSA year", "S8UL won Challengers South Asia Split 1 over Revenant XSpark. No Salary Peek took Split 2 by beating S8UL 3–2 in the final, then lost their only match at the Pacific Last Chance Qualifier in Jakarta 0–2 to Yi-Jing."],
+  ["Team India qualifies for the Esports Nations Cup", "India lost to Japan in the Asia qualifier, then won through the lower bracket against Pakistan, Mongolia and Hong Kong to take Asia's second spot at the Riyadh main event (8–15 November)."],
+  ["S8UL and No Salary Peek step away", "S8UL paused its Valorant team after missing the Predator League 2026 playoffs, citing the state of the domestic ecosystem, and VLR now lists both S8UL and No Salary Peek as inactive. With Global Esports gone too, Revenant XSpark lead the active rankings going into 2027."],
+  ["2027 brings open qualifiers back", "Riot replaces Pacific Stages with Kickoff and two Cups. South Asia has no direct Cup slot: two teams from the South Asia qualifier go to the Kickoff Last Chance Qualifier, and South Asia's road to Cups runs through the post-Kickoff LCQ."],
+];
+const UPCOMING = [
+  ["VCT 2027 Pacific Kickoff: South Asia Qualifier", "Open qualifier from 17 November 2026; two teams reach the Kickoff Last Chance Qualifier against Oceania and SEA opposition."],
+  ["VCT Pacific Kickoff 2027", "Bangkok, early 2027. Cup 1 follows in Manila and Cup 2 in Tokyo."],
+  ["Free agency after Global Esports", "GE's VCT roster is on the market, along with the best-rated VCSA players, before Kickoff rosters lock."],
+];
+const HISTORY = [
+  ["2020", "Velocity Gaming and Global Esports become the two poles of the scene through lockdown-era cups such as the TEC Challenger Series and Skyesports Championship."],
+  ["2021", "Riot and NODWIN open a South Asia path to the APAC Last Chance Qualifier. Global Esports beat Velocity Gaming 3–2 for the spot and went out at the LCQ, which Full Sense won."],
+  ["2022", "Riot names Global Esports as South Asia's partner team for the new VCT Pacific league from 2023."],
+  ["2023", "Challengers South Asia runs under NODWIN Gaming with splits and open qualifiers. Orangutan X finish runner-up at Game Changers APAC Open 1."],
+  ["2025", "Revenant XSpark win VCSA Split 2, sweeping Reckoning Esports 3–0 at the Mumbai LAN, and lead the circuit into the Ascension qualifiers."],
+  ["2026", "Global Esports reach Masters London, win VCT Pacific Stage 2 and play Champions, then exit esports. India qualifies for the first Esports Nations Cup."],
+];
+
+/* ---------- router ---------- */
+function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
+function render() {
+  const h = (location.hash || "#overview").slice(1);
+  let [name, id] = h.split(/-(.+)/);
+  if (!V[name]) name = "overview";
+  document.querySelectorAll("#tabs a").forEach(a => a.classList.toggle("on", a.getAttribute("href") === "#" + (name === "team" ? "teams" : name === "player" ? "players" : name === "event" ? "events" : name)));
+  const out = V[name](id);
+  const root = $("#view");
+  const y = window.scrollY;
+  if (typeof out === "string") root.innerHTML = out; else { root.innerHTML = out.html; out.bind(root); }
+  if (render.last !== h) window.scrollTo(0, 0); else window.scrollTo(0, y);
+  render.last = h;
+}
+window.addEventListener("hashchange", render);
+
+/* search */
+const SEARCH = [...D.teams.filter(t => t.series[0] + t.series[1] > 0).map(t => ({ k: "t", id: t.id, n: t.name, s: (t.name + " " + (t.tag || "")).toLowerCase(), sub: t.indian ? "Team" : "Team · " + (t.country || "") })),
+  ...D.players.map(p => ({ k: "p", id: p.id, n: p.name, s: (p.name + " " + (p.real || "")).toLowerCase(), sub: tname(p.team) }))];
+$("#q").addEventListener("input", debounce(e => {
+  const q = e.target.value.trim().toLowerCase(); const box = $("#qres");
+  if (q.length < 2) { box.hidden = true; return; }
+  const hits = SEARCH.filter(x => x.s.includes(q)).sort((a, b) => (a.s.startsWith(q) ? 0 : 1) - (b.s.startsWith(q) ? 0 : 1)).slice(0, 14);
+  box.innerHTML = hits.map(x => `<a href="#${x.k === "t" ? "team" : "player"}-${x.id}">${x.k === "t" ? (tlogo(x.id) ? `<img class="logo" src="${tlogo(x.id)}" alt="">` : "") : ""}<b>${esc(x.n)}</b><small>${esc(x.sub)}</small></a>`).join("") || `<div class="empty">No match</div>`;
+  box.hidden = false;
+}, 150));
+document.addEventListener("click", e => { if (!e.target.closest(".search")) $("#qres").hidden = true; if (!e.target.closest(".colpick")) { const m = $("#pcolmenu"); if (m) m.hidden = true; } });
+$("#qres").addEventListener("click", () => { $("#qres").hidden = true; $("#q").value = ""; });
+
+/* theme */
+const themeBtn = $("#themebtn");
+function applyTheme(t) { if (t) document.documentElement.setAttribute("data-theme", t); else document.documentElement.removeAttribute("data-theme"); themeBtn.textContent = t === "light" ? "Light" : t === "dark" ? "Dark" : "Auto"; }
+let theme = store.get("theme", null); applyTheme(theme);
+themeBtn.onclick = () => { theme = theme === null ? "light" : theme === "light" ? "dark" : null; store.set("theme", theme); applyTheme(theme); };
+
+$("#asof").textContent = "data to " + D.generated;
+$("#foot").innerHTML = `Built from VLR.gg match data and Liquipedia (CC BY-SA) player bios · snapshot ${esc(D.generated)} · ${D.matches.length.toLocaleString()} series · ${D.players.length.toLocaleString()} players · ${D.teams.length.toLocaleString()} teams. Not affiliated with Riot Games.`;
+render();
+</script>

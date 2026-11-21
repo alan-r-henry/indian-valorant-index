@@ -1,0 +1,6 @@
+cache/
+site/publish/
+data/crawl.log
+__pycache__/
+*.pyc
+.venv/
