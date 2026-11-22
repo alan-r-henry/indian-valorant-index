@@ -35,6 +35,7 @@ export to CSV, and `/` jumps to search.
 | `scrape/lp.py` | Liquipedia API helper (1 request every 2 s, 50 titles per call, cache in `cache/lp`) |
 | `scrape/crawl_events.py` | Lists VLR Pacific-region events into `data/vlr_events_pacific.json` |
 | `scrape/crawl.py` | Seeds from Indian/South Asian events and expands through every Indian team's match history into `data/matches.jsonl` and `data/teams_raw.json` |
+| `scrape/refresh_teams.py` | Re-reads team pages older than five days for teams active in the last 18 months, so new logos, names and rosters reach the site |
 | `scrape/find_abroad.py` | Liquipedia players with Indian nationality into `data/lp_indian_players.json` |
 | `scrape/crawl_abroad.py` | Scans every VLR regional ranking's rosters for Indian-flagged players abroad and crawls their matches since 2024 (`data/abroad_*.json*`); `ABROAD_RESCAN=0` only fetches new matches |
 | `scrape/build.py` | Ratings, aggregates, events and the Liquipedia join, written to `site/data.js` |
@@ -51,6 +52,7 @@ Locally: Python 3.10+, plus Pillow for the preview image.
 cd scrape
 python -X utf8 crawl_events.py
 python -X utf8 crawl.py
+python -X utf8 refresh_teams.py
 python -X utf8 find_abroad.py
 python -X utf8 crawl_abroad.py
 python -X utf8 build.py

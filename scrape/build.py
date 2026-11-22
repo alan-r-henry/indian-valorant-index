@@ -92,6 +92,47 @@ def map_rows(m):
     return [g for g in m.get("games", []) if g["gid"] != "all" and g.get("score")]
 
 
+LOGO_RE = re.compile(r'(?:https:)?//owcdn\.net/img/([A-Za-z0-9_-]+)\.png')
+
+
+def mirror_logos(s):
+    """Copy every owcdn logo into site/logos as a small WebP and point the data at the copy.
+
+    Visitors then never hit VLR's image server, which blockers and hotlink rules can stop.
+    Originals are kept in cache/logos, so a weekly build downloads only new logos.
+    """
+    from PIL import Image
+    import io, urllib.request
+    src_dir = os.path.join(ROOT, "cache", "logos")
+    out_dir = os.path.join(ROOT, "site", "logos")
+    os.makedirs(src_dir, exist_ok=True)
+    os.makedirs(out_dir, exist_ok=True)
+    names, failed = set(LOGO_RE.findall(s)), set()
+    for n in sorted(names):
+        dst = os.path.join(out_dir, n + ".webp")
+        if os.path.exists(dst):
+            continue
+        src = os.path.join(src_dir, n + ".png")
+        try:
+            if not os.path.exists(src):
+                req = urllib.request.Request(f"https://owcdn.net/img/{n}.png",
+                                             headers={"User-Agent": vlr.UA, "Referer": "https://www.vlr.gg/"})
+                data = urllib.request.urlopen(req, timeout=30).read()
+                open(src, "wb").write(data)
+            im = Image.open(src)
+            im = im.convert("RGBA")
+            im.thumbnail((128, 128), Image.LANCZOS)
+            im.save(dst, "WEBP", quality=88, method=6)
+        except Exception as e:
+            print("logo fail", n, e, flush=True)
+            failed.add(n)
+    for f in os.listdir(out_dir):
+        if f[:-5] not in names:
+            os.remove(os.path.join(out_dir, f))
+    print("logos", len(names) - len(failed), "mirrored,", len(failed), "left on owcdn", flush=True)
+    return LOGO_RE.sub(lambda m: m.group(0) if m.group(1) in failed else f"logos/{m.group(1)}.webp", s)
+
+
 def main():
     matches = load_matches()
     known = {m["id"] for m in matches}
@@ -671,6 +712,7 @@ def main():
     )
     os.makedirs(os.path.join(ROOT, "site"), exist_ok=True)
     s = json.dumps(out, ensure_ascii=False, separators=(",", ":"))
+    s = mirror_logos(s)
     open(os.path.join(ROOT, "site", "data.js"), "w", encoding="utf8").write("window.IVI_DATA=" + s + ";")
     # cache-bust: point index.html at this exact data file so browsers don't keep last week's copy
     ix = os.path.join(ROOT, "site", "index.html")
