@@ -124,6 +124,10 @@ tr.top3 td.rank { color: var(--accent); }
 .tlink { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; }
 .logo { width: 22px; height: 22px; object-fit: contain; flex: none; }
 .logo.lg { width: 64px; height: 64px; }
+.logo.lm { display: none; }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .logo.lm { display: inline-block; } :root:not([data-theme="dark"]) .logo.dm { display: none; } }
+:root[data-theme="light"] .logo.lm { display: inline-block; }
+:root[data-theme="light"] .logo.dm { display: none; }
 .flag { font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: .05em; }
 .form { display: inline-flex; gap: 2px; }
 .form i { width: 7px; height: 14px; display: inline-block; border-radius: 1px; }
@@ -258,7 +262,7 @@ kbd { font: 11px var(--body); border: 1px solid var(--line); border-bottom-width
 <main class="wrap" id="view"><div class="empty">Loading data…</div><noscript><div class="empty">This site needs JavaScript to show its tables and charts.</div></noscript></main>
 <footer><div class="wrap" id="foot"></div></footer>
 
-<script src="data.js?v=7fe9fcb4ba" charset="utf-8"></script>
+<script src="data.js?v=c86242f600" charset="utf-8"></script>
 <script>
 "use strict";
 const D = window.IVI_DATA;
@@ -268,7 +272,7 @@ const fmt = (v, d = 2) => v == null || isNaN(v) ? "–" : (+v).toFixed(d);
 const pct = (v, d = 0) => v == null || isNaN(v) ? "–" : (v * 100).toFixed(d) + "%";
 const pctRaw = (v, d = 0) => v == null || isNaN(v) ? "–" : (+v).toFixed(d) + "%";
 const sgn = v => (v > 0 ? "+" : "") + v;
-const img = u => u ? (u.startsWith("//") ? "https:" + u : (u.startsWith("/") ? "https://www.vlr.gg" + u : u)) : "";
+const img = u => (u = String(u || "").split("||")[0]) ? (u.startsWith("//") ? "https:" + u : (u.startsWith("/") ? "https://www.vlr.gg" + u : u)) : "";
 const NOW = new Date(D.generated + "T00:00:00");
 const daysAgo = d => Math.round((NOW - new Date(d + "T00:00:00")) / 864e5);
 // Current season = the snapshot's year, unless it has barely started (then the previous year).
@@ -299,7 +303,10 @@ function logoFallback(name, lg) {
 function logoHTML(url, name, lg = false) {
   const u = img(url);
   if (!u || /\/img\/vlr\/tmp\/vlr\.png$/.test(u)) return logoFallback(name, lg);
-  return `<img class="logo${lg ? " lg" : ""}" src="${esc(u)}" alt="" data-n="${esc(name)}" loading="lazy">`;
+  const tag = (src, mode) => `<img class="logo${lg ? " lg" : ""}${mode}" src="${esc(src)}" alt="" data-n="${esc(name)}" loading="lazy">`;
+  // Liquipedia logos can come as "light||dark": render both, CSS shows the one for the theme
+  const dark = String(url).split("||")[1];
+  return dark ? tag(u, " lm") + tag(img(dark), " dm") : tag(u, "");
 }
 // Broken or blocked logo URLs turn into an initials badge instead of a broken-image icon.
 document.addEventListener("error", e => {
@@ -815,7 +822,7 @@ V.about = () => `
   <div class="panel"><h3>Indian players abroad</h3><p>Indian-flagged players on teams outside South Asia are found three ways: by scanning the rosters of every team in VLR's regional rankings (Asia-Pacific, EMEA, MENA, Americas, China, Japan, Korea, Oceania, Game Changers and collegiate), from Liquipedia players with Indian nationality, and from a hand-kept list in the repository (<code>data/abroad_extra.json</code>). Their matches since 2024 count towards their player stats and they carry an <span class="pill abroad">Abroad</span> tag everywhere. Those matches stay out of team ratings and results, and because their opponents have no rating here, the opponent strength used for the adjusted rating is estimated from the event: 1950 for VCT leagues and internationals, 1650 for Challengers, 1550 otherwise.</p></div>
   <div class="panel"><h3>Sources</h3><ul class="small" style="padding-left:18px;margin:0;display:grid;gap:4px">
     <li><a href="https://www.vlr.gg" target="_blank" rel="noopener">VLR.gg</a>: matches, maps, player stats, rosters, placements, prize money.</li>
-    <li><a href="https://liquipedia.net/valorant" target="_blank" rel="noopener">Liquipedia VALORANT</a> (CC BY-SA): birth dates, IGL tags, real names, socials.</li>
+    <li><a href="https://liquipedia.net/valorant" target="_blank" rel="noopener">Liquipedia VALORANT</a> (CC BY-SA): birth dates, IGL tags, real names, socials; team logos where VLR has none.</li>
     <li><a href="https://www.1trick.gg" target="_blank" rel="noopener">1trick.gg</a> (Elevated): reference for adjusted ratings and scouting layout.</li>
     <li>News reports for storylines: Sheep Esports, The Bridge, Outlook Respawn, Mykhel, VLR news.</li>
   </ul><p class="note">Data snapshot ${esc(D.generated)}. Matches VLR hasn't recorded (some small community cups and early open-qualifier rounds) are missing. Forfeits and maps under 13 rounds are excluded. "Indians abroad" only covers Indian players whose foreign teams met Indian opposition or played in South Asian events.</p></div>
@@ -1292,7 +1299,7 @@ let theme = store.get("theme", null); applyTheme(theme);
 themeBtn.onclick = () => { theme = theme === null ? "light" : theme === "light" ? "dark" : null; store.set("theme", theme); applyTheme(theme); };
 
 $("#asof").textContent = "data to " + D.generated;
-$("#foot").innerHTML = `Built from VLR.gg match data and Liquipedia (CC BY-SA) player bios · snapshot ${esc(D.generated)} · ${D.matches.length.toLocaleString()} series · ${D.players.length.toLocaleString()} players · ${D.teams.length.toLocaleString()} teams. Not affiliated with Riot Games. · <a href="https://github.com/alan-r-henry/indian-valorant-index" target="_blank" rel="noopener">Source on GitHub</a>`;
+$("#foot").innerHTML = `Built from VLR.gg match data and Liquipedia (CC BY-SA) player bios and some team logos · snapshot ${esc(D.generated)} · ${D.matches.length.toLocaleString()} series · ${D.players.length.toLocaleString()} players · ${D.teams.length.toLocaleString()} teams. Not affiliated with Riot Games. · <a href="https://github.com/alan-r-henry/indian-valorant-index" target="_blank" rel="noopener">Source on GitHub</a>`;
 onNav();
 </script>
 </body>

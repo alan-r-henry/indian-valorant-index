@@ -36,6 +36,7 @@ export to CSV, and `/` jumps to search.
 | `scrape/crawl_events.py` | Lists VLR Pacific-region events into `data/vlr_events_pacific.json` |
 | `scrape/crawl.py` | Seeds from Indian/South Asian events and expands through every Indian team's match history into `data/matches.jsonl` and `data/teams_raw.json` |
 | `scrape/refresh_teams.py` | Re-reads team pages older than five days for teams active in the last 18 months, so new logos, names and rosters reach the site |
+| `scrape/lp_logos.py` | For teams with only VLR's placeholder logo, finds the logo in Liquipedia's team templates (light and dark versions) and keeps it only if a Valorant event page links to that team, into `data/lp_logos.json` |
 | `scrape/find_abroad.py` | Liquipedia players with Indian nationality into `data/lp_indian_players.json` |
 | `scrape/crawl_abroad.py` | Scans every VLR regional ranking's rosters for Indian-flagged players abroad and crawls their matches since 2024 (`data/abroad_*.json*`); `ABROAD_RESCAN=0` only fetches new matches |
 | `scrape/build.py` | Ratings, aggregates, events and the Liquipedia join, written to `site/data.js` |
@@ -53,6 +54,7 @@ cd scrape
 python -X utf8 crawl_events.py
 python -X utf8 crawl.py
 python -X utf8 refresh_teams.py
+python -X utf8 lp_logos.py
 python -X utf8 find_abroad.py
 python -X utf8 crawl_abroad.py
 python -X utf8 build.py

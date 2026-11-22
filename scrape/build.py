@@ -92,31 +92,44 @@ def map_rows(m):
     return [g for g in m.get("games", []) if g["gid"] != "all" and g.get("score")]
 
 
-LOGO_RE = re.compile(r'(?:https:)?//owcdn\.net/img/([A-Za-z0-9_-]+)\.png')
+LOGO_RE = re.compile(r'(?:https:)?//owcdn\.net/img/[A-Za-z0-9_-]+\.png'
+                     r'|https://liquipedia\.net/commons/images/[^"\s|]+')
+
+
+def _logo_key(url):
+    m = re.search(r'owcdn\.net/img/([A-Za-z0-9_-]+)\.png$', url)
+    return m.group(1) if m else "lp-" + hashlib.md5(url.encode()).hexdigest()[:12]
 
 
 def mirror_logos(s):
-    """Copy every owcdn logo into site/logos as a small WebP and point the data at the copy.
+    """Copy every logo (VLR's owcdn and Liquipedia) into site/logos as a small WebP and
+    point the data at the copy.
 
-    Visitors then never hit VLR's image server, which blockers and hotlink rules can stop.
-    Originals are kept in cache/logos, so a weekly build downloads only new logos.
+    Visitors then never hit the source image servers, which blockers and hotlink rules
+    can stop. Originals are kept in cache/logos, so a weekly build downloads only new logos.
     """
     from PIL import Image
-    import io, urllib.request
+    import urllib.request, time
     src_dir = os.path.join(ROOT, "cache", "logos")
     out_dir = os.path.join(ROOT, "site", "logos")
     os.makedirs(src_dir, exist_ok=True)
     os.makedirs(out_dir, exist_ok=True)
-    names, failed = set(LOGO_RE.findall(s)), set()
-    for n in sorted(names):
-        dst = os.path.join(out_dir, n + ".webp")
+    urls = {u if not u.startswith("//") else "https:" + u for u in LOGO_RE.findall(s)}
+    keys, failed = {u: _logo_key(u) for u in urls}, set()
+    for u, k in sorted(keys.items()):
+        dst = os.path.join(out_dir, k + ".webp")
         if os.path.exists(dst):
             continue
-        src = os.path.join(src_dir, n + ".png")
+        src = os.path.join(src_dir, k + ".img")
+        if not os.path.exists(src) and os.path.exists(os.path.join(src_dir, k + ".png")):
+            src = os.path.join(src_dir, k + ".png")
         try:
             if not os.path.exists(src):
-                req = urllib.request.Request(f"https://owcdn.net/img/{n}.png",
-                                             headers={"User-Agent": vlr.UA, "Referer": "https://www.vlr.gg/"})
+                lpimg = "liquipedia.net" in u
+                if lpimg:
+                    time.sleep(1.0)  # be gentle with Liquipedia
+                req = urllib.request.Request(u, headers={"User-Agent": lp.UA if lpimg else vlr.UA,
+                                                         "Referer": "https://liquipedia.net/" if lpimg else "https://www.vlr.gg/"})
                 data = urllib.request.urlopen(req, timeout=30).read()
                 open(src, "wb").write(data)
             im = Image.open(src)
@@ -124,13 +137,19 @@ def mirror_logos(s):
             im.thumbnail((128, 128), Image.LANCZOS)
             im.save(dst, "WEBP", quality=88, method=6)
         except Exception as e:
-            print("logo fail", n, e, flush=True)
-            failed.add(n)
+            print("logo fail", u, e, flush=True)
+            failed.add(u)
+    wanted = {k for u, k in keys.items() if u not in failed}
     for f in os.listdir(out_dir):
-        if f[:-5] not in names:
+        if f[:-5] not in wanted:
             os.remove(os.path.join(out_dir, f))
-    print("logos", len(names) - len(failed), "mirrored,", len(failed), "left on owcdn", flush=True)
-    return LOGO_RE.sub(lambda m: m.group(0) if m.group(1) in failed else f"logos/{m.group(1)}.webp", s)
+    print("logos", len(wanted), "mirrored,", len(failed), "left on the source server", flush=True)
+
+    def sub(m):
+        u = m.group(0)
+        full = "https:" + u if u.startswith("//") else u
+        return u if full in failed else f"logos/{keys[full]}.webp"
+    return LOGO_RE.sub(sub, s)
 
 
 def main():
@@ -142,6 +161,13 @@ def main():
     region_of_team = {v["team_id"]: v["region"] for v in abroad_info.values() if v.get("team_id") and v.get("region")}
     print("abroad matches", len(abroad_matches), "abroad players", len(abroad_info))
     teams_raw = json.load(open(os.path.join(DATA, "teams_raw.json"), encoding="utf8"))
+    # teams with only VLR's placeholder logo: use Liquipedia's (lp_logos.py); "light||dark" when it has both
+    lp_fn = os.path.join(DATA, "lp_logos.json")
+    lp_logos = json.load(open(lp_fn, encoding="utf8")) if os.path.exists(lp_fn) else {}
+    for tid_s, v in lp_logos.items():
+        t = teams_raw.get(tid_s)
+        if t is not None and (not t.get("logo") or "/tmp/vlr.png" in t["logo"]):
+            t["logo"] = v["logo"] + ("||" + v["dark"] if v.get("dark") else "")
     print("matches", len(matches), "teams", len(teams_raw))
 
     # ---------- lineup nationality per team ----------

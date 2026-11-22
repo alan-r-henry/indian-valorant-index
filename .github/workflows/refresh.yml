@@ -40,6 +40,7 @@ jobs:
           python -X utf8 crawl_events.py
           python -X utf8 crawl.py
           python -X utf8 refresh_teams.py
+          python -X utf8 lp_logos.py
           python -X utf8 find_abroad.py
       - name: Indian players abroad
         working-directory: scrape
